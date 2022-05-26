@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { useValidationErrorUpdate } from '../pages/TestScriptTestingPage/Context/ValidationErrorContext';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
@@ -24,23 +26,28 @@ const ExpandMore = styled((props) => {
     }),
 }));
 
-export default function EnterTestScriptNameCard({
-    submitted = false,
-    isSubmitButtonDisabled = true,
-    textAuthenticationError = "",
-    testScriptName = ""
+function EnterTestScriptNameCard({
+    setFormProps,
+    setIsTestScriptRequested,
+    isSubmitButtonDisabled,
+    textAuthenticationError,
+    testScriptName,
 }) {
     const [expanded, setExpanded] = React.useState(true);
-    // const [submitButtonColor, setSubmitButtonColor] = React.useState("#BFBFBF");
+    const invalidTestScriptNameError = useValidationErrorUpdate();
 
     const handleOnChange = (returnedObject) => {
-        const objectToReturn = { value: returnedObject.value, field: returnedObject.field };
-        const stringFunction = returnedObject.field + "(objectToReturn)";
-        eval(stringFunction);
+        // const objectToReturn = { value: returnedObject.value, field: returnedObject.field };
+        // const stringFunction = returnedObject.field + "(objectToReturn)";
+        // eval(stringFunction);
+        invalidTestScriptNameError("");
+        setFormProps(
+            prev => ({ ...prev, [returnedObject.field]: returnedObject.value })
+        );
     }
 
     const handleSubmit = () => {
-        submitted(true);
+        setIsTestScriptRequested(true);
     }
 
     // React.useEffect(() => {
@@ -107,7 +114,7 @@ export default function EnterTestScriptNameCard({
                             required={false}
                             type="text"
                             authenticationField={true}
-                            textAuthenticationError={textAuthenticationError}
+                            // textAuthenticationError={textAuthenticationError}
                             field={"testScriptName"}>
                         </MaterialTextField>
                         <button
@@ -122,3 +129,21 @@ export default function EnterTestScriptNameCard({
         </Card >
     );
 }
+
+EnterTestScriptNameCard.propType = {
+    setFormProps: PropTypes.func,
+    setIsTestScriptRequested: PropTypes.func,
+    isSubmitButtonDisabled: PropTypes.bool,
+    // testScriptName: PropTypes.string,
+    // textAuthenticationError: PropTypes.string,
+}
+
+EnterTestScriptNameCard.defaultProps = {
+    setFormProps: () => { },
+    setIsTestScriptRequested: () => { },
+    isSubmitButtonDisabled: false,
+    // testScriptName: "",
+    // textAuthenticationError: "",
+}
+
+export default EnterTestScriptNameCard;

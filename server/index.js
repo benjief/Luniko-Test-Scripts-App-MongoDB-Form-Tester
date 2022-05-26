@@ -19,11 +19,35 @@ app.use(cors());
 
 // Queries
 app.get("/get-test-script-names", async (req, res) => {
-    const testScriptNames = await TestScript.find(
-        {},
-        { "name": 1, "_id": 0 }
-    ).lean().exec();
-    res.status(200).json(testScriptNames);
+    try {
+        const testScriptNames = await TestScript.find(
+            {},
+            { "name": 1, "_id": 0 }
+        ).lean().exec();
+        res.status(200).json(testScriptNames);
+    } catch (e) {
+        res.status(500).send;
+    }
+});
+
+app.get("/get-test-script/:testScriptName", async (req, res) => {
+    const testScriptName = req.params.testScriptName;
+    console.log("fetching", testScriptName);
+    try {
+        const testScript = await TestScript.findOne(
+            { name: testScriptName },
+            {
+                "name": 1,
+                "description": 1,
+                "owner": 1,
+                "primaryWorkstream": 1,
+                "steps": 1
+            }
+        ).lean().exec();
+        res.status(200).json(testScript);
+    } catch (e) {
+        res.status(500).send;
+    }
 });
 
 connect()
