@@ -142,10 +142,10 @@ function MaterialTextField({
         setErrorEnabled(true);
         setDisplayedHelperText(authenticationError);
       } else {
-        if (value.trim().length || authenticationField) {
-          setErrorEnabled(false);
-          setDisplayedHelperText("");
-        }
+        // if (value.trim().length || authenticationField) {
+        setErrorEnabled(false);
+        setDisplayedHelperText("");
+        // }
       }
     }
   }, [authenticationField, authenticationError, errorEnabled, value]) // TODO: check need for firstRender
@@ -203,7 +203,7 @@ function MaterialTextField({
   );
 }
 
-MaterialTextField.propType = {
+MaterialTextField.propTypes = {
   field: PropTypes.string,
   className: PropTypes.string,
   label: PropTypes.string,
@@ -211,7 +211,7 @@ MaterialTextField.propType = {
   characterLimit: PropTypes.number,
   placeholder: PropTypes.string,
   defaultValue: PropTypes.string,
-  inputValue: PropTypes.string,
+  inputValue: PropTypes.func,
   multiline: PropTypes.bool,
   type: PropTypes.string,
   required: PropTypes.bool,
@@ -237,7 +237,7 @@ MaterialTextField.defaultProps = {
   characterLimit: 500,
   placeholder: "",
   defaultValue: "",
-  inputValue: "",
+  inputValue: () => { },
   multiline: false,
   type: "text",
   required: false,

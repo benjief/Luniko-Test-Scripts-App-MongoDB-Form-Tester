@@ -6,7 +6,7 @@ const cors = require("cors");
 const app = express();
 
 const connect = require("./connect");
-const { Step, TestScript } = require("./schemas/testScript");
+const { Step, TestScript } = require("./schemas/schemas");
 // const e = require("express");
 
 // Middleware
@@ -45,6 +45,18 @@ app.get("/get-test-script/:testScriptName", async (req, res) => {
             }
         ).lean().exec();
         res.status(200).json(testScript);
+    } catch (e) {
+        res.status(500).send;
+    }
+});
+
+app.get("/get-test-script-steps/:testScriptID", async (req, res) => {
+    const testScriptID = req.params.testScriptID;
+    try {
+        const steps = await Step.find(
+            { testScriptID: testScriptID }
+        ).lean().exec();
+        res.status(200).json(steps);
     } catch (e) {
         res.status(500).send;
     }

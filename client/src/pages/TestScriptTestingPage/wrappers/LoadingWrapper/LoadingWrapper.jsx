@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
-import NavBar from '../../../components/Navbar';
-import "../../../styles/TestScriptTestingPage.css";
+import NavBar from '../../../../components/Navbar';
+import Hypnosis from 'react-cssfx-loading/lib/Hypnosis';
+// import "../../../styles/TestScriptTestingPage.css";
 
 function LoadingWrapper({
     // children,
@@ -18,7 +19,14 @@ function LoadingWrapper({
             <div
                 className={rendering ? "loading-spinner" : "transition-element"}
                 style={{ opacity: rendering ? "100%" : transitionElementOpacity, visibility: rendering ? "visible" : transitionElementVisibility }}>
-                {/* {children} */}
+                {rendering
+                    ? <Hypnosis
+                        className="spinner"
+                        color="var(--lunikoOrange)"
+                        width="100px"
+                        height="100px"
+                        duration="1.5s" />
+                    : <div></div>}
             </div >
             <NavBar></NavBar>
         </Fragment>

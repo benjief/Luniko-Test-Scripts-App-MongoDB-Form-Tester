@@ -1,15 +1,15 @@
-import React, { Fragment, useEffect, useState, useRef } from "react";
+import React, { Fragment, useEffect, useState, useRef, useCallback } from "react";
 import { useValidationErrorUpdate } from "./Context/ValidationErrorContext";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
-import LoadingWrapper from "./LoadingWrapper";
-import ErrorWrapper from "./ErrorWrapper";
-import CardWrapper from "./CardWrapper";
-import NavBar from "../../components/Navbar";
-import Hypnosis from "react-cssfx-loading/lib/Hypnosis";
+import LoadingWrapper from "./wrappers/LoadingWrapper/LoadingWrapper";
+import ErrorWrapper from "./wrappers/ErrorWrapper";
+import CardWrapper from "./wrappers/CardWrapper";
+// import NavBar from "../../components/Navbar";
+// import Hypnosis from "react-cssfx-loading/lib/Hypnosis";
 import EnterTestScriptNameCard from "../../components/EnterTestScriptNameCard";
 import TestingFormCard from "../../components/TestingFormCard";
-import MaterialAlert from "../../components/MaterialAlert";
+// import MaterialAlert from "../../components/MaterialAlert";
 import "../../styles/TestScriptTestingPage.css";
 import "../../styles/InputComponents.css";
 import "../../styles/CardComponents.css";
@@ -24,7 +24,6 @@ function TestScriptTestingPage() {
     const [isValidTestScriptNameEntered, setIsValidTestScriptNameEntered] = useState(false);
     // const [invalidTestScriptNameError, setInvalidTestScriptNameError] = useState("");
     const invalidTestScriptNameError = useValidationErrorUpdate();
-    const [isTestScriptRequested, setIsTestScriptRequested] = useState(false);
     const [isRequestTestScriptButtonDisabled, setIsRequestTestScriptButtonDisabled] = useState(true);
     const [isBeginTestingButtonDisabled, setIsBeginTestingButtonDisabled] = useState(true);
     const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState(true);
@@ -35,6 +34,7 @@ function TestScriptTestingPage() {
         testerFirstName: "",
         testerLastName: "",
     });
+    const cardChanged = useRef(false);
     const [isTestingInProgress, setIsTestingInProgress] = useState(false);
     const [isTestingCompleted, setIsTestingCompleted] = useState(false);
     // const [testScriptSteps, setTestScriptSteps] = useState([]);
@@ -51,7 +51,7 @@ function TestScriptTestingPage() {
     const alertType = useRef("success-alert");
 
     const testScriptNamesAlreadyInDB = useRef([]);
-    const isDataFetched = useRef(false);
+    const isDataBeingFetched = useRef(false);
     const [isTestScriptSubmitted, setIsTestScriptSubmitted] = useState(false);
 
     const loadErrorMessage = "Apologies! We've encountered an error. Please attempt to re-load this page.";
@@ -59,56 +59,127 @@ function TestScriptTestingPage() {
 
     const navigate = useNavigate();
 
-    const runPrimaryReadAsyncFunctions = async () => {
-        isDataFetched.current = true;
-        await fetchTestScriptNamesAlreadyInDB();
-        setRendering(false);
-    }
+    const handleError = useCallback((errorType) => {
+        setIsErrorThrown(true);
+        alertType.current = "error-alert";
+        errorType === "r"
+            ? alertMessage.current = loadErrorMessage
+            : alertMessage.current = writeErrorMessage;
 
-    const fetchTestScriptNamesAlreadyInDB = async () => {
-        console.log("fetching existing test script names");
-        try {
-            async.current = true;
-            await Axios.get("http://localhost:5000/get-test-script-names", {
-            })
-                .then(res => {
-                    testScriptNamesAlreadyInDB.current = res.data.map(({ name }) => name);
-                    async.current = false;
-                });
-        } catch (e) {
-            console.log(e);
-            handleError("r");
+        // Delay is set up just in case an error is generated before the is fully-displayed
+        // let delay = transitionElementOpacity === "100%" ? 500 : rendering ? 500 : 0;
+        let delay = 0; // TODO: test this and amend if necessary
+
+        if (rendering) {
+            setRendering(false);
+        }
+
+        setTimeout(() => {
+            setAlert(true);
+        }, delay);
+    }, [alertType, rendering]);
+
+    const handleAlertClosed = (alertClosed) => {
+        if (alertClosed) {
+            setAlert(false);
+            navigate("/");
         }
     }
 
-    const runSecondaryReadAsyncFunctions = async (testScriptName) => {
-        isDataFetched.current = true;
-        await fetchTestScriptInformation(testScriptName);
-    }
+    useEffect(() => {
+        const runPrimaryReadAsyncFunctions = async () => {
+            isDataBeingFetched.current = true;
+            await fetchTestScriptNamesAlreadyInDB();
+            setRendering(false);
+        }
 
-    const fetchTestScriptInformation = async (testScriptName) => {
-        try {
-            async.current = true;
-            await Axios.get(`http://localhost:5000/get-test-script/${testScriptName}`, {
-            })
-                .then(res => {
-                    populateTestScriptInformation(res.data);
+        const fetchTestScriptNamesAlreadyInDB = async () => {
+            console.log("fetching existing test script names");
+            try {
+                async.current = true;
+                await Axios.get("http://localhost:5000/get-test-script-names", {
                 })
-        } catch (e) {
-            console.log(e);
-            handleError("r");
+                    .then(res => {
+                        testScriptNamesAlreadyInDB.current = res.data.map(({ name }) => name);
+                        async.current = false;
+                    });
+            } catch (e) {
+                console.log(e);
+                handleError("r");
+            }
         }
-    }
 
-    const populateTestScriptInformation = (testScriptInformation) => {
-        setFormProps({
-            testScriptName: testScriptInformation.name,
-            testScriptDescription: testScriptInformation.description,
-            testScriptPrimaryWorkstream: testScriptInformation.primaryWorkstream,
-        });
-        // setTestScriptSteps(testScriptInformation.steps);
-        async.current = false;
-    }
+        const runSecondaryReadAsyncFunctions = async (testScriptName) => {
+            isDataBeingFetched.current = true;
+            await fetchTestScriptInformation(testScriptName);
+            setRendering(false);
+        }
+
+        const fetchTestScriptInformation = async (testScriptName) => {
+            try {
+                async.current = true;
+                await Axios.get(`http://localhost:5000/get-test-script/${testScriptName}`, {
+                })
+                    .then(res => {
+                        populateTestScriptInformation(res.data);
+                    })
+            } catch (e) {
+                console.log(e);
+                handleError("r");
+            }
+        }
+
+        const populateTestScriptInformation = (testScriptInformation) => {
+            setFormProps({
+                testScriptName: testScriptInformation.name,
+                testScriptDescription: testScriptInformation.description,
+                testScriptPrimaryWorkstream: testScriptInformation.primaryWorkstream,
+            });
+            // setTestScriptSteps(testScriptInformation.steps);
+            async.current = false;
+        }
+
+        if (rendering) {
+            if (!isValidTestScriptNameEntered && !isDataBeingFetched.current) { // TODO: go over logic here
+                runPrimaryReadAsyncFunctions();
+            } else if (isValidTestScriptNameEntered) {
+                if (!isTestingInProgress && !isDataBeingFetched.current) {
+                    runSecondaryReadAsyncFunctions(formProps["testScriptName"]);
+                } else if (cardChanged.current) {
+                    setRendering(false);
+                } else if (cardChanged.current) {
+                    setRendering(false);
+                }
+            }
+        } else {
+            setTransitionElementOpacity("0%");
+            setTransitionElementVisibility("hidden");
+            if (!isValidTestScriptNameEntered) {
+                formProps["testScriptName"].trim().length ? setIsRequestTestScriptButtonDisabled(false) : setIsRequestTestScriptButtonDisabled(true);
+            } else {
+                if (!isTestingCompleted) {
+                    setIsSubmitButtonDisabled(true);
+                }
+                if (!isTestScriptSubmitted) {
+                    // (formProps["testScriptName"].trim() !== "" && formProps["testScriptDescription"].trim() !== "" && formProps["testScriptPrimaryWorkstream"].trim() !== ""
+                    //     && formProps["ownerFirstName"].trim() !== "" && formProps["ownerLastName"].trim() !== "" /*&& formProps["ownerEmail"] !== ""*/)
+                    //     ? setIsModifyButtonDisabled(false)
+                    //     : setIsModifyButtonDisabled(true);
+                    // testScriptSteps.length && !testScriptSteps.slice(-1)[0]["description"].trim().length
+                    //     ? setAddStepButtonDisabled(true)
+                    //     : setAddStepButtonDisabled(false);
+                    // testScriptSteps.length === 1
+                    //     ? setRemoveStepButtonDisabled(true)
+                    //     : setRemoveStepButtonDisabled(false);
+                    // TODO: look into abstracting functions in useEffect hook... can this be done?
+                } else {
+                    handleSubmitTestScriptResults();
+                }
+            }
+        }
+    }, [rendering, isDataBeingFetched, cardChanged, formProps, isValidTestScriptNameEntered, isTestingInProgress, isTestingCompleted, isTestScriptSubmitted, handleError]);
+
+
 
     // const handleFormCallback = (returnedObject) => {
     //     const field = returnedObject.field;
@@ -121,16 +192,17 @@ function TestScriptTestingPage() {
     //     setFormPropsForFieldAndValue(field, value);
     // }
 
-    const setFormPropsForFieldAndValue = (field, value) => {
-        setFormProps((prevState) => ({
-            ...prevState,
-            [field]: value,
-        }));
-    }
+    // const setFormPropsForFieldAndValue = (field, value) => {
+    //     setFormProps((prevState) => ({
+    //         ...prevState,
+    //         [field]: value,
+    //     }));
+    // }
 
     // const handleChangeCard = (changeCard) => {
     //     if (changeCard) {
     //         setRendering(true);
+    //         cardChanged.current = true;
     //         addOrModifySteps
     //             ? setAddOrModifySteps(false)
     //             : setAddOrModifySteps(true);
@@ -183,11 +255,11 @@ function TestScriptTestingPage() {
     //     return listOfSteps;
     // }
 
-    const handleRequestTestScript = (testScriptRequested) => {
-        if (testScriptRequested && !isValidTestScriptNameEntered) {
+    const handleRequestTestScript = () => { // TODO: make this more direct
+        if (!isValidTestScriptNameEntered) {
             if (validateTestScriptNameEntered()) {
                 setIsValidTestScriptNameEntered(true);
-                isDataFetched.current = false;
+                isDataBeingFetched.current = false;
                 setRendering(true);
                 setIsRequestTestScriptButtonDisabled(true);
             } else {
@@ -252,73 +324,6 @@ function TestScriptTestingPage() {
     //     }
     // }
 
-    const handleError = (errorType) => {
-        setIsErrorThrown(true);
-        alertType.current = "error-alert";
-        errorType === "r"
-            ? alertMessage.current = loadErrorMessage
-            : alertMessage.current = writeErrorMessage;
-
-        // Delay is set up just in case an error is generated before the is fully-displayed
-        let delay = transitionElementOpacity === "100%" ? 500 : rendering ? 500 : 0;
-
-        if (rendering) {
-            setRendering(false);
-        }
-
-        setTimeout(() => {
-            setAlert(true);
-        }, delay);
-    }
-
-    const handleAlertClosed = (alertClosed) => {
-        if (alertClosed) {
-            setAlert(false);
-            navigate("/");
-        }
-    }
-
-    useEffect(() => {
-        if (rendering) {
-            if (!isValidTestScriptNameEntered && !isDataFetched.current) {
-                runPrimaryReadAsyncFunctions();
-            } else if (isValidTestScriptNameEntered) {
-                if (!isTestingInProgress && !isDataFetched.current) {
-                    runSecondaryReadAsyncFunctions(formProps["testScriptName"]);
-                } else if (isTestingInProgress) {
-                    setRendering(false);
-                } else {
-                    setRendering(false);
-                }
-            }
-        } else {
-            setTransitionElementOpacity("0%");
-            setTransitionElementVisibility("hidden");
-            if (!isValidTestScriptNameEntered) {
-                formProps["testScriptName"].trim().length ? setIsRequestTestScriptButtonDisabled(false) : setIsRequestTestScriptButtonDisabled(true);
-            } else {
-                if (!isTestingCompleted) {
-                    setIsSubmitButtonDisabled(true);
-                }
-                if (!isTestScriptSubmitted) {
-                    // (formProps["testScriptName"].trim() !== "" && formProps["testScriptDescription"].trim() !== "" && formProps["testScriptPrimaryWorkstream"].trim() !== ""
-                    //     && formProps["ownerFirstName"].trim() !== "" && formProps["ownerLastName"].trim() !== "" /*&& formProps["ownerEmail"] !== ""*/)
-                    //     ? setIsModifyButtonDisabled(false)
-                    //     : setIsModifyButtonDisabled(true);
-                    // testScriptSteps.length && !testScriptSteps.slice(-1)[0]["description"].trim().length
-                    //     ? setAddStepButtonDisabled(true)
-                    //     : setAddStepButtonDisabled(false);
-                    // testScriptSteps.length === 1
-                    //     ? setRemoveStepButtonDisabled(true)
-                    //     : setRemoveStepButtonDisabled(false);
-                    // TODO: look into abstracting functions in useEffect hook... can this be done?
-                } else {
-                    handleSubmitTestScriptResults();
-                }
-            }
-        }
-    }, [rendering, isDataFetched, formProps, isValidTestScriptNameEntered, isTestingInProgress, isTestingCompleted, isTestScriptSubmitted]);
-
     return (
         <Fragment>
             <LoadingWrapper
@@ -326,54 +331,15 @@ function TestScriptTestingPage() {
                 transitionElementOpacity={transitionElementOpacity}
                 transitionElementVisibility={transtitionElementVisibility}>
             </LoadingWrapper>
-            {/* rendering
-            ? <div className="loading-spinner">
-                <Hypnosis
-                    className="spinner"
-                    color="var(--lunikoOrange)"
-                    width="100px"
-                    height="100px"
-                    duration="1.5s" />
-            </div>
-            // : <Fragment>
-                <div
-                    className="transition-element"
-                    style={{
-                        opacity: transitionElementOpacity,
-                        visibility: transtitionElementVisibility
-                    }}>
-                </div>
-                <NavBar>
-                </NavBar> */}
             <ErrorWrapper
                 alert={alert}
                 alertMessage={alertMessage.current}
                 handleAlertClosed={handleAlertClosed}
-                alertType={alertType.current}> // TODO: change alerType hook to useState?
+                alertType={alertType.current}> {/* TODO: change alertType hook to useState? */}
             </ErrorWrapper>
-            {/* {isErrorThrown
-                ? alert
-                    ? <div className="alert-container">
-                        <MaterialAlert
-                            message={alertMessage.current}
-                            closed={handleAlertClosed}
-                            className={alertType.current}>
-                        </MaterialAlert>
-                        <div className="error-div"></div>
-                    </div>
-                    : <div></div>
-                : alert
-                    ? <div className="alert-container">
-                        <MaterialAlert
-                            message={alertMessage.current}
-                            closed={handleAlertClosed}
-                            className={alertType.current}>
-                        </MaterialAlert>
-                    </div>
-                    : <div></div>
-            } */}
             {isValidTestScriptNameEntered
                 ? <CardWrapper
+                    rendering={rendering}
                     isErrorThrown={isErrorThrown}
                     isTestingInProgress={isTestingInProgress}>
                     {isTestingInProgress
@@ -403,7 +369,7 @@ function TestScriptTestingPage() {
                             <EnterTestScriptNameCard
                                 setFormProps={setFormProps}
                                 // testScriptName={handleFormCallback}
-                                setIsTestScriptRequested={handleRequestTestScript}
+                                requestTestScript={handleRequestTestScript}
                                 isSubmitButtonDisabled={isRequestTestScriptButtonDisabled}
                                 /*textAuthenticationError={invalidTestScriptNameError}*/>
                             </EnterTestScriptNameCard>

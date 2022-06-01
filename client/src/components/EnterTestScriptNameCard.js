@@ -28,10 +28,8 @@ const ExpandMore = styled((props) => {
 
 function EnterTestScriptNameCard({
     setFormProps,
-    setIsTestScriptRequested,
+    requestTestScript,
     isSubmitButtonDisabled,
-    textAuthenticationError,
-    testScriptName,
 }) {
     const [expanded, setExpanded] = React.useState(true);
     const invalidTestScriptNameError = useValidationErrorUpdate();
@@ -44,10 +42,6 @@ function EnterTestScriptNameCard({
         setFormProps(
             prev => ({ ...prev, [returnedObject.field]: returnedObject.value })
         );
-    }
-
-    const handleSubmit = () => {
-        setIsTestScriptRequested(true);
     }
 
     // React.useEffect(() => {
@@ -119,7 +113,7 @@ function EnterTestScriptNameCard({
                         </MaterialTextField>
                         <button
                             className="submit-test-script-name-button"
-                            onClick={handleSubmit}
+                            onClick={requestTestScript}
                             disabled={isSubmitButtonDisabled}>
                             Submit
                         </button>
@@ -130,9 +124,9 @@ function EnterTestScriptNameCard({
     );
 }
 
-EnterTestScriptNameCard.propType = {
+EnterTestScriptNameCard.propTypes = {
     setFormProps: PropTypes.func,
-    setIsTestScriptRequested: PropTypes.func,
+    requestTestScript: PropTypes.func,
     isSubmitButtonDisabled: PropTypes.bool,
     // testScriptName: PropTypes.string,
     // textAuthenticationError: PropTypes.string,
@@ -140,7 +134,7 @@ EnterTestScriptNameCard.propType = {
 
 EnterTestScriptNameCard.defaultProps = {
     setFormProps: () => { },
-    setIsTestScriptRequested: () => { },
+    requestTestScript: () => { },
     isSubmitButtonDisabled: false,
     // testScriptName: "",
     // textAuthenticationError: "",
