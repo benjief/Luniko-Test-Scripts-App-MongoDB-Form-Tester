@@ -99,6 +99,7 @@ function EnterTestScriptNameCard({
                         <strong>Updatable Fields</strong>
                     </Typography> */}
                         <MaterialTextField
+                            className="test-script-name"
                             label="Test Script Name"
                             // characterLimit={10}
                             // placeholder="Approximate number of unique records pre-cleanup"

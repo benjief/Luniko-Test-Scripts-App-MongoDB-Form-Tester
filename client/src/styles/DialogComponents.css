@@ -18,8 +18,12 @@
 
 .material-dialog-exterior-button-container img {
     margin-right: 8px;
-    width: 22px;
-    height: 22px;
+    width: 23px;
+    height: 23px;
+}
+
+.material-dialog-exterior-button {
+    font-size: 13pt !important;
 }
 
 #alert-dialog-title {

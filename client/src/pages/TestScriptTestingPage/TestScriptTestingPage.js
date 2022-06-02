@@ -272,7 +272,7 @@ function TestScriptTestingPage() {
     // adapted from https://stackoverflow.com/questions/60440139/check-if-a-string-contains-exact-match
     const validateTestScriptNameEntered = () => {
         for (let i = 0; i < testScriptNamesAlreadyInDB.current.length; i++) {
-            let escapeRegExpMatch = formProps["testScriptName"].replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+            let escapeRegExpMatch = formProps["testScriptName"].replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
             if (new RegExp(`(?:^|s|$)${escapeRegExpMatch}(?:^|s|$)`).test(testScriptNamesAlreadyInDB.current[i])) {
                 return true;
             }

@@ -31,7 +31,7 @@
     padding-bottom: 20px !important;
 }
 
-.MuiCardHeader-title {
+.MuiCardHeader-title strong {
     margin-bottom: 0px !important;
     font-size: 13.2pt !important;
 }
