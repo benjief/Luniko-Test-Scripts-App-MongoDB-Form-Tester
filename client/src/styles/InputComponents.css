@@ -19,6 +19,14 @@
     padding: 0 !important;
 }
 
+.MuiFormGroup-root {
+    margin-bottom: 15px !important;
+}
+
+/* .MuiRadio-root {
+    height: 100% !important;
+} */
+
 .MuiOutlinedInput-root {
     min-height: 50px !important;
     font-family: "Raleway", Verdana, Geneva, Tahoma, sans-serif !important;

@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 // import MaterialSingleSelectFreeSolo from './MaterialSingleSelectFreeSolo';
 import MaterialTextField from './MaterialTextField';
 import MaterialDialog from "./MaterialDialog";
+import MaterialRadioButton from './MaterialRadioButton';
 // import MaterialMultiSelect from './MaterialMultiSelect';
 // import MaterialMultiSelectFreeSolo from './MaterialMultiSelectFreeSolo';
 // import MaterialCheckBox from './MaterialCheckBox';
@@ -132,6 +133,11 @@ function TestStepCard({
                             showCharCounter={true}
                             field="testerFirstName" >
                         </MaterialTextField>
+                        <MaterialRadioButton
+                            buttonOne={{ value: "P", label: "Pass" }}
+                            buttonTwo={{ value: "F", label: "Fail" }}
+                            setCurrentStepResponseProps={setCurrentStepResponseProps}>
+                        </MaterialRadioButton>
                         <button
                             className="previous-step-button"
                             onClick={handleOnClickPreviousStep}
