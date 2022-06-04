@@ -9,6 +9,7 @@ import CardWrapper from "./wrappers/CardWrapper";
 // import Hypnosis from "react-cssfx-loading/lib/Hypnosis";
 import EnterTestScriptNameCard from "../../components/EnterTestScriptNameCard";
 import TestingFormCard from "../../components/TestingFormCard";
+import TestStepCard from "../../components/TestStepCard";
 // import MaterialAlert from "../../components/MaterialAlert";
 import "../../styles/TestScriptTestingPage.css";
 import "../../styles/InputComponents.css";
@@ -34,9 +35,20 @@ function TestScriptTestingPage() {
         testerFirstName: "",
         testerLastName: "",
     });
+    const testScriptID = useRef("");
+    const [testScriptSteps, setTestScriptSteps] = useState([]);
+    const [currentStep, setCurrentStep] = useState({});
+    const [stepResponses, setStepResponses] = useState([]);
     const cardChanged = useRef(false);
     const [isTestingInProgress, setIsTestingInProgress] = useState(false);
-    const [isTestingCompleted, setIsTestingCompleted] = useState(false);
+    const [currentStepResponseProps, setCurrentStepResponseProps] = useState({
+        sessionID: "",
+        stepID: "",
+        tester: "",
+        comments: "",
+        pass: false
+    });
+    // const [isTestingCompleted, setIsTestingCompleted] = useState(false);
     // const [testScriptSteps, setTestScriptSteps] = useState([]);
     // const [addOrModifySteps, setAddOrModifySteps] = useState(false);
     // const [isAddOrModifyStepsButtonDisabled, setIsAddOrModifyStepsButtonDisabled] = useState(false);
@@ -112,6 +124,7 @@ function TestScriptTestingPage() {
         const runSecondaryReadAsyncFunctions = async (testScriptName) => {
             isDataBeingFetched.current = true;
             await fetchTestScriptInformation(testScriptName);
+            await fetchTestScriptSteps(testScriptID.current);
             setRendering(false);
         }
 
@@ -130,13 +143,40 @@ function TestScriptTestingPage() {
         }
 
         const populateTestScriptInformation = (testScriptInformation) => {
-            setFormProps({
-                testScriptName: testScriptInformation.name,
-                testScriptDescription: testScriptInformation.description,
-                testScriptPrimaryWorkstream: testScriptInformation.primaryWorkstream,
-            });
+            setFormProps(
+                prev => ({
+                    ...prev,
+                    "testScriptName": testScriptInformation.name,
+                    "testScriptDescription": testScriptInformation.description,
+                    "testScriptPrimaryWorkstream": testScriptInformation.primaryWorkstream
+                })
+            );
+            // setFormProps({
+            //     testScriptName: testScriptInformation.name,
+            //     testScriptDescription: testScriptInformation.description,
+            //     testScriptPrimaryWorkstream: testScriptInformation.primaryWorkstream,
+            // });
             // setTestScriptSteps(testScriptInformation.steps);
+            testScriptID.current = testScriptInformation._id;
             async.current = false;
+        }
+
+        const fetchTestScriptSteps = async (testScriptID) => {
+            if (!async.current) {
+                try {
+                    async.current = true;
+                    await Axios.get(`http://localhost:5000/get-test-script-steps/${testScriptID}`, {
+                    })
+                        .then(res => {
+                            setTestScriptSteps(res.data);
+                            setCurrentStep(res.data[0]);
+                            async.current = false;
+                        })
+                } catch (e) {
+                    console.log(e);
+                    handleError("r");
+                }
+            }
         }
 
         if (rendering) {
@@ -157,14 +197,10 @@ function TestScriptTestingPage() {
             if (!isValidTestScriptNameEntered) {
                 formProps["testScriptName"].trim().length ? setIsRequestTestScriptButtonDisabled(false) : setIsRequestTestScriptButtonDisabled(true);
             } else {
-                if (!isTestingCompleted) {
-                    setIsSubmitButtonDisabled(true);
-                }
+                stepResponses.length ? setIsSubmitButtonDisabled(false) : setIsSubmitButtonDisabled(true);
                 if (!isTestScriptSubmitted) {
-                    // (formProps["testScriptName"].trim() !== "" && formProps["testScriptDescription"].trim() !== "" && formProps["testScriptPrimaryWorkstream"].trim() !== ""
-                    //     && formProps["ownerFirstName"].trim() !== "" && formProps["ownerLastName"].trim() !== "" /*&& formProps["ownerEmail"] !== ""*/)
-                    //     ? setIsModifyButtonDisabled(false)
-                    //     : setIsModifyButtonDisabled(true);
+                    (formProps["testerFirstName"].trim() !== "" && formProps["testerLastName"].trim() !== "")
+                        ? setIsBeginTestingButtonDisabled(false) : setIsBeginTestingButtonDisabled(true);
                     // testScriptSteps.length && !testScriptSteps.slice(-1)[0]["description"].trim().length
                     //     ? setAddStepButtonDisabled(true)
                     //     : setAddStepButtonDisabled(false);
@@ -177,7 +213,7 @@ function TestScriptTestingPage() {
                 }
             }
         }
-    }, [rendering, isDataBeingFetched, cardChanged, formProps, isValidTestScriptNameEntered, isTestingInProgress, isTestingCompleted, isTestScriptSubmitted, handleError]);
+    }, [rendering, isDataBeingFetched, cardChanged, formProps, isValidTestScriptNameEntered, isTestingInProgress, isTestScriptSubmitted, stepResponses.length, handleError]);
 
 
 
@@ -343,7 +379,14 @@ function TestScriptTestingPage() {
                     isErrorThrown={isErrorThrown}
                     isTestingInProgress={isTestingInProgress}>
                     {isTestingInProgress
-                        ? "CARD PLACEHOLDER"
+                        ? <TestStepCard
+                            setStepBeingTested={setCurrentStep}
+                            setCurrentStepResponseProps={setCurrentStepResponseProps}
+                            setStepResponses={setStepResponses}
+                            stepNumber={currentStep["number"]}
+                            stepDescription={currentStep["description"]}
+                            isLastStep={currentStep["number"] === testScriptSteps.length}>
+                        </TestStepCard>
                         : <TestingFormCard
                             setFormProps={setFormProps}
                             testScriptName={formProps["testScriptName"]}
