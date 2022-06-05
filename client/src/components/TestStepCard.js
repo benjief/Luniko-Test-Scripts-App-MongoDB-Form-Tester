@@ -8,12 +8,11 @@ import Typography from '@mui/material/Typography';
 // import MaterialSingleSelect from './MaterialSingleSelect';
 // import MaterialSingleSelectFreeSolo from './MaterialSingleSelectFreeSolo';
 import MaterialTextField from './MaterialTextField';
-import MaterialDialog from "./MaterialDialog";
 import MaterialRadioButton from './MaterialRadioButton';
 // import MaterialMultiSelect from './MaterialMultiSelect';
 // import MaterialMultiSelectFreeSolo from './MaterialMultiSelectFreeSolo';
 // import MaterialCheckBox from './MaterialCheckBox';
-import FadingBalls from "react-cssfx-loading/lib/FadingBalls";
+// import FadingBalls from "react-cssfx-loading/lib/FadingBalls";
 
 // const ExpandMore = styled((props) => {
 //     const { expand, ...other } = props;
@@ -27,7 +26,7 @@ import FadingBalls from "react-cssfx-loading/lib/FadingBalls";
 // }));
 
 function TestStepCard({
-    setStepBeingTested,
+    handleChangeStep,
     setCurrentStepResponseProps,
     existingComments,
     setStepResponses,
@@ -37,23 +36,29 @@ function TestStepCard({
     isLastStep,
 }) {
     // const [expanded, setExpanded] = React.useState(true);
-    // const [submitButtonColor, setSubmitButtonColor] = React.useState("#BFBFBF");
+    const [isNextStepButtonDisabled, setIsNextStepButtonDisabled] = React.useState(true);
 
     const handleOnChange = (returnedObject) => {
         // const objectToReturn = { value: returnedObject.value, field: returnedObject.field };
         // const stringFunction = returnedObject.field + "(objectToReturn)";
         // eval(stringFunction);
+        if (returnedObject["field"] === "radio button value") {
+            setIsNextStepButtonDisabled(false);
+            returnedObject["field"] = "pass";
+        }
         setCurrentStepResponseProps(
             prev => ({ ...prev, [returnedObject.field]: returnedObject.value })
         );
     }
 
-    const handleOnClickPreviousStep = () => {
-        setStepBeingTested(stepNumber--);
+    const handleOnClickNextStep = () => {
+        console.log(stepNumber + 1);
+        handleChangeStep(stepNumber + 1);
     }
 
-    const handleOnClickNextStep = () => {
-        setStepBeingTested(stepNumber++);
+    const handleOnClickPreviousStep = () => {
+        console.log(stepNumber - 1);
+        handleChangeStep(stepNumber - 1);
     }
 
     // const handleBeginTesting = () => {
@@ -64,13 +69,9 @@ function TestStepCard({
     //     setIsTestScriptSubmitted(true);
     // }
 
-    // React.useEffect(() => {
-    //     if (!submitButtonDisabled) {
-    //         setSubmitButtonColor("var(--lunikoBlue)");
-    //     } else {
-    //         setSubmitButtonColor("#BFBFBF");
-    //     }
-    // }, [submitButtonDisabled]);
+    React.useEffect(() => {
+        console.log(stepNumber);
+    }, [stepNumber]);
 
     return (
         <Card
@@ -134,9 +135,9 @@ function TestStepCard({
                             field="testerFirstName" >
                         </MaterialTextField>
                         <MaterialRadioButton
-                            buttonOne={{ value: "P", label: "Pass" }}
-                            buttonTwo={{ value: "F", label: "Fail" }}
-                            setCurrentStepResponseProps={setCurrentStepResponseProps}>
+                            buttonOne={{ value: true, label: "Pass" }}
+                            buttonTwo={{ value: false, label: "Fail" }}
+                            selectedValue={handleOnChange}>
                         </MaterialRadioButton>
                         <button
                             className="previous-step-button"
@@ -147,7 +148,7 @@ function TestStepCard({
                         <button
                             className="next-step-button"
                             onClick={handleOnClickNextStep}
-                            disabled={isLastStep}>
+                            disabled={isLastStep || isNextStepButtonDisabled}>
                             Next Step
                         </button>
                     </CardContent>
@@ -158,7 +159,7 @@ function TestStepCard({
 }
 
 TestStepCard.propTypes = {
-    setStepBeingTested: PropTypes.func,
+    handleChangeStep: PropTypes.func,
     setCurrentStepResponseProps: PropTypes.func,
     existingComments: PropTypes.string,
     setStepResponses: PropTypes.func,
@@ -166,10 +167,11 @@ TestStepCard.propTypes = {
     stepNumber: PropTypes.number,
     stepDescription: PropTypes.string,
     isLastStep: PropTypes.bool,
+    isNextStepButtonDisabled: PropTypes.bool,
 }
 
 TestStepCard.defaultProps = {
-    setStepBeingTested: () => { },
+    handleChangeStep: () => { },
     setCurrentStepResponseProps: () => { },
     existingComments: "",
     setStepResponses: () => { },
@@ -177,6 +179,7 @@ TestStepCard.defaultProps = {
     stepNumber: 0,
     stepDescription: "",
     isLastStep: false,
+    isNextStepButtonDisabled: true,
 }
 
 export default TestStepCard;

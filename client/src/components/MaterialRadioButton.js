@@ -11,17 +11,17 @@ function MaterialRadioButton({
   formTitle,
   buttonOne,
   buttonTwo,
-  setCurrentStepResponseProps
+  selectedValue,
 }) {
-  const [value, setValue] = React.useState('female');
+  const [value, setValue] = React.useState("");
 
   // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
   //   setValue((event.target as HTMLInputElement).value);
   // };
 
-  const handleChange = (object) => {
-    setValue(object);
-    console.log(object);
+  const handleChange = (value) => {
+    setValue(value);
+    selectedValue({field: "radio button value", value: value});
   }
 
   return (
@@ -61,21 +61,21 @@ function MaterialRadioButton({
 MaterialRadioButton.propTypes = {
   formTitle: PropTypes.string,
   buttonOne: PropTypes.shape({
-    value: PropTypes.string,
+    value: PropTypes.bool,
     label: PropTypes.string,
   }),
   buttonTwo: PropTypes.shape({
-    value: PropTypes.string,
+    value: PropTypes.bool,
     label: PropTypes.string,
   }),
-  setCurrentStepResponseProps: PropTypes.func,
+  selectedValue: PropTypes.func,
 }
 
 MaterialRadioButton.defaultProps = {
   formTitle: "",
   buttonOne: {},
   buttonTwo: {},
-  setCurrentStepResponseProps: () => { },
+  selectedValue: () => {},
 }
 
 export default MaterialRadioButton;

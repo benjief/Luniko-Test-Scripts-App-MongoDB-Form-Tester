@@ -5,6 +5,11 @@
     /* margin-top: 5px; */
 }
 
+.step-response-comments {
+    margin-top: 20px !important;
+    margin-bottom: 5px !important;
+}
+
 .test-script-name {
     min-height: 78.91px !important;
 }

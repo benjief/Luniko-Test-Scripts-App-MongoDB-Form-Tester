@@ -1,7 +1,7 @@
 .material-dialog-exterior-button {
     border-color: var(--lunikoBlue) !important;
     color: var(--lunikoBlue) !important;
-    padding: 20px !important;
+    padding: 10px 20px 10px 20px !important;
     font-family: "Raleway", Verdana, Geneva, Tahoma, sans-serif !important;
     font-weight: 600 !important;
 }

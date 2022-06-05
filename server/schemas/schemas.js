@@ -36,7 +36,7 @@ const testingSession = new mongoose.Schema({
         required: true
     },
     pass: {
-        type: String,
+        type: Boolean,
         required: true
     }
 
@@ -59,7 +59,7 @@ const stepResponse = new mongoose.Schema({
     },
     pass: {
         type: Boolean,
-        default: false,
+        // default: false,
         required: true
     }
 });

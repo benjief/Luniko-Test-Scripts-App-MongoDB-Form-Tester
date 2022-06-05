@@ -2,6 +2,7 @@ import React, { Fragment, useEffect, useState, useRef, useCallback } from "react
 import { useValidationErrorUpdate } from "./Context/ValidationErrorContext";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
+import { v4 as uuidv4 } from "uuid";
 import LoadingWrapper from "./wrappers/LoadingWrapper/LoadingWrapper";
 import ErrorWrapper from "./wrappers/ErrorWrapper";
 import CardWrapper from "./wrappers/CardWrapper";
@@ -37,12 +38,12 @@ function TestScriptTestingPage() {
     });
     const testScriptID = useRef("");
     const [testScriptSteps, setTestScriptSteps] = useState([]);
-    const [currentStep, setCurrentStep] = useState({});
+    const [currentStepNumber, setCurrentStepNumber] = useState(1);
     const [stepResponses, setStepResponses] = useState([]);
     const cardChanged = useRef(false);
     const [isTestingInProgress, setIsTestingInProgress] = useState(false);
     const [currentStepResponseProps, setCurrentStepResponseProps] = useState({
-        sessionID: "",
+        sessionID: uuidv4(),
         stepID: "",
         tester: "",
         comments: "",
@@ -169,7 +170,7 @@ function TestScriptTestingPage() {
                     })
                         .then(res => {
                             setTestScriptSteps(res.data);
-                            setCurrentStep(res.data[0]);
+                            // setCurrentStep(res.data[0]);
                             async.current = false;
                         })
                 } catch (e) {
@@ -180,7 +181,7 @@ function TestScriptTestingPage() {
         }
 
         if (rendering) {
-            if (!isValidTestScriptNameEntered && !isDataBeingFetched.current) { // TODO: go over logic here
+            if (!isValidTestScriptNameEntered && !isDataBeingFetched.current && !isTestingInProgress) { // TODO: go over logic here
                 runPrimaryReadAsyncFunctions();
             } else if (isValidTestScriptNameEntered) {
                 if (!isTestingInProgress && !isDataBeingFetched.current) {
@@ -192,6 +193,7 @@ function TestScriptTestingPage() {
                 }
             }
         } else {
+            console.log(currentStepNumber);
             setTransitionElementOpacity("0%");
             setTransitionElementVisibility("hidden");
             if (!isValidTestScriptNameEntered) {
@@ -213,7 +215,7 @@ function TestScriptTestingPage() {
                 }
             }
         }
-    }, [rendering, isDataBeingFetched, cardChanged, formProps, isValidTestScriptNameEntered, isTestingInProgress, isTestScriptSubmitted, stepResponses.length, handleError]);
+    }, [rendering, isDataBeingFetched, cardChanged, formProps, isValidTestScriptNameEntered, isTestingInProgress, isTestScriptSubmitted, stepResponses.length, handleError, currentStepNumber]);
 
 
 
@@ -380,12 +382,13 @@ function TestScriptTestingPage() {
                     isTestingInProgress={isTestingInProgress}>
                     {isTestingInProgress
                         ? <TestStepCard
-                            setStepBeingTested={setCurrentStep}
+                            handleChangeStep={setCurrentStepNumber}
                             setCurrentStepResponseProps={setCurrentStepResponseProps}
                             setStepResponses={setStepResponses}
-                            stepNumber={currentStep["number"]}
-                            stepDescription={currentStep["description"]}
-                            isLastStep={currentStep["number"] === testScriptSteps.length}>
+                            stepID={testScriptSteps[currentStepNumber - 1]._id}
+                            stepNumber={testScriptSteps[currentStepNumber - 1].number}
+                            stepDescription={testScriptSteps[currentStepNumber - 1].description}
+                            isLastStep={currentStepNumber === testScriptSteps.length}>
                         </TestStepCard>
                         : <TestingFormCard
                             setFormProps={setFormProps}
