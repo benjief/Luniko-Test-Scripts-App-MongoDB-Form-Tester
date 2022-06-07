@@ -12,8 +12,9 @@ function MaterialRadioButton({
   buttonOne,
   buttonTwo,
   selectedValue,
+  defaultValue,
 }) {
-  const [value, setValue] = React.useState("");
+  const [value, setValue] = React.useState(defaultValue);
 
   // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
   //   setValue((event.target as HTMLInputElement).value);
@@ -21,7 +22,7 @@ function MaterialRadioButton({
 
   const handleChange = (value) => {
     setValue(value);
-    selectedValue({field: "radio button value", value: value});
+    selectedValue({ field: "radio button value", value: value });
   }
 
   return (
@@ -45,19 +46,6 @@ function MaterialRadioButton({
   );
 }
 
-{/* <FormControl>
-<FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>
-<RadioGroup
-  aria-labelledby="demo-radio-buttons-group-label"
-  defaultValue="female"
-  name="radio-buttons-group"
->
-  <FormControlLabel value="female" control={<Radio />} label="Female" />
-  <FormControlLabel value="male" control={<Radio />} label="Male" />
-  <FormControlLabel value="other" control={<Radio />} label="Other" />
-</RadioGroup>
-</FormControl> */}
-
 MaterialRadioButton.propTypes = {
   formTitle: PropTypes.string,
   buttonOne: PropTypes.shape({
@@ -69,13 +57,15 @@ MaterialRadioButton.propTypes = {
     label: PropTypes.string,
   }),
   selectedValue: PropTypes.func,
+  defaultValue: PropTypes.bool,
 }
 
 MaterialRadioButton.defaultProps = {
   formTitle: "",
   buttonOne: {},
   buttonTwo: {},
-  selectedValue: () => {},
+  selectedValue: () => { },
+  defaultValue: "",
 }
 
 export default MaterialRadioButton;

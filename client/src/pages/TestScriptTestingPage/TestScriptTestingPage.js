@@ -45,7 +45,6 @@ function TestScriptTestingPage() {
     const [currentStepResponseProps, setCurrentStepResponseProps] = useState({
         sessionID: uuidv4(),
         stepID: "",
-        tester: "",
         comments: "",
         pass: false
     });
@@ -62,10 +61,10 @@ function TestScriptTestingPage() {
     const [alert, setAlert] = useState(false);
     const alertMessage = useRef("Test script successfully submitted!");
     const alertType = useRef("success-alert");
-
     const testScriptNamesAlreadyInDB = useRef([]);
     const isDataBeingFetched = useRef(false);
     const [isTestScriptSubmitted, setIsTestScriptSubmitted] = useState(false);
+    const resetStepResponseProps = useRef(false);
 
     const loadErrorMessage = "Apologies! We've encountered an error. Please attempt to re-load this page.";
     const writeErrorMessage = "Apologies! We've encountered an error. Please attempt to re-submit your test script.";
@@ -184,7 +183,19 @@ function TestScriptTestingPage() {
             if (!isValidTestScriptNameEntered && !isDataBeingFetched.current && !isTestingInProgress) { // TODO: go over logic here
                 runPrimaryReadAsyncFunctions();
             } else if (isValidTestScriptNameEntered) {
-                if (!isTestingInProgress && !isDataBeingFetched.current) {
+                if (resetStepResponseProps.current) {
+                    setCurrentStepResponseProps(
+                        currentStepNumber > stepResponses.length
+                            ? prev => ({
+                                ...prev,
+                                stepID: "",
+                                comments: "",
+                                pass: false
+                            })
+                            : stepResponses[currentStepNumber - 1]
+                    );
+                    setRendering(false);
+                } else if (!isTestingInProgress && !isDataBeingFetched.current) {
                     runSecondaryReadAsyncFunctions(formProps["testScriptName"]);
                 } else if (cardChanged.current) {
                     setRendering(false);
@@ -193,7 +204,6 @@ function TestScriptTestingPage() {
                 }
             }
         } else {
-            console.log(currentStepNumber);
             setTransitionElementOpacity("0%");
             setTransitionElementVisibility("hidden");
             if (!isValidTestScriptNameEntered) {
@@ -215,7 +225,7 @@ function TestScriptTestingPage() {
                 }
             }
         }
-    }, [rendering, isDataBeingFetched, cardChanged, formProps, isValidTestScriptNameEntered, isTestingInProgress, isTestScriptSubmitted, stepResponses.length, handleError, currentStepNumber]);
+    }, [rendering, isDataBeingFetched, cardChanged, formProps, isValidTestScriptNameEntered, isTestingInProgress, isTestScriptSubmitted, stepResponses, resetStepResponseProps, currentStepNumber, handleError]);
 
 
 
@@ -318,6 +328,29 @@ function TestScriptTestingPage() {
         return false;
     }
 
+    const handleSaveStepResponse = (newStepNumber) => {
+        let copyOfCurrentStepResponseProps = currentStepResponseProps;
+        copyOfCurrentStepResponseProps["stepID"] = testScriptSteps[currentStepNumber - 1];
+        let copyOfStepResponses = stepResponses;
+        if (currentStepNumber > stepResponses.length) {
+            copyOfStepResponses.push(copyOfCurrentStepResponseProps);
+        } else {
+            copyOfStepResponses[currentStepNumber - 1] = currentStepResponseProps;
+        }
+        setStepResponses(copyOfStepResponses);
+        handleChangeStep(newStepNumber);
+        setRendering(true);
+    }
+
+    const handleChangeStep = (newStepNumber) => {
+        // console.log("changing step");
+        setCurrentStepNumber(newStepNumber);
+        // console.log("finished changing step");
+        resetStepResponseProps.current = true;
+        setRendering(true);
+        // handleResetStepResponseProps(newStepNumber);
+    }
+
     const handleSubmitTestScriptResults = () => {
         // isTestScriptSubmitted.current = true;
         setIsBeginTestingButtonDisabled(true);
@@ -382,9 +415,11 @@ function TestScriptTestingPage() {
                     isTestingInProgress={isTestingInProgress}>
                     {isTestingInProgress
                         ? <TestStepCard
-                            handleChangeStep={setCurrentStepNumber}
+                            handleChangeStep={handleChangeStep}
                             setCurrentStepResponseProps={setCurrentStepResponseProps}
-                            setStepResponses={setStepResponses}
+                            saveStepResponse={handleSaveStepResponse}
+                            existingComments={currentStepResponseProps["comments"]}
+                            existingPass={currentStepResponseProps["pass"]}
                             stepID={testScriptSteps[currentStepNumber - 1]._id}
                             stepNumber={testScriptSteps[currentStepNumber - 1].number}
                             stepDescription={testScriptSteps[currentStepNumber - 1].description}

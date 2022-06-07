@@ -28,37 +28,44 @@ import MaterialRadioButton from './MaterialRadioButton';
 function TestStepCard({
     handleChangeStep,
     setCurrentStepResponseProps,
+    saveStepResponse,
     existingComments,
-    setStepResponses,
-    stepID,
+    existingPass,
+    // setStepResponses,
+    // stepID,
     stepNumber,
     stepDescription,
     isLastStep,
 }) {
     // const [expanded, setExpanded] = React.useState(true);
-    const [isNextStepButtonDisabled, setIsNextStepButtonDisabled] = React.useState(true);
+    // const [isNextStepButtonDisabled, setIsNextStepButtonDisabled] = React.useState(true);
+    // const isStepResponseSaveable = React.useRef(false);
 
     const handleOnChange = (returnedObject) => {
         // const objectToReturn = { value: returnedObject.value, field: returnedObject.field };
         // const stringFunction = returnedObject.field + "(objectToReturn)";
         // eval(stringFunction);
         if (returnedObject["field"] === "radio button value") {
-            setIsNextStepButtonDisabled(false);
             returnedObject["field"] = "pass";
+            returnedObject["value"] = returnedObject["value"] === "true";
         }
         setCurrentStepResponseProps(
             prev => ({ ...prev, [returnedObject.field]: returnedObject.value })
         );
     }
 
+    // const setStepID = (newStepNumber) => {
+    //     setCurrentStepResponseProps(
+    //         prev => ({ ...prev, stepID: stepID })
+    //     );
+    // }
+
     const handleOnClickNextStep = () => {
-        console.log(stepNumber + 1);
-        handleChangeStep(stepNumber + 1);
+        saveStepResponse(stepNumber + 1);
     }
 
     const handleOnClickPreviousStep = () => {
-        console.log(stepNumber - 1);
-        handleChangeStep(stepNumber - 1);
+        saveStepResponse(stepNumber - 1);
     }
 
     // const handleBeginTesting = () => {
@@ -68,10 +75,6 @@ function TestStepCard({
     // const handleSubmit = () => {
     //     setIsTestScriptSubmitted(true);
     // }
-
-    React.useEffect(() => {
-        console.log(stepNumber);
-    }, [stepNumber]);
 
     return (
         <Card
@@ -132,12 +135,13 @@ function TestStepCard({
                             multiline={true}
                             characterLimit={1000}
                             showCharCounter={true}
-                            field="testerFirstName" >
+                            field="comments" >
                         </MaterialTextField>
                         <MaterialRadioButton
                             buttonOne={{ value: true, label: "Pass" }}
                             buttonTwo={{ value: false, label: "Fail" }}
-                            selectedValue={handleOnChange}>
+                            selectedValue={handleOnChange}
+                            defaultValue={existingPass}>
                         </MaterialRadioButton>
                         <button
                             className="previous-step-button"
@@ -148,7 +152,7 @@ function TestStepCard({
                         <button
                             className="next-step-button"
                             onClick={handleOnClickNextStep}
-                            disabled={isLastStep || isNextStepButtonDisabled}>
+                            disabled={isLastStep}>
                             Next Step
                         </button>
                     </CardContent>
@@ -161,9 +165,11 @@ function TestStepCard({
 TestStepCard.propTypes = {
     handleChangeStep: PropTypes.func,
     setCurrentStepResponseProps: PropTypes.func,
+    saveStepResponse: PropTypes.func,
     existingComments: PropTypes.string,
-    setStepResponses: PropTypes.func,
-    stepID: PropTypes.string,
+    existingPass: PropTypes.bool,
+    // setStepResponses: PropTypes.func,
+    // stepID: PropTypes.string,
     stepNumber: PropTypes.number,
     stepDescription: PropTypes.string,
     isLastStep: PropTypes.bool,
@@ -173,9 +179,11 @@ TestStepCard.propTypes = {
 TestStepCard.defaultProps = {
     handleChangeStep: () => { },
     setCurrentStepResponseProps: () => { },
+    saveStepResponse: () => { },
     existingComments: "",
-    setStepResponses: () => { },
-    stepID: "",
+    existingPass: false,
+    // setStepResponses: () => { },
+    // stepID: "",
     stepNumber: 0,
     stepDescription: "",
     isLastStep: false,
