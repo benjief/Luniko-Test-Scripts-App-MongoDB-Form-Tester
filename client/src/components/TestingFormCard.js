@@ -41,6 +41,7 @@ function TestingFormCard({
     setIsTestScriptSubmitted,
     isSubmitButtonDisabled,
     hasUserCompletedStepResponses,
+    submitTestScriptResults,
     displayFadingBalls,
 }) {
     // const [expanded, setExpanded] = React.useState(true);
@@ -57,10 +58,6 @@ function TestingFormCard({
 
     const handleBeginTesting = () => {
         setIsTestingInProgress(true);
-    }
-
-    const handleSubmit = () => {
-        setIsTestScriptSubmitted(true);
     }
 
     // React.useEffect(() => {
@@ -168,7 +165,7 @@ function TestingFormCard({
                         </button>
                         <button
                             className="submit-test-script-button"
-                            onClick={handleSubmit}
+                            onClick={submitTestScriptResults}
                             disabled={isSubmitButtonDisabled}
                             /*style={{ backgroundColor: submitButtonColor }}*/>
                             {displayFadingBalls ?
@@ -203,6 +200,7 @@ TestingFormCard.propTypes = {
     isBeginTestingButtonDisabled: PropTypes.bool,
     setIsTestScriptSubmitted: PropTypes.func,
     hasUserCompletedStepResponses: PropTypes.bool,
+    submitTestScriptResults: PropTypes.func,
     displayFadingBalls: PropTypes.bool,
 }
 
@@ -219,6 +217,7 @@ TestingFormCard.defaultProps = {
     isBeginTestingButtonDisabled: true,
     setIsTestScriptSubmitted: () => { },
     hasUserCompletedStepResponses: false,
+    submitTestScriptResults: () => {},
     displayFadingBalls: false,
 }
 

@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState, useRef, useCallback } from "react
 import { useValidationErrorUpdate } from "./Context/ValidationErrorContext";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
-import { v4 as uuidv4 } from "uuid";
+// import { v4 as uuidv4 } from "uuid";
 import LoadingWrapper from "./wrappers/LoadingWrapper/LoadingWrapper";
 import ErrorWrapper from "./wrappers/ErrorWrapper";
 import CardWrapper from "./wrappers/CardWrapper";
@@ -44,7 +44,7 @@ function TestScriptTestingPage() {
     const stepChanged = useRef(false);
     const [isTestingInProgress, setIsTestingInProgress] = useState(false);
     const [currentStepResponseProps, setCurrentStepResponseProps] = useState({
-        sessionID: uuidv4(),
+        sessionID: "",
         stepID: "",
         comments: "",
         pass: false
@@ -60,15 +60,15 @@ function TestScriptTestingPage() {
     const async = useRef(false);
     const [isErrorThrown, setIsErrorThrown] = useState(false);
     const [alert, setAlert] = useState(false);
-    const alertMessage = useRef("Test script successfully submitted!");
+    const alertMessage = useRef("Test script results successfully submitted!");
     const alertType = useRef("success-alert");
     const testScriptNamesAlreadyInDB = useRef([]);
     const isDataBeingFetched = useRef(false);
-    const [isTestScriptSubmitted, setIsTestScriptSubmitted] = useState(false);
+    const [areTestScriptResultsSubmitted, setAreTestScriptResultsSubmitted] = useState(false);
     // const resetStepResponseProps = useRef(false);
 
     const loadErrorMessage = "Apologies! We've encountered an error. Please attempt to re-load this page.";
-    const writeErrorMessage = "Apologies! We've encountered an error. Please attempt to re-submit your test script.";
+    const writeErrorMessage = "Apologies! We've encountered an error. Please attempt to re-submit your test script results.";
 
     const navigate = useNavigate();
 
@@ -96,6 +96,7 @@ function TestScriptTestingPage() {
         if (alertClosed) {
             setAlert(false);
             navigate("/");
+            setIsErrorThrown(false); // TODO: test this
         }
     }
 
@@ -199,7 +200,7 @@ function TestScriptTestingPage() {
                 formProps["testScriptName"].trim().length ? setIsRequestTestScriptButtonDisabled(false) : setIsRequestTestScriptButtonDisabled(true);
             } else {
                 stepResponses.length ? setIsSubmitButtonDisabled(false) : setIsSubmitButtonDisabled(true);
-                if (!isTestScriptSubmitted) {
+                if (!areTestScriptResultsSubmitted) {
                     (formProps["testerFirstName"].trim() !== "" && formProps["testerLastName"].trim() !== "")
                         ? setIsBeginTestingButtonDisabled(false) : setIsBeginTestingButtonDisabled(true);
                     // testScriptSteps.length && !testScriptSteps.slice(-1)[0]["description"].trim().length
@@ -209,12 +210,10 @@ function TestScriptTestingPage() {
                     //     ? setRemoveStepButtonDisabled(true)
                     //     : setRemoveStepButtonDisabled(false);
                     // TODO: look into abstracting functions in useEffect hook... can this be done?
-                } else {
-                    handleSubmitTestScriptResults();
                 }
             }
         }
-    }, [rendering, isDataBeingFetched, cardChanged, formProps, isValidTestScriptNameEntered, isTestingInProgress, isTestScriptSubmitted, stepResponses, stepChanged, handleError]);
+    }, [rendering, isDataBeingFetched, cardChanged, formProps, isValidTestScriptNameEntered, isTestingInProgress, areTestScriptResultsSubmitted, stepResponses, stepChanged, handleError]);
 
 
 
@@ -319,7 +318,7 @@ function TestScriptTestingPage() {
 
     const handleSaveStepResponse = (newStepNumber) => {
         let copyOfCurrentStepResponseProps = currentStepResponseProps;
-        copyOfCurrentStepResponseProps["stepID"] = testScriptSteps[currentStepNumber - 1];
+        copyOfCurrentStepResponseProps["stepID"] = testScriptSteps[currentStepNumber - 1]._id;
         let copyOfStepResponses = stepResponses;
         if (currentStepNumber > stepResponses.length) {
             copyOfStepResponses.push(copyOfCurrentStepResponseProps);
@@ -327,8 +326,10 @@ function TestScriptTestingPage() {
             copyOfStepResponses[currentStepNumber - 1] = currentStepResponseProps;
         }
         setStepResponses(copyOfStepResponses);
-        handleChangeStep(newStepNumber);
-        setRendering(true);
+        if (newStepNumber !== currentStepNumber) {
+            handleChangeStep(newStepNumber);
+            setRendering(true);
+        }
     }
 
     const handleChangeStep = (newStepNumber) => {
@@ -336,7 +337,7 @@ function TestScriptTestingPage() {
         setCurrentStepNumber(newStepNumber);
         // console.log("finished changing step");
         // resetStepResponseProps.current = true;
-        setRendering(true);
+        // setRendering(true);
         resetCurrentResponseProps(newStepNumber);
         // handleResetStepResponseProps(newStepNumber);
     }
@@ -356,48 +357,46 @@ function TestScriptTestingPage() {
     }
 
     const handleSubmitTestScriptResults = () => {
-        // isTestScriptSubmitted.current = true;
+        setAreTestScriptResultsSubmitted(true);
         setIsBeginTestingButtonDisabled(true);
         setIsSubmitButtonDisabled(true);
         setDisplayFadingBalls(true);
-        console.log("SUBMITTED");
-        // runWriteAsyncFunctions();
+        runWriteAsyncFunctions();
     }
 
-    // const runWriteAsyncFunctions = () => {
-    //     updateTestScriptInDB();
-    //     setAlert(true);
-    // }
+    const runWriteAsyncFunctions = async () => {
+        await addTestScriptResultsToDB();
+        setAlert(true);
+    }
 
-    // const updateTestScriptInDB = async () => {
-    //     console.log("updating test script");
-    //     async.current = true;
-    //     try {
-    //         removeEmptySteps();
-    //         await Axios.put("http://localhost:5000/update-test-script", {
-    //             testScriptOwner: { firstName: formProps["ownerFirstName"], lastName: formProps["ownerLastName"] },
-    //             testScriptName: formProps["testScriptName"],
-    //             testScriptDescription: formProps["testScriptDescription"],
-    //             testScriptPrimaryWorkstream: formProps["testScriptPrimaryWorkstream"],
-    //             testScriptSteps: testScriptSteps
-    //         })
-    //             .then(res => {
-    //                 console.log(res);
-    //                 async.current = false;
-    //             })
-    //     } catch (e) {
-    //         console.log(e);
-    //         handleError("w");
-    //     }
-    // }
+    const addTestScriptResultsToDB = async () => {
+        console.log("adding test script results to DB");
+        async.current = true;
+        try {
+            await Axios.post("http://localhost:5000/add-testing-session", {
+                testScriptID: testScriptID.current,
+                testingSessionTester: {firstName: formProps["testerFirstName"], lastName: formProps["testerLastName"]},
+                testingSessionPass: checkIfTestingSessionPassed(),
+                testingSessionStepResponses: stepResponses,
+            })
+                .then(res => {
+                    console.log(res);
+                    async.current = false;
+                })
+        } catch (e) {
+            console.log(e);
+            handleError("w");
+        }
+    }
 
-    // const removeEmptySteps = () => {
-    //     if (testScriptSteps.length) {
-    //         if (!testScriptSteps.slice(-1)[0]["description"].trim().length) {
-    //             testScriptSteps.pop();
-    //         }
-    //     }
-    // }
+    const checkIfTestingSessionPassed = () => {
+        for (let i = 0; i < stepResponses.length; i++) {
+            if (!stepResponses[i]["pass"]) {
+                return false;
+            } 
+        }
+        return true;
+    }
 
     return (
         <Fragment>
@@ -441,9 +440,10 @@ function TestScriptTestingPage() {
                             existingTesterLastName={formProps["testerLastName"]}
                             setIsTestingInProgress={setIsTestingInProgress}
                             isBeginTestingButtonDisabled={isBeginTestingButtonDisabled}
-                            setIsTestScriptSubmitted={setIsTestScriptSubmitted}
+                            setIsTestScriptSubmitted={setAreTestScriptResultsSubmitted}
                             isSubmitButtonDisabled={isSubmitButtonDisabled}
                             hasUserCompletedStepResponses={stepResponses.length > 0}
+                            submitTestScriptResults={handleSubmitTestScriptResults}
                             displayFadingBalls={displayFadingBalls}>
                         </TestingFormCard>}
                 </CardWrapper >

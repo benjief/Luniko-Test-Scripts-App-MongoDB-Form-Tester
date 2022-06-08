@@ -39,7 +39,7 @@ function TestStepCard({
     isLastStep,
 }) {
     // const [expanded, setExpanded] = React.useState(true);
-    // const [isNextStepButtonDisabled, setIsNextStepButtonDisabled] = React.useState(true);
+    const [areButtonsDisabled, setAreButtonsDisabled] = React.useState(false);
     // const isStepResponseSaveable = React.useRef(false);
 
     const handleOnChange = (returnedObject) => {
@@ -62,6 +62,7 @@ function TestStepCard({
     // }
 
     const handleChangeStep = (direction) => {
+        setAreButtonsDisabled(true);
         direction === "increment"
             ? saveStepResponse(stepNumber + 1)
             : saveStepResponse(stepNumber - 1);
@@ -76,6 +77,8 @@ function TestStepCard({
     // }
 
     const goBack = () => {
+        saveStepResponse(stepNumber);
+        setAreButtonsDisabled(true);
         setIsTestingInProgress(false);
     }
 
@@ -157,18 +160,19 @@ function TestStepCard({
                         <button
                             className="previous-step-button"
                             onClick={() => handleChangeStep()}
-                            disabled={stepNumber === 1}>
+                            disabled={stepNumber === 1 || areButtonsDisabled}>
                             Previous Step
                         </button>
                         <button
                             className="next-step-button"
                             onClick={() => handleChangeStep("increment")}
-                            disabled={isLastStep}>
+                            disabled={isLastStep || areButtonsDisabled}>
                             Next Step
                         </button>
                         <button
                             className="back-button"
-                            onClick={() => goBack()}>
+                            onClick={() => goBack()}
+                            disabled={areButtonsDisabled}>
                             Back
                         </button>
                     </CardContent>

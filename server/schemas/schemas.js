@@ -2,8 +2,9 @@ const mongoose = require("mongoose");
 
 const step = new mongoose.Schema({
     testScriptID: {
-        type: String,
-        required: true
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: "testScript"
     },
     number: {
         type: Number,
@@ -28,6 +29,14 @@ const step = new mongoose.Schema({
 });
 
 const testingSession = new mongoose.Schema({
+    // testScriptID: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     required: true,
+    //     ref: "testScript"
+    // },
+    testScriptID: {
+        type: String
+    },
     tester: {
         type: {
             firstName: String,
@@ -39,7 +48,6 @@ const testingSession = new mongoose.Schema({
         type: Boolean,
         required: true
     }
-
 }, { timestamps: true });
 
 const stepResponse = new mongoose.Schema({
@@ -49,6 +57,7 @@ const stepResponse = new mongoose.Schema({
         ref: "testingSession"
     },
     stepID: {
+        // type: String
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: "step"
@@ -104,4 +113,4 @@ const TestingSession = mongoose.model("testingSession", testingSession);
 const StepResponse = mongoose.model("stepResponse", stepResponse);
 const TestScript = mongoose.model("testScript", testScript);
 
-module.exports = { Step, TestScript };
+module.exports = { Step, TestingSession, StepResponse, TestScript };

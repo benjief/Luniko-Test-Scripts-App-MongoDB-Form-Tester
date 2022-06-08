@@ -62,7 +62,8 @@
 .begin-testing-button:not(:disabled),
 .submit-test-script-button:not(:disabled),
 .previous-step-button:not(:disabled),
-.next-step-button:not(:disabled) {
+.next-step-button:not(:disabled),
+.back-button:not(:disabled) {
     background-color: var(--lunikoBlue);
 }
 
@@ -70,7 +71,8 @@
 .begin-testing-button:disabled,
 .submit-test-script-button:disabled,
 .previous-step-button:disabled,
-.next-step-button:disabled {
+.next-step-button:disabled,
+.back-button:disabled {
     background-color: #BFBFBF;
 }
 
@@ -78,7 +80,7 @@
 .begin-testing-button:not(:disabled):hover,
 .previous-step-button:not(:disabled):hover,
 .next-step-button:not(:disabled):hover,
-.back-button:hover {
+.back-button:not(:disabled):hover {
     background-color: var(--lunikoOrange) !important;
 }
 

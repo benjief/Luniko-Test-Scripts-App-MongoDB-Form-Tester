@@ -6,7 +6,7 @@ const cors = require("cors");
 const app = express();
 
 const connect = require("./connect");
-const { Step, TestScript } = require("./schemas/schemas");
+const { Step, TestingSession, StepResponse, TestScript } = require("./schemas/schemas");
 // const e = require("express");
 
 // Middleware
@@ -18,6 +18,27 @@ app.use(express.json());
 app.use(cors());
 
 // Queries
+app.post("/add-testing-session", async (req, res) => {
+    const testScriptID = req.body.testScriptID;
+    const testingSessionTester = req.body.testingSessionTester;
+    const testingSessionPass = req.body.testingSessionPass;
+    const testingSessionStepResponses = req.body.testingSessionStepResponses;
+    try {
+        // console.log(testingSessionStepResponses);
+        const testingSession = await TestingSession.create({
+            testScriptID: testScriptID,
+            tester: testingSessionTester,
+            pass: testingSessionPass,
+        });
+        await addStepResponses(testingSession.toObject()._id.toString(), testingSessionStepResponses);
+        res.status(201).json(testingSession.toObject());
+    } catch (e) {
+        res.status(500).send;
+    }
+});
+
+
+
 app.get("/get-test-script-names", async (req, res) => {
     try {
         const testScriptNames = await TestScript.find(
@@ -61,6 +82,21 @@ app.get("/get-test-script-steps/:testScriptID", async (req, res) => {
         res.status(500).send;
     }
 });
+
+// Helper functions
+const addStepResponses = async (testingSessionID, stepResponsesToAdd) => {
+    console.log(stepResponsesToAdd);
+    addTestingSessionIDToStepResponses(testingSessionID, stepResponsesToAdd);
+    for (let i = 0; i < 2; i++) {
+        await StepResponse.create(stepResponsesToAdd[i]);
+    }
+}
+
+const addTestingSessionIDToStepResponses = (testingSessionID, stepResponsesToAdd) => {
+    for (let i = 0; i < stepResponsesToAdd.length; i++) {
+        stepResponsesToAdd[i]["sessionID"] = testingSessionID;
+    }
+}
 
 connect()
     .then(() => app.listen(5000, () => {
