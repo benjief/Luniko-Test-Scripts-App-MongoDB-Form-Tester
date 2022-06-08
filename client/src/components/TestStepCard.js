@@ -26,7 +26,8 @@ import MaterialRadioButton from './MaterialRadioButton';
 // }));
 
 function TestStepCard({
-    handleChangeStep,
+    setIsTestingInProgress,
+    // handleChangeStep,
     setCurrentStepResponseProps,
     saveStepResponse,
     existingComments,
@@ -60,12 +61,22 @@ function TestStepCard({
     //     );
     // }
 
-    const handleOnClickNextStep = () => {
-        saveStepResponse(stepNumber + 1);
+    const handleChangeStep = (direction) => {
+        direction === "increment"
+            ? saveStepResponse(stepNumber + 1)
+            : saveStepResponse(stepNumber - 1);
     }
 
-    const handleOnClickPreviousStep = () => {
-        saveStepResponse(stepNumber - 1);
+    // const handleOnClickNextStep = () => {
+    //     saveStepResponse(stepNumber + 1);
+    // }
+
+    // const handleOnClickPreviousStep = () => {
+    //     saveStepResponse(stepNumber - 1);
+    // }
+
+    const goBack = () => {
+        setIsTestingInProgress(false);
     }
 
     // const handleBeginTesting = () => {
@@ -145,15 +156,20 @@ function TestStepCard({
                         </MaterialRadioButton>
                         <button
                             className="previous-step-button"
-                            onClick={handleOnClickPreviousStep}
+                            onClick={() => handleChangeStep()}
                             disabled={stepNumber === 1}>
                             Previous Step
                         </button>
                         <button
                             className="next-step-button"
-                            onClick={handleOnClickNextStep}
+                            onClick={() => handleChangeStep("increment")}
                             disabled={isLastStep}>
                             Next Step
+                        </button>
+                        <button
+                            className="back-button"
+                            onClick={() => goBack()}>
+                            Back
                         </button>
                     </CardContent>
                 </Collapse>
@@ -163,7 +179,8 @@ function TestStepCard({
 }
 
 TestStepCard.propTypes = {
-    handleChangeStep: PropTypes.func,
+    setIsTestingInProgress: PropTypes.func,
+    // handleChangeStep: PropTypes.func,
     setCurrentStepResponseProps: PropTypes.func,
     saveStepResponse: PropTypes.func,
     existingComments: PropTypes.string,
@@ -173,11 +190,11 @@ TestStepCard.propTypes = {
     stepNumber: PropTypes.number,
     stepDescription: PropTypes.string,
     isLastStep: PropTypes.bool,
-    isNextStepButtonDisabled: PropTypes.bool,
 }
 
 TestStepCard.defaultProps = {
-    handleChangeStep: () => { },
+    setIsTestingInProgress: () => { },
+    // handleChangeStep: () => { },
     setCurrentStepResponseProps: () => { },
     saveStepResponse: () => { },
     existingComments: "",
@@ -187,7 +204,6 @@ TestStepCard.defaultProps = {
     stepNumber: 0,
     stepDescription: "",
     isLastStep: false,
-    isNextStepButtonDisabled: true,
 }
 
 export default TestStepCard;
