@@ -1,16 +1,22 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
+// import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-export default function MaterialDialog({
-    exteriorButtonText = "",
-    interiorButtonText = "",
-    dialogTitle = "",
-    dialogDescription = ""
+function MaterialDialog({
+    className,
+    exteriorButton,
+    // exteriorButtonText,
+    inactiveButtonText,
+    displayActiveButton,
+    activeButtonFunction,
+    activeButtonText,
+    dialogTitle,
+    dialogDescription,
 }) {
     const [open, setOpen] = React.useState(false);
 
@@ -22,16 +28,17 @@ export default function MaterialDialog({
         setOpen(false);
     };
 
+    const handleOnClickActiveButton = () => {
+        handleClose();
+        activeButtonFunction();
+    }
+
     return (
-        <div>
-            <div className="material-dialog-exterior-button-container">
-                <Button className="material-dialog-exterior-button" variant="outlined" onClick={handleClickOpen}>
-                    <img src={require("../img/exclamation_icon_blue_2.png")} alt="!"></img>
-                    {exteriorButtonText}
-                </Button>
+        <div className={className}>
+            <div className="material-dialog-exterior-button-container" onClick={handleClickOpen}>
+                {exteriorButton}
             </div>
             <Dialog
-                className="test"
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="alert-dialog-title"
@@ -47,11 +54,42 @@ export default function MaterialDialog({
                     </DialogContentText> */}
                 </DialogContent>
                 <DialogActions>
-                    <Button className="material-dialog-interior-button" onClick={handleClose} autoFocus>
-                        {interiorButtonText}
+                    <Button className="material-dialog-inactive-button" onClick={handleClose} autoFocus>
+                        {inactiveButtonText}
                     </Button>
+                    {displayActiveButton
+                        ? <Button className="material-dialog-active-button" onClick={handleOnClickActiveButton} autoFocus>
+                            {activeButtonText}
+                        </Button>
+                        : <div></div>}
                 </DialogActions>
             </Dialog>
         </div >
     );
 }
+
+MaterialDialog.propTypes = {
+    className: PropTypes.string,
+    exteriorButton: PropTypes.object,
+    // exteriorButtonText: PropTypes.string,
+    inactiveButtonText: PropTypes.string,
+    displayActiveButton: PropTypes.bool,
+    activeButtonFunction: PropTypes.func,
+    activeButtonText: PropTypes.string,
+    dialogTitle: PropTypes.string,
+    dialogDescription: PropTypes.object,
+}
+
+MaterialDialog.defaultProps = {
+    className: "",
+    exteriorButton: {},
+    // exteriorButtonText: "",
+    inactiveButtonText: "",
+    displayActiveButton: false,
+    activeButtonFunction: () => { },
+    activeButtonText: "",
+    dialogTitle: "",
+    dialogDescription: {},
+}
+
+export default MaterialDialog;

@@ -31,6 +31,7 @@ app.post("/add-testing-session", async (req, res) => {
             pass: testingSessionPass,
         });
         await addStepResponses(testingSession.toObject()._id.toString(), testingSessionStepResponses);
+        console.log("testing session added to DB");
         res.status(201).json(testingSession.toObject());
     } catch (e) {
         res.status(500).send;
@@ -85,14 +86,19 @@ app.get("/get-test-script-steps/:testScriptID", async (req, res) => {
 
 // Helper functions
 const addStepResponses = async (testingSessionID, stepResponsesToAdd) => {
+    // console.log(stepResponsesToAdd);
+    console.log("adding step responses:");
+    console.log(testingSessionID);
     console.log(stepResponsesToAdd);
     addTestingSessionIDToStepResponses(testingSessionID, stepResponsesToAdd);
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < stepResponsesToAdd.length; i++) {
         await StepResponse.create(stepResponsesToAdd[i]);
     }
+    console.log("step responses added");
 }
 
 const addTestingSessionIDToStepResponses = (testingSessionID, stepResponsesToAdd) => {
+    console.log(stepResponsesToAdd.length);
     for (let i = 0; i < stepResponsesToAdd.length; i++) {
         stepResponsesToAdd[i]["sessionID"] = testingSessionID;
     }

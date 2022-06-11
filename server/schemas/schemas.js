@@ -29,14 +29,14 @@ const step = new mongoose.Schema({
 });
 
 const testingSession = new mongoose.Schema({
-    // testScriptID: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     required: true,
-    //     ref: "testScript"
-    // },
     testScriptID: {
-        type: String
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: "testScript"
     },
+    // testScriptID: {
+    //     type: String
+    // },
     tester: {
         type: {
             firstName: String,

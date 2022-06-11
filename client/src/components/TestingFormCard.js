@@ -8,11 +8,13 @@ import Typography from '@mui/material/Typography';
 // import MaterialSingleSelect from './MaterialSingleSelect';
 // import MaterialSingleSelectFreeSolo from './MaterialSingleSelectFreeSolo';
 import MaterialTextField from './MaterialTextField';
-import MaterialDialog from "./MaterialDialog";
+import MaterialDialog from './MaterialDialog';
+import SubmitButton from './SubmitButton';
+import { display } from '@mui/system';
 // import MaterialMultiSelect from './MaterialMultiSelect';
 // import MaterialMultiSelectFreeSolo from './MaterialMultiSelectFreeSolo';
 // import MaterialCheckBox from './MaterialCheckBox';
-import FadingBalls from "react-cssfx-loading/lib/FadingBalls";
+// import FadingBalls from "react-cssfx-loading/lib/FadingBalls";
 
 // const ExpandMore = styled((props) => {
 //     const { expand, ...other } = props;
@@ -38,9 +40,10 @@ function TestingFormCard({
     // submittedOwnerEmail = "",
     setIsTestingInProgress,
     isBeginTestingButtonDisabled,
-    setIsTestScriptSubmitted,
+    // setIsTestScriptSubmitted,
     isSubmitButtonDisabled,
-    hasUserCompletedStepResponses,
+    hasUserCompletedAnyStepResponses,
+    hasUserCompletedAllStepResponses,
     submitTestScriptResults,
     displayFadingBalls,
 }) {
@@ -115,12 +118,20 @@ function TestingFormCard({
                         <strong>Updatable Fields</strong>
                     </Typography> */}
                         <MaterialDialog
+                            className="test-script-instructions"
+                            exteriorButton=
+                            {
+                                <button className="material-dialog-exterior-button">
+                                    <img src={require("../img/exclamation_icon_blue_2.png")} alt="!"></img>
+                                    Read Before Testing
+                                </button>
+                            }
                             exteriorButtonText="Read Before Testing"
-                            interiorButtonText="Okay"
+                            inactiveButtonText="Okay"
                             dialogTitle="Instructions"
                             dialogDescription={
                                 <ol>
-                                    <li>Enter your name below."</li>
+                                    <li>Enter your name below.</li>
                                     <li>Click on the 'Begin Test' button below to perform the test steps.</li>
                                     <li>Wherever data is entered or when numbers are automatically generated in the system, record what was entered or generated in the 'Comments' box.</li>
                                     <li>After each step is performed, specify whether the step passed or failed in the 'Pass/Fail' dropdown.</li>
@@ -161,25 +172,32 @@ function TestingFormCard({
                             className="begin-testing-button"
                             onClick={handleBeginTesting}
                             disabled={isBeginTestingButtonDisabled}>
-                            {hasUserCompletedStepResponses ? "Continue Testing" : "Begin Testing"}
+                            {hasUserCompletedAnyStepResponses ? "Continue Testing" : "Begin Testing"}
                         </button>
-                        <button
-                            className="submit-test-script-button"
-                            onClick={submitTestScriptResults}
-                            disabled={isSubmitButtonDisabled}
-                            /*style={{ backgroundColor: submitButtonColor }}*/>
-                            {displayFadingBalls ?
-                                <div className="fading-balls-container">
-                                    <FadingBalls
-                                        className="spinner"
-                                        color="white"
-                                        width="7px"
-                                        height="7px"
-                                        duration="0.5s"
-                                    />
-                                </div> :
-                                <p>Submit</p>}
-                        </button>
+                        {hasUserCompletedAllStepResponses
+                            ? <SubmitButton
+                                isSubmitButtonDisabled={isSubmitButtonDisabled}
+                                displayFadingBalls={displayFadingBalls}
+                                handleOnClick={true}
+                                handleOnClickFunction={submitTestScriptResults}>
+                            </SubmitButton>
+                            : <MaterialDialog
+                                className="submit-test-script-results" // TODO: deal with this - it doesn't really make sense
+                                exteriorButton=
+                                {
+                                    <SubmitButton
+                                        isSubmitButtonDisabled={isSubmitButtonDisabled}
+                                        displayFadingBalls={displayFadingBalls}
+                                        handleOnClick={false}>
+                                    </SubmitButton>
+                                }
+                                inactiveButtonText="Cancel"
+                                displayActiveButton={true}
+                                activeButtonFunction={submitTestScriptResults}
+                                activeButtonText="Submit"
+                                // dialogTitle="Test"
+                                dialogDescription={<p>You're attempting to submit test script results before completing all steps. This is perfectly fine, but are you sure you want to do this?</p>}>
+                            </MaterialDialog>}
                     </CardContent>
                 </Collapse>
             </div>
@@ -198,8 +216,9 @@ TestingFormCard.propTypes = {
     existingTesterLastName: PropTypes.string,
     setIsTestingInProgress: PropTypes.func,
     isBeginTestingButtonDisabled: PropTypes.bool,
-    setIsTestScriptSubmitted: PropTypes.func,
+    // setIsTestScriptSubmitted: PropTypes.func,
     hasUserCompletedStepResponses: PropTypes.bool,
+    hasUserCompletedAllStepResponses: PropTypes.bool,
     submitTestScriptResults: PropTypes.func,
     displayFadingBalls: PropTypes.bool,
 }
@@ -215,9 +234,10 @@ TestingFormCard.defaultProps = {
     existingTesterLastName: "",
     setIsTestingInProgress: () => { },
     isBeginTestingButtonDisabled: true,
-    setIsTestScriptSubmitted: () => { },
+    // setIsTestScriptSubmitted: () => { },
     hasUserCompletedStepResponses: false,
-    submitTestScriptResults: () => {},
+    hasUserCompletedAllStepResponses: false,
+    submitTestScriptResults: () => { },
     displayFadingBalls: false,
 }
 

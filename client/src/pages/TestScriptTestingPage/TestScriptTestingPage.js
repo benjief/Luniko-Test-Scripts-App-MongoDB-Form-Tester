@@ -365,23 +365,27 @@ function TestScriptTestingPage() {
     }
 
     const runWriteAsyncFunctions = async () => {
+        console.log("running write async functions");
         await addTestScriptResultsToDB();
+        console.log("setting alert to true")
         setAlert(true);
     }
 
     const addTestScriptResultsToDB = async () => {
         console.log("adding test script results to DB");
+        console.log(stepResponses);
         async.current = true;
         try {
             await Axios.post("http://localhost:5000/add-testing-session", {
                 testScriptID: testScriptID.current,
-                testingSessionTester: {firstName: formProps["testerFirstName"], lastName: formProps["testerLastName"]},
+                testingSessionTester: { firstName: formProps["testerFirstName"], lastName: formProps["testerLastName"] },
                 testingSessionPass: checkIfTestingSessionPassed(),
                 testingSessionStepResponses: stepResponses,
             })
                 .then(res => {
                     console.log(res);
                     async.current = false;
+                    console.log("test script results written to DB");
                 })
         } catch (e) {
             console.log(e);
@@ -393,7 +397,7 @@ function TestScriptTestingPage() {
         for (let i = 0; i < stepResponses.length; i++) {
             if (!stepResponses[i]["pass"]) {
                 return false;
-            } 
+            }
         }
         return true;
     }
@@ -442,7 +446,8 @@ function TestScriptTestingPage() {
                             isBeginTestingButtonDisabled={isBeginTestingButtonDisabled}
                             setIsTestScriptSubmitted={setAreTestScriptResultsSubmitted}
                             isSubmitButtonDisabled={isSubmitButtonDisabled}
-                            hasUserCompletedStepResponses={stepResponses.length > 0}
+                            hasUserCompletedAnyStepResponses={stepResponses.length > 0}
+                            hasUserCompletedAllStepResponses={stepResponses.length === testScriptSteps.length}
                             submitTestScriptResults={handleSubmitTestScriptResults}
                             displayFadingBalls={displayFadingBalls}>
                         </TestingFormCard>}

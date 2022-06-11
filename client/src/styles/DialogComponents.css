@@ -1,8 +1,11 @@
-.material-dialog-exterior-button {
+.test-script-instructions .material-dialog-exterior-button {
     border-color: var(--lunikoBlue) !important;
+    background-color: transparent;
     color: var(--lunikoBlue) !important;
-    padding: 10px 20px 10px 20px !important;
+    padding: 10px !important;
+    border-radius: 5px;
     font-family: "Raleway", Verdana, Geneva, Tahoma, sans-serif !important;
+    font-size: 13pt !important;
     font-weight: 600 !important;
 }
 
@@ -10,20 +13,16 @@
     border-color: var(--lunikoBlue) !important;
 }
 
-.material-dialog-exterior-button-container {
+.test-script-instructions .material-dialog-exterior-button-container {
     display: flex;
     justify-content: center;
     margin-bottom: 16px;
 }
 
-.material-dialog-exterior-button-container img {
+.test-script-instructions .material-dialog-exterior-button-container img {
     margin-right: 8px;
     width: 23px;
     height: 23px;
-}
-
-.material-dialog-exterior-button {
-    font-size: 13pt !important;
 }
 
 #alert-dialog-title {
@@ -36,18 +35,18 @@
     font-size: 12pt;
 }
 
-.material-dialog-interior-button {
+.test-script-instructions .material-dialog-inactive-button {
     font-family: "Raleway", Verdana, Geneva, Tahoma, sans-serif !important;
     font-size: 11pt !important;
     font-weight: 700 !important;
     color: var(--lunikoBlue) !important;
 }
 
-ol {
+.test-script-instructions ol {
     margin-left: -15px !important;
 }
 
-li {
+.test-script-instructions li {
     padding-left: 5px;
     color: rgba(0, 0, 0, 0.6);
 }
