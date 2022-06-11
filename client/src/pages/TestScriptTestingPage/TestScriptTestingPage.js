@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState, useRef, useCallback } from "react";
 import { useValidationErrorUpdate } from "./Context/ValidationErrorContext";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 // import { v4 as uuidv4 } from "uuid";
 import LoadingWrapper from "./wrappers/LoadingWrapper/LoadingWrapper";
@@ -70,7 +70,7 @@ function TestScriptTestingPage() {
     const loadErrorMessage = "Apologies! We've encountered an error. Please attempt to re-load this page.";
     const writeErrorMessage = "Apologies! We've encountered an error. Please attempt to re-submit your test script results.";
 
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     const handleError = useCallback((errorType) => {
         setIsErrorThrown(true);
@@ -100,7 +100,7 @@ function TestScriptTestingPage() {
         //     setIsValidTestScriptNameEntered(false);
         // }
         // navigate("/");
-        setIsErrorThrown(false); // TODO: test this
+        setIsErrorThrown(false); // TODO: test this... is it needed anymore?
     }
 
     useEffect(() => {
