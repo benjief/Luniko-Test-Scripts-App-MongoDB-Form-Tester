@@ -92,12 +92,15 @@ function TestScriptTestingPage() {
         }, delay);
     }, [alertType, rendering]);
 
-    const handleAlertClosed = (alertClosed) => {
-        if (alertClosed) {
-            setAlert(false);
-            navigate("/");
-            setIsErrorThrown(false); // TODO: test this
-        }
+    const handleAlertClosed = () => {
+        console.log("closing alert");
+        window.location.reload();
+        // setAlert(false);
+        // if (isValidTestScriptNameEntered) {
+        //     setIsValidTestScriptNameEntered(false);
+        // }
+        // navigate("/");
+        setIsErrorThrown(false); // TODO: test this
     }
 
     useEffect(() => {
