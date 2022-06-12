@@ -86,10 +86,6 @@ app.get("/get-test-script-steps/:testScriptID", async (req, res) => {
 
 // Helper functions
 const addStepResponses = async (testingSessionID, stepResponsesToAdd) => {
-    // console.log(stepResponsesToAdd);
-    console.log("adding step responses:");
-    console.log(testingSessionID);
-    console.log(stepResponsesToAdd);
     addTestingSessionIDToStepResponses(testingSessionID, stepResponsesToAdd);
     for (let i = 0; i < stepResponsesToAdd.length; i++) {
         await StepResponse.create(stepResponsesToAdd[i]);

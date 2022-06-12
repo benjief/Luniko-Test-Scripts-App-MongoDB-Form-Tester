@@ -115,6 +115,7 @@ function TestScriptTestingPage() {
             try {
                 async.current = true;
                 await Axios.get("http://localhost:5000/get-test-script-names", {
+                    timeout: 2000
                 })
                     .then(res => {
                         testScriptNamesAlreadyInDB.current = res.data.map(({ name }) => name);
@@ -137,6 +138,7 @@ function TestScriptTestingPage() {
             try {
                 async.current = true;
                 await Axios.get(`http://localhost:5000/get-test-script/${testScriptName}`, {
+                    timeout: 2000
                 })
                     .then(res => {
                         populateTestScriptInformation(res.data);
@@ -171,6 +173,7 @@ function TestScriptTestingPage() {
                 try {
                     async.current = true;
                     await Axios.get(`http://localhost:5000/get-test-script-steps/${testScriptID}`, {
+                        timeout: 2000
                     })
                         .then(res => {
                             setTestScriptSteps(res.data);
@@ -384,7 +387,7 @@ function TestScriptTestingPage() {
                 testingSessionTester: { firstName: formProps["testerFirstName"], lastName: formProps["testerLastName"] },
                 testingSessionPass: checkIfTestingSessionPassed(),
                 testingSessionStepResponses: stepResponses,
-            })
+            }, {timeout: 2000})
                 .then(res => {
                     console.log(res);
                     async.current = false;

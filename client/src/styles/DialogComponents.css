@@ -26,27 +26,29 @@
 }
 
 #alert-dialog-title {
-    font-size: 13pt !important;
+    font-size: 15pt !important;
     font-weight: 700 !important;
+    padding-bottom: 27px !important;
 }
 
 #alert-dialog-description {
     font-family: "Raleway", Verdana, Geneva, Tahoma, sans-serif !important;
-    font-size: 12pt;
+    font-size: 13pt;
+    padding-bottom: 0 !important
 }
 
-.test-script-instructions .material-dialog-inactive-button {
+.material-dialog-inactive-button, .material-dialog-active-button {
     font-family: "Raleway", Verdana, Geneva, Tahoma, sans-serif !important;
-    font-size: 11pt !important;
+    font-size: 13pt !important;
     font-weight: 700 !important;
     color: var(--lunikoBlue) !important;
 }
 
-.test-script-instructions ol {
+ol {
     margin-left: -15px !important;
 }
 
-.test-script-instructions li {
+li {
     padding-left: 5px;
     color: rgba(0, 0, 0, 0.6);
 }
