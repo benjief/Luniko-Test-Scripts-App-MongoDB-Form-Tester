@@ -31,7 +31,7 @@ function EnterTestScriptNameCard({
     requestTestScript,
     isSubmitButtonDisabled,
 }) {
-    const [expanded, setExpanded] = React.useState(true);
+    const expanded = true;
     const invalidTestScriptNameError = useValidationErrorUpdate();
 
     const handleOnChange = (returnedObject) => {
@@ -40,7 +40,7 @@ function EnterTestScriptNameCard({
         // eval(stringFunction);
         invalidTestScriptNameError("");
         setFormProps(
-            prev => ({ ...prev, [returnedObject.field]: returnedObject.value })
+            prev => ({ ...prev, [returnedObject.field]: returnedObject.value.trim() })
         );
     }
 

@@ -115,7 +115,7 @@ function TestScriptTestingPage() {
             try {
                 async.current = true;
                 await Axios.get("http://localhost:5000/get-test-script-names", {
-                    timeout: 2000
+                    timeout: 5000
                 })
                     .then(res => {
                         testScriptNamesAlreadyInDB.current = res.data.map(({ name }) => name);
@@ -138,7 +138,7 @@ function TestScriptTestingPage() {
             try {
                 async.current = true;
                 await Axios.get(`http://localhost:5000/get-test-script/${testScriptName}`, {
-                    timeout: 2000
+                    timeout: 5000
                 })
                     .then(res => {
                         populateTestScriptInformation(res.data);
@@ -173,7 +173,7 @@ function TestScriptTestingPage() {
                 try {
                     async.current = true;
                     await Axios.get(`http://localhost:5000/get-test-script-steps/${testScriptID}`, {
-                        timeout: 2000
+                        timeout: 5000
                     })
                         .then(res => {
                             setTestScriptSteps(res.data);
@@ -387,7 +387,7 @@ function TestScriptTestingPage() {
                 testingSessionTester: { firstName: formProps["testerFirstName"], lastName: formProps["testerLastName"] },
                 testingSessionPass: checkIfTestingSessionPassed(),
                 testingSessionStepResponses: stepResponses,
-            }, {timeout: 2000})
+            }, { timeout: 5000 })
                 .then(res => {
                     console.log(res);
                     async.current = false;
@@ -428,6 +428,7 @@ function TestScriptTestingPage() {
                     isTestingInProgress={isTestingInProgress}>
                     {isTestingInProgress
                         ? <TestStepCard
+                            setRendering={setRendering}
                             setIsTestingInProgress={setIsTestingInProgress}
                             // handleChangeStep={handleChangeStep}
                             setCurrentStepResponseProps={setCurrentStepResponseProps}
@@ -448,6 +449,7 @@ function TestScriptTestingPage() {
                             existingTesterFirstName={formProps["testerFirstName"]}
                             // testerLastName={setFormProps}
                             existingTesterLastName={formProps["testerLastName"]}
+                            setRendering={setRendering}
                             setIsTestingInProgress={setIsTestingInProgress}
                             isBeginTestingButtonDisabled={isBeginTestingButtonDisabled}
                             setIsTestScriptSubmitted={setAreTestScriptResultsSubmitted}

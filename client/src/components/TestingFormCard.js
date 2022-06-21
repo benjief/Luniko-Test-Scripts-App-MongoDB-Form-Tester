@@ -38,6 +38,7 @@ function TestingFormCard({
     existingTesterLastName,
     // ownerEmail = "",
     // submittedOwnerEmail = "",
+    setRendering,
     setIsTestingInProgress,
     isBeginTestingButtonDisabled,
     // setIsTestScriptSubmitted,
@@ -60,6 +61,7 @@ function TestingFormCard({
     }
 
     const handleBeginTesting = () => {
+        setRendering(true);
         setIsTestingInProgress(true);
     }
 
@@ -214,6 +216,7 @@ TestingFormCard.propTypes = {
     existingTesterFirstName: PropTypes.string,
     // testerLastName: PropTypes.func,
     existingTesterLastName: PropTypes.string,
+    setRendering: PropTypes.func,
     setIsTestingInProgress: PropTypes.func,
     isBeginTestingButtonDisabled: PropTypes.bool,
     // setIsTestScriptSubmitted: PropTypes.func,
@@ -232,6 +235,7 @@ TestingFormCard.defaultProps = {
     existingTesterFirstName: "",
     // testerLastName: () => { },
     existingTesterLastName: "",
+    setRendering: () => { },
     setIsTestingInProgress: () => { },
     isBeginTestingButtonDisabled: true,
     // setIsTestScriptSubmitted: () => { },

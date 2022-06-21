@@ -16,7 +16,7 @@ function CardWrapper({
                     <div className="page-message">
                         {isTestingInProgress
                             ? "Please Complete the Instructions Outlined Below:"
-                            : "Please Fill in the Fields Below:"}
+                            : "Please Fill In Your Name Below and Begin Testing:"}
                     </div>
                     <div className={isTestingInProgress ? "complete-step-container" : "test-landing-page-container"}>
                         <div className={isTestingInProgress ? "complete-step-card" : "test-landing-page-card"}>

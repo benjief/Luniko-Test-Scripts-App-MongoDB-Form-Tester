@@ -26,6 +26,7 @@ import MaterialRadioButton from './MaterialRadioButton';
 // }));
 
 function TestStepCard({
+    setRendering,
     setIsTestingInProgress,
     // handleChangeStep,
     setCurrentStepResponseProps,
@@ -79,6 +80,7 @@ function TestStepCard({
     const goBack = () => {
         saveStepResponse(stepNumber);
         setAreButtonsDisabled(true);
+        setRendering(true);
         setIsTestingInProgress(false);
     }
 
@@ -183,6 +185,7 @@ function TestStepCard({
 }
 
 TestStepCard.propTypes = {
+    setRendering: PropTypes.func,
     setIsTestingInProgress: PropTypes.func,
     // handleChangeStep: PropTypes.func,
     setCurrentStepResponseProps: PropTypes.func,
@@ -197,6 +200,7 @@ TestStepCard.propTypes = {
 }
 
 TestStepCard.defaultProps = {
+    setRendering: () => { },
     setIsTestingInProgress: () => { },
     // handleChangeStep: () => { },
     setCurrentStepResponseProps: () => { },
