@@ -77,7 +77,7 @@ app.get("/get-test-script-steps/:testScriptID", async (req, res) => {
     try {
         const steps = await Step.find(
             { testScriptID: testScriptID }
-        ).lean().exec();
+        ).sort({number: "asc"}).lean().exec();
         res.status(200).json(steps);
     } catch (e) {
         res.status(500).send;
@@ -88,7 +88,11 @@ app.get("/get-test-script-steps/:testScriptID", async (req, res) => {
 const addStepResponses = async (testingSessionID, stepResponsesToAdd) => {
     addTestingSessionIDToStepResponses(testingSessionID, stepResponsesToAdd);
     for (let i = 0; i < stepResponsesToAdd.length; i++) {
-        await StepResponse.create(stepResponsesToAdd[i]);
+        try {
+            await StepResponse.create(stepResponsesToAdd[i]);
+        } catch (e) {
+            console.log(e);
+        }
     }
     console.log("step responses added");
 }

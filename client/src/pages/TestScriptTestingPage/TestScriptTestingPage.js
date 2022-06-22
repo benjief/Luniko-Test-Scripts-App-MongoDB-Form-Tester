@@ -194,6 +194,7 @@ function TestScriptTestingPage() {
                 if (!isTestingInProgress && !isDataBeingFetched.current) {
                     runSecondaryReadAsyncFunctions(formProps["testScriptName"]);
                 } else if (cardChanged.current) {
+                    console.log("card changed");
                     setRendering(false);
                 } else if (stepChanged.current) {
                     setRendering(false);
@@ -241,15 +242,11 @@ function TestScriptTestingPage() {
     //     }));
     // }
 
-    // const handleChangeCard = (changeCard) => {
-    //     if (changeCard) {
-    //         setRendering(true);
-    //         cardChanged.current = true;
-    //         addOrModifySteps
-    //             ? setAddOrModifySteps(false)
-    //             : setAddOrModifySteps(true);
-    //     }
-    // }
+    const handleChangeCard = () => {
+        setRendering(true);
+        cardChanged.current = true;
+        isTestingInProgress ? setIsTestingInProgress(false) : setIsTestingInProgress(true);
+    }
 
     // const handleAddStep = (addStep) => {
     //     if (addStep) {
@@ -323,6 +320,7 @@ function TestScriptTestingPage() {
     }
 
     const handleSaveStepResponse = (newStepNumber) => {
+        // console.log("saving step");
         let copyOfCurrentStepResponseProps = currentStepResponseProps;
         copyOfCurrentStepResponseProps["stepID"] = testScriptSteps[currentStepNumber - 1]._id;
         let copyOfStepResponses = stepResponses;
@@ -428,9 +426,10 @@ function TestScriptTestingPage() {
                     isTestingInProgress={isTestingInProgress}>
                     {isTestingInProgress
                         ? <TestStepCard
-                            setRendering={setRendering}
-                            setIsTestingInProgress={setIsTestingInProgress}
+                            // setRendering={setRendering}
+                            // setIsTestingInProgress={setIsTestingInProgress}
                             // handleChangeStep={handleChangeStep}
+                            goBackToTestingLandingPage={handleChangeCard}
                             setCurrentStepResponseProps={setCurrentStepResponseProps}
                             saveStepResponse={handleSaveStepResponse}
                             existingComments={currentStepResponseProps["comments"]}
@@ -438,7 +437,8 @@ function TestScriptTestingPage() {
                             stepID={testScriptSteps[currentStepNumber - 1]._id}
                             stepNumber={testScriptSteps[currentStepNumber - 1].number}
                             stepDescription={testScriptSteps[currentStepNumber - 1].description}
-                            isLastStep={currentStepNumber === testScriptSteps.length}>
+                            // isLastStep={currentStepNumber === testScriptSteps.length}
+                            totalNumberOfSteps={testScriptSteps.length}>
                         </TestStepCard>
                         : <TestingFormCard
                             setFormProps={setFormProps}
@@ -449,8 +449,9 @@ function TestScriptTestingPage() {
                             existingTesterFirstName={formProps["testerFirstName"]}
                             // testerLastName={setFormProps}
                             existingTesterLastName={formProps["testerLastName"]}
-                            setRendering={setRendering}
-                            setIsTestingInProgress={setIsTestingInProgress}
+                            // setRendering={setRendering}
+                            // setCardChanged={setCard}
+                            beginTesting={handleChangeCard}
                             isBeginTestingButtonDisabled={isBeginTestingButtonDisabled}
                             setIsTestScriptSubmitted={setAreTestScriptResultsSubmitted}
                             isSubmitButtonDisabled={isSubmitButtonDisabled}

@@ -26,8 +26,9 @@ import MaterialRadioButton from './MaterialRadioButton';
 // }));
 
 function TestStepCard({
-    setRendering,
-    setIsTestingInProgress,
+    // setRendering,
+    goBackToTestingLandingPage,
+    // setIsTestingInProgress,
     // handleChangeStep,
     setCurrentStepResponseProps,
     saveStepResponse,
@@ -37,7 +38,8 @@ function TestStepCard({
     // stepID,
     stepNumber,
     stepDescription,
-    isLastStep,
+    // isLastStep,
+    totalNumberOfSteps,
 }) {
     // const [expanded, setExpanded] = React.useState(true);
     const [areButtonsDisabled, setAreButtonsDisabled] = React.useState(false);
@@ -79,9 +81,7 @@ function TestStepCard({
 
     const goBack = () => {
         saveStepResponse(stepNumber);
-        setAreButtonsDisabled(true);
-        setRendering(true);
-        setIsTestingInProgress(false);
+        goBackToTestingLandingPage();
     }
 
     // const handleBeginTesting = () => {
@@ -117,7 +117,7 @@ function TestStepCard({
                     //         {statusAbbreviation}
                     //     </Avatar>
                     // }
-                    title={<strong>Step {stepNumber}</strong>}
+                    title={<strong>Step {stepNumber} of {totalNumberOfSteps}</strong>}
                 />
                 {/* < CardActions
                 disableSpacing
@@ -168,7 +168,7 @@ function TestStepCard({
                         <button
                             className="next-step-button"
                             onClick={() => handleChangeStep("increment")}
-                            disabled={isLastStep || areButtonsDisabled}>
+                            disabled={stepNumber === totalNumberOfSteps || areButtonsDisabled}>
                             Next Step
                         </button>
                         <button
@@ -185,8 +185,9 @@ function TestStepCard({
 }
 
 TestStepCard.propTypes = {
-    setRendering: PropTypes.func,
-    setIsTestingInProgress: PropTypes.func,
+    // setRendering: PropTypes.func,
+    // setIsTestingInProgress: PropTypes.func,
+    goBackToTestingLandingPage: PropTypes.func,
     // handleChangeStep: PropTypes.func,
     setCurrentStepResponseProps: PropTypes.func,
     saveStepResponse: PropTypes.func,
@@ -196,12 +197,14 @@ TestStepCard.propTypes = {
     // stepID: PropTypes.string,
     stepNumber: PropTypes.number,
     stepDescription: PropTypes.string,
-    isLastStep: PropTypes.bool,
+    // isLastStep: PropTypes.bool,
+    totalNumberOfSteps: PropTypes.number,
 }
 
 TestStepCard.defaultProps = {
-    setRendering: () => { },
-    setIsTestingInProgress: () => { },
+    // setRendering: () => { },
+    // setIsTestingInProgress: () => { },
+    goBackToTestingLandingPage: () => { },
     // handleChangeStep: () => { },
     setCurrentStepResponseProps: () => { },
     saveStepResponse: () => { },
@@ -211,7 +214,8 @@ TestStepCard.defaultProps = {
     // stepID: "",
     stepNumber: 0,
     stepDescription: "",
-    isLastStep: false,
+    // isLastStep: false,
+    totalNumberOfSteps: 0,
 }
 
 export default TestStepCard;

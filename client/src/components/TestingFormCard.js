@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 import MaterialTextField from './MaterialTextField';
 import MaterialDialog from './MaterialDialog';
 import SubmitButton from './SubmitButton';
-import { display } from '@mui/system';
+// import { display } from '@mui/system';
 // import MaterialMultiSelect from './MaterialMultiSelect';
 // import MaterialMultiSelectFreeSolo from './MaterialMultiSelectFreeSolo';
 // import MaterialCheckBox from './MaterialCheckBox';
@@ -38,8 +38,9 @@ function TestingFormCard({
     existingTesterLastName,
     // ownerEmail = "",
     // submittedOwnerEmail = "",
-    setRendering,
-    setIsTestingInProgress,
+    // setRendering,
+    // setCardChanged,
+   beginTesting,
     isBeginTestingButtonDisabled,
     // setIsTestScriptSubmitted,
     isSubmitButtonDisabled,
@@ -58,11 +59,6 @@ function TestingFormCard({
         setFormProps(
             prev => ({ ...prev, [returnedObject.field]: returnedObject.value })
         );
-    }
-
-    const handleBeginTesting = () => {
-        setRendering(true);
-        setIsTestingInProgress(true);
     }
 
     // React.useEffect(() => {
@@ -172,7 +168,7 @@ function TestingFormCard({
                         </MaterialTextField>
                         <button
                             className="begin-testing-button"
-                            onClick={handleBeginTesting}
+                            onClick={beginTesting}
                             disabled={isBeginTestingButtonDisabled}>
                             {hasUserCompletedAnyStepResponses ? "Continue Testing" : "Begin Testing"}
                         </button>
@@ -216,8 +212,9 @@ TestingFormCard.propTypes = {
     existingTesterFirstName: PropTypes.string,
     // testerLastName: PropTypes.func,
     existingTesterLastName: PropTypes.string,
-    setRendering: PropTypes.func,
-    setIsTestingInProgress: PropTypes.func,
+    // setRendering: PropTypes.func,
+    // setCardChanged: PropTypes.func,
+    beginTesting: PropTypes.func,
     isBeginTestingButtonDisabled: PropTypes.bool,
     // setIsTestScriptSubmitted: PropTypes.func,
     hasUserCompletedStepResponses: PropTypes.bool,
@@ -235,8 +232,9 @@ TestingFormCard.defaultProps = {
     existingTesterFirstName: "",
     // testerLastName: () => { },
     existingTesterLastName: "",
-    setRendering: () => { },
-    setIsTestingInProgress: () => { },
+    // setRendering: () => { },
+    // setCardChanged: () => { },
+    beginTesting: () => {},
     isBeginTestingButtonDisabled: true,
     // setIsTestScriptSubmitted: () => { },
     hasUserCompletedStepResponses: false,
