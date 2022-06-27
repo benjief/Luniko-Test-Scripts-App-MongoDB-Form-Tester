@@ -108,7 +108,6 @@ function MaterialTextField({
   }
 
   const handleInvalidNumber = (number, helperText) => {
-    // setValue(null);
     setValue(number);
     inputValue({ field: field, value: number });
     setDisplayedHelperText(helperText);
@@ -142,13 +141,11 @@ function MaterialTextField({
         setErrorEnabled(true);
         setDisplayedHelperText(authenticationError);
       } else {
-        // if (value.trim().length || authenticationField) {
         setErrorEnabled(false);
         setDisplayedHelperText("");
-        // }
       }
     }
-  }, [authenticationField, authenticationError, errorEnabled, value]) // TODO: check need for firstRender
+  }, [authenticationField, authenticationError, errorEnabled, value])
 
   return (
     <Box
@@ -174,13 +171,7 @@ function MaterialTextField({
               }
             }
           }}
-          // onKeyDown={(evt) => {
-          //   if (type === "number") {
-          //     ["e", "E"].includes(evt.key) && evt.preventDefault()
-          //   }
-          //   type === "number"
-          //     ? ["e", "E"].includes(evt.key) && evt.preventDefault() : "null";
-          // }}
+          
           label={label}
           defaultValue={defaultValue}
           type={type}

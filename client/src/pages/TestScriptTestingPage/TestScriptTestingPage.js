@@ -1,17 +1,12 @@
 import React, { Fragment, useEffect, useState, useRef, useCallback } from "react";
 import { useValidationErrorUpdate } from "./Context/ValidationErrorContext";
-// import { useNavigate } from "react-router-dom";
 import Axios from "axios";
-// import { v4 as uuidv4 } from "uuid";
 import LoadingWrapper from "./wrappers/LoadingWrapper/LoadingWrapper";
 import ErrorWrapper from "./wrappers/ErrorWrapper";
 import CardWrapper from "./wrappers/CardWrapper";
-// import NavBar from "../../components/Navbar";
-// import Hypnosis from "react-cssfx-loading/lib/Hypnosis";
 import EnterTestScriptNameCard from "../../components/EnterTestScriptNameCard";
 import TestingFormCard from "../../components/TestingFormCard";
 import TestStepCard from "../../components/TestStepCard";
-// import MaterialAlert from "../../components/MaterialAlert";
 import "../../styles/TestScriptTestingPage.css";
 import "../../styles/InputComponents.css";
 import "../../styles/CardComponents.css";
@@ -24,7 +19,6 @@ function TestScriptTestingPage() {
     const [transitionElementOpacity, setTransitionElementOpacity] = useState("100%");
     const [transtitionElementVisibility, setTransitionElementVisibility] = useState("visible");
     const [isValidTestScriptNameEntered, setIsValidTestScriptNameEntered] = useState(false);
-    // const [invalidTestScriptNameError, setInvalidTestScriptNameError] = useState("");
     const invalidTestScriptNameError = useValidationErrorUpdate();
     const [isRequestTestScriptButtonDisabled, setIsRequestTestScriptButtonDisabled] = useState(true);
     const [isBeginTestingButtonDisabled, setIsBeginTestingButtonDisabled] = useState(true);
@@ -47,15 +41,9 @@ function TestScriptTestingPage() {
         sessionID: "",
         stepID: "",
         comments: "",
-        pass: false
+        pass: true,
     });
-    // const [isTestingCompleted, setIsTestingCompleted] = useState(false);
-    // const [testScriptSteps, setTestScriptSteps] = useState([]);
-    // const [addOrModifySteps, setAddOrModifySteps] = useState(false);
-    // const [isAddOrModifyStepsButtonDisabled, setIsAddOrModifyStepsButtonDisabled] = useState(false);
-    // const [isAddStepButtonDisabled, setAddStepButtonDisabled] = useState(false);
-    // const [isRemoveStepButtonDisabled, setRemoveStepButtonDisabled] = useState(true);
-    // const [isModifyButtonDisabled, setIsModifyButtonDisabled] = useState(true);
+    const allFailedSteps = useRef([]);
     const [displayFadingBalls, setDisplayFadingBalls] = useState(false);
     const async = useRef(false);
     const [isErrorThrown, setIsErrorThrown] = useState(false);
@@ -65,12 +53,9 @@ function TestScriptTestingPage() {
     const testScriptNamesAlreadyInDB = useRef([]);
     const isDataBeingFetched = useRef(false);
     const [areTestScriptResultsSubmitted, setAreTestScriptResultsSubmitted] = useState(false);
-    // const resetStepResponseProps = useRef(false);
 
     const loadErrorMessage = "Apologies! We've encountered an error. Please attempt to re-load this page.";
     const writeErrorMessage = "Apologies! We've encountered an error. Please attempt to re-submit your test script results.";
-
-    // const navigate = useNavigate();
 
     const handleError = useCallback((errorType) => {
         setIsErrorThrown(true);
@@ -95,11 +80,6 @@ function TestScriptTestingPage() {
     const handleAlertClosed = () => {
         console.log("closing alert");
         window.location.reload();
-        // setAlert(false);
-        // if (isValidTestScriptNameEntered) {
-        //     setIsValidTestScriptNameEntered(false);
-        // }
-        // navigate("/");
         setIsErrorThrown(false); // TODO: test this... is it needed anymore?
     }
 
@@ -158,12 +138,6 @@ function TestScriptTestingPage() {
                     "testScriptPrimaryWorkstream": testScriptInformation.primaryWorkstream
                 })
             );
-            // setFormProps({
-            //     testScriptName: testScriptInformation.name,
-            //     testScriptDescription: testScriptInformation.description,
-            //     testScriptPrimaryWorkstream: testScriptInformation.primaryWorkstream,
-            // });
-            // setTestScriptSteps(testScriptInformation.steps);
             testScriptID.current = testScriptInformation._id;
             async.current = false;
         }
@@ -177,7 +151,6 @@ function TestScriptTestingPage() {
                     })
                         .then(res => {
                             setTestScriptSteps(res.data);
-                            // setCurrentStep(res.data[0]);
                             async.current = false;
                         })
                 } catch (e) {
@@ -194,7 +167,6 @@ function TestScriptTestingPage() {
                 if (!isTestingInProgress && !isDataBeingFetched.current) {
                     runSecondaryReadAsyncFunctions(formProps["testScriptName"]);
                 } else if (cardChanged.current) {
-                    console.log("card changed");
                     setRendering(false);
                 } else if (stepChanged.current) {
                     setRendering(false);
@@ -210,89 +182,16 @@ function TestScriptTestingPage() {
                 if (!areTestScriptResultsSubmitted) {
                     (formProps["testerFirstName"].trim() !== "" && formProps["testerLastName"].trim() !== "")
                         ? setIsBeginTestingButtonDisabled(false) : setIsBeginTestingButtonDisabled(true);
-                    // testScriptSteps.length && !testScriptSteps.slice(-1)[0]["description"].trim().length
-                    //     ? setAddStepButtonDisabled(true)
-                    //     : setAddStepButtonDisabled(false);
-                    // testScriptSteps.length === 1
-                    //     ? setRemoveStepButtonDisabled(true)
-                    //     : setRemoveStepButtonDisabled(false);
-                    // TODO: look into abstracting functions in useEffect hook... can this be done?
                 }
             }
         }
     }, [rendering, isDataBeingFetched, cardChanged, formProps, isValidTestScriptNameEntered, isTestingInProgress, areTestScriptResultsSubmitted, stepResponses, stepChanged, handleError]);
-
-
-
-    // const handleFormCallback = (returnedObject) => {
-    //     const field = returnedObject.field;
-    //     const value = returnedObject.value;
-    //     if (field === "testScriptName") {
-    //         console.log("resetting test script name error");
-    //         // setInvalidTestScriptNameError("");
-    //         invalidTestScriptNameError("");
-    //     }
-    //     setFormPropsForFieldAndValue(field, value);
-    // }
-
-    // const setFormPropsForFieldAndValue = (field, value) => {
-    //     setFormProps((prevState) => ({
-    //         ...prevState,
-    //         [field]: value,
-    //     }));
-    // }
 
     const handleChangeCard = () => {
         setRendering(true);
         cardChanged.current = true;
         isTestingInProgress ? setIsTestingInProgress(false) : setIsTestingInProgress(true);
     }
-
-    // const handleAddStep = (addStep) => {
-    //     if (addStep) {
-    //         console.log("adding step");
-    //         let stepCount = testScriptSteps.length;
-    //         let uniqueID = uuidv4();
-    //         let newStep = { number: stepCount + 1, description: "", pass: false, id: uniqueID };
-    //         let tempArray = testScriptSteps;
-    //         tempArray.push(newStep);
-    //         setTestScriptSteps([...tempArray]);
-    //     }
-    // }
-
-    // const handleUpdateStepDescription = (updateInfo) => {
-    //     const stepNumber = updateInfo["number"];
-    //     const updatedDescription = updateInfo["description"];
-    //     let copyOfSteps = testScriptSteps;
-    //     let stepToUpdate = copyOfSteps.filter(obj => {
-    //         return obj["number"] === stepNumber
-    //     });
-    //     stepToUpdate = stepToUpdate[0];
-    //     let indexOfStepToUpdate = copyOfSteps.indexOf(stepToUpdate);
-    //     stepToUpdate["description"] = updatedDescription;
-    //     setTestScriptSteps([...copyOfSteps]);
-    // }
-
-    // const handleRemoveStep = async (stepInfo) => {
-    //     const stepNumber = stepInfo["number"];
-    //     let copyOfSteps = testScriptSteps;
-    //     copyOfSteps = copyOfSteps.filter(obj => {
-    //         return obj["number"] !== stepNumber
-    //     });
-    //     if (testScriptSteps.length) {
-    //         copyOfSteps = await updateStepNumbers(copyOfSteps, stepNumber);
-    //     }
-    //     console.log(copyOfSteps);
-    //     setTestScriptSteps([...copyOfSteps]);
-    // }
-
-    // const updateStepNumbers = (listOfSteps, startingStepNumber) => {
-    //     console.log("updating steps");
-    //     for (let i = startingStepNumber - 1; i < listOfSteps.length; i++) {
-    //         listOfSteps[i]["number"]--;
-    //     }
-    //     return listOfSteps;
-    // }
 
     const handleRequestTestScript = () => { // TODO: make this more direct
         if (!isValidTestScriptNameEntered) {
@@ -302,7 +201,6 @@ function TestScriptTestingPage() {
                 setRendering(true);
                 setIsRequestTestScriptButtonDisabled(true);
             } else {
-                // setInvalidTestScriptNameError("Invalid test script name");
                 invalidTestScriptNameError("Invalid test script name");
             }
         }
@@ -320,7 +218,6 @@ function TestScriptTestingPage() {
     }
 
     const handleSaveStepResponse = (newStepNumber) => {
-        // console.log("saving step");
         let copyOfCurrentStepResponseProps = currentStepResponseProps;
         copyOfCurrentStepResponseProps["stepID"] = testScriptSteps[currentStepNumber - 1]._id;
         let copyOfStepResponses = stepResponses;
@@ -337,13 +234,8 @@ function TestScriptTestingPage() {
     }
 
     const handleChangeStep = (newStepNumber) => {
-        // console.log("changing step");
         setCurrentStepNumber(newStepNumber);
-        // console.log("finished changing step");
-        // resetStepResponseProps.current = true;
-        // setRendering(true);
         resetCurrentResponseProps(newStepNumber);
-        // handleResetStepResponseProps(newStepNumber);
     }
 
     const resetCurrentResponseProps = (stepNumber) => {
@@ -353,7 +245,7 @@ function TestScriptTestingPage() {
                     ...prev,
                     stepID: "",
                     comments: "",
-                    pass: false
+                    pass: true,
                 })
                 : stepResponses[stepNumber - 1]
         );
@@ -380,10 +272,14 @@ function TestScriptTestingPage() {
         console.log(stepResponses);
         async.current = true;
         try {
+            identifyAllFailedSteps();
             await Axios.post("http://localhost:5000/add-testing-session", {
                 testScriptID: testScriptID.current,
                 testingSessionTester: { firstName: formProps["testerFirstName"], lastName: formProps["testerLastName"] },
-                testingSessionPass: checkIfTestingSessionPassed(),
+                testingSessionPass: allFailedSteps.current.length ? false : true,
+                testingSessionComplete: !(stepResponses.length < testScriptSteps.length),
+                testingSessionStoppedAt: currentStepNumber,
+                testingSessionFailedSteps: allFailedSteps.current,
                 testingSessionStepResponses: stepResponses,
             }, { timeout: 5000 })
                 .then(res => {
@@ -397,13 +293,14 @@ function TestScriptTestingPage() {
         }
     }
 
-    const checkIfTestingSessionPassed = () => {
+    const identifyAllFailedSteps = () => {
+        let tempArray = [];
         for (let i = 0; i < stepResponses.length; i++) {
-            if (!stepResponses[i]["pass"]) {
-                return false;
+            if (!stepResponses[i].pass) {
+                tempArray.push(i + 1);
             }
         }
-        return true;
+        allFailedSteps.current = tempArray;
     }
 
     return (
@@ -426,9 +323,6 @@ function TestScriptTestingPage() {
                     isTestingInProgress={isTestingInProgress}>
                     {isTestingInProgress
                         ? <TestStepCard
-                            // setRendering={setRendering}
-                            // setIsTestingInProgress={setIsTestingInProgress}
-                            // handleChangeStep={handleChangeStep}
                             goBackToTestingLandingPage={handleChangeCard}
                             setCurrentStepResponseProps={setCurrentStepResponseProps}
                             saveStepResponse={handleSaveStepResponse}
@@ -437,7 +331,6 @@ function TestScriptTestingPage() {
                             stepID={testScriptSteps[currentStepNumber - 1]._id}
                             stepNumber={testScriptSteps[currentStepNumber - 1].number}
                             stepDescription={testScriptSteps[currentStepNumber - 1].description}
-                            // isLastStep={currentStepNumber === testScriptSteps.length}
                             totalNumberOfSteps={testScriptSteps.length}>
                         </TestStepCard>
                         : <TestingFormCard
@@ -445,12 +338,8 @@ function TestScriptTestingPage() {
                             testScriptName={formProps["testScriptName"]}
                             testScriptDescription={formProps["testScriptDescription"]}
                             testScriptPrimaryWorkstream={formProps["testScriptPrimaryWorkstream"]}
-                            // testerFirstName={setFormProps}
                             existingTesterFirstName={formProps["testerFirstName"]}
-                            // testerLastName={setFormProps}
                             existingTesterLastName={formProps["testerLastName"]}
-                            // setRendering={setRendering}
-                            // setCardChanged={setCard}
                             beginTesting={handleChangeCard}
                             isBeginTestingButtonDisabled={isBeginTestingButtonDisabled}
                             setIsTestScriptSubmitted={setAreTestScriptResultsSubmitted}
@@ -469,70 +358,12 @@ function TestScriptTestingPage() {
                         <div className="enter-valid-test-script-name-card">
                             <EnterTestScriptNameCard
                                 setFormProps={setFormProps}
-                                // testScriptName={handleFormCallback}
                                 requestTestScript={handleRequestTestScript}
-                                isSubmitButtonDisabled={isRequestTestScriptButtonDisabled}
-                                /*textAuthenticationError={invalidTestScriptNameError}*/>
+                                isSubmitButtonDisabled={isRequestTestScriptButtonDisabled}>
                             </EnterTestScriptNameCard>
                         </div>
                     </div>
                 </div>}
-            {/* <Fragment>
-                {isValidTestScriptNameEntered
-                    ? <Fragment>
-                        {isTestingInProgress
-                            ? <div className="complete-step">
-                                <div className="page-message">
-                                    Please Complete the Instructions Outlined Below:
-                                </div>
-                                <div className="complete-step-container">
-                                    <div className="complete-step-card">
-                                        CARD PLACEHOLDER
-                                    </div>
-                                </div>
-                            </div >
-                            : <div className="test-landing-page">
-                                <div className="page-message">
-                                    Please Fill in the Fields Below:
-                                </div>
-                                <div className="test-landing-page-container">
-                                    <div className="test-landing-page-card">
-                                        <TestingForm
-                                            testScriptName={formProps["testScriptName"]}
-                                            testScriptDescription={formProps["testScriptDescription"]}
-                                            testScriptPrimaryWorkstream={formProps["testScriptPrimaryWorkstream"]}
-                                            testerFirstName={handleFormCallback}
-                                            existingTesterFirstName={formProps["testerFirstName"]}
-                                            testerLastName={handleFormCallback}
-                                            existingTesterLastName={formProps["testerLastName"]}
-                                            setIsTestingInProgress={setIsTestingInProgress}
-                                            isBeginTestingButtonDisabled={isBeginTestingButtonDisabled}
-                                            setIsTestScriptSubmitted={setIsTestScriptSubmitted}
-                                            isSubmitButtonDisabled={isSubmitButtonDisabled}
-                                            displayFadingBalls={displayFadingBalls}>
-                                        </TestingForm>
-                                    </div>
-                                </div>
-                            </div>}
-                    </Fragment>
-                    : <Fragment>
-                        <div className="enter-valid-test-script-name">
-                            <div className="enter-valid-test-script-name-container">
-                                <div className="page-message">
-                                    Retrieve Your Test Script Below:
-                                </div>
-                                <div className="enter-valid-test-script-name-card">
-                                    <EnterTestScriptNameCard
-                                        testScriptName={handleFormCallback}
-                                        submitted={handleRequestTestScript}
-                                        isSubmitButtonDisabled={isRequestTestScriptButtonDisabled}
-                                        textAuthenticationError={invalidTestScriptNameError}>
-                                    </EnterTestScriptNameCard>
-                                </div>
-                            </div>
-                        </div>
-                    </Fragment>}
-            </Fragment> */}
         </Fragment >
     )
 };

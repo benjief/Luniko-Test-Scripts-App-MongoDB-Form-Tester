@@ -5,50 +5,21 @@ import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import Collapse from '@mui/material/Collapse';
 import Typography from '@mui/material/Typography';
-// import MaterialSingleSelect from './MaterialSingleSelect';
-// import MaterialSingleSelectFreeSolo from './MaterialSingleSelectFreeSolo';
 import MaterialTextField from './MaterialTextField';
 import MaterialRadioButton from './MaterialRadioButton';
-// import MaterialMultiSelect from './MaterialMultiSelect';
-// import MaterialMultiSelectFreeSolo from './MaterialMultiSelectFreeSolo';
-// import MaterialCheckBox from './MaterialCheckBox';
-// import FadingBalls from "react-cssfx-loading/lib/FadingBalls";
-
-// const ExpandMore = styled((props) => {
-//     const { expand, ...other } = props;
-//     return <IconButton {...other} />;
-// })(({ theme, expand }) => ({
-//     transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-//     marginLeft: 'auto',
-//     transition: theme.transitions.create('transform', {
-//         duration: theme.transitions.duration.shortest,
-//     }),
-// }));
-
 function TestStepCard({
-    // setRendering,
     goBackToTestingLandingPage,
-    // setIsTestingInProgress,
-    // handleChangeStep,
     setCurrentStepResponseProps,
     saveStepResponse,
     existingComments,
     existingPass,
-    // setStepResponses,
-    // stepID,
     stepNumber,
     stepDescription,
-    // isLastStep,
     totalNumberOfSteps,
 }) {
-    // const [expanded, setExpanded] = React.useState(true);
     const [areButtonsDisabled, setAreButtonsDisabled] = React.useState(false);
-    // const isStepResponseSaveable = React.useRef(false);
 
     const handleOnChange = (returnedObject) => {
-        // const objectToReturn = { value: returnedObject.value, field: returnedObject.field };
-        // const stringFunction = returnedObject.field + "(objectToReturn)";
-        // eval(stringFunction);
         if (returnedObject["field"] === "radio button value") {
             returnedObject["field"] = "pass";
             returnedObject["value"] = returnedObject["value"] === "true";
@@ -58,12 +29,6 @@ function TestStepCard({
         );
     }
 
-    // const setStepID = (newStepNumber) => {
-    //     setCurrentStepResponseProps(
-    //         prev => ({ ...prev, stepID: stepID })
-    //     );
-    // }
-
     const handleChangeStep = (direction) => {
         setAreButtonsDisabled(true);
         direction === "increment"
@@ -71,32 +36,14 @@ function TestStepCard({
             : saveStepResponse(stepNumber - 1);
     }
 
-    // const handleOnClickNextStep = () => {
-    //     saveStepResponse(stepNumber + 1);
-    // }
-
-    // const handleOnClickPreviousStep = () => {
-    //     saveStepResponse(stepNumber - 1);
-    // }
-
     const goBack = () => {
         saveStepResponse(stepNumber);
         goBackToTestingLandingPage();
     }
 
-    // const handleBeginTesting = () => {
-    //     setIsTestingInProgress(true);
-    // }
-
-    // const handleSubmit = () => {
-    //     setIsTestScriptSubmitted(true);
-    // }
-
     return (
         <Card
             sx={{
-                // minWidth: 1,
-                // maxWidth: 1,
                 maxHeight: "calc(100vh - 166.52px)",
                 overflowY: "scroll",
                 borderRadius: "10px",
@@ -108,36 +55,10 @@ function TestStepCard({
             <div className="card-content">
                 <CardHeader
                     titleTypographyProps={{ color: "white", fontFamily: "'Raleway', Verdana, Geneva, Tahoma, sans-serif", fontSize: "10.5pt" }}
-                    // subheaderTypographyProps={{ color: "rgba(0, 0, 0, 0.7)", fontFamily: "'Raleway', Verdana, Geneva, Tahoma, sans-serif", fontSize: "10.5pt" }}
-                    // avatar={
-                    //     <Avatar sx={{
-                    //         bgcolor: "var(--lunikoBlue)"
-                    //     }}
-                    //         aria-label="status">
-                    //         {statusAbbreviation}
-                    //     </Avatar>
-                    // }
                     title={<strong>Step {stepNumber} of {totalNumberOfSteps}</strong>}
                 />
-                {/* < CardActions
-                disableSpacing
-                style={{ justifyContent: "center", height: "40px", padding: 0, paddingBottom: "10px" }}>
-                <ExpandMore
-                    expand={expanded}
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
-                    aria-label="show more"
-                    style={{ marginLeft: 0 }}
-                >
-                    <ExpandMoreIcon />
-                </ExpandMore>
-            </CardActions > */}
                 <Collapse in={true} timeout="auto" unmountOnExit>
                     <CardContent>
-                        {/* <Typography
-                        paragraph>
-                        <strong>Updatable Fields</strong>
-                    </Typography> */}
                         <Typography paragraph className="step-description">
                             <strong>Step Description</strong><br />
                             {stepDescription}
@@ -185,36 +106,24 @@ function TestStepCard({
 }
 
 TestStepCard.propTypes = {
-    // setRendering: PropTypes.func,
-    // setIsTestingInProgress: PropTypes.func,
     goBackToTestingLandingPage: PropTypes.func,
-    // handleChangeStep: PropTypes.func,
     setCurrentStepResponseProps: PropTypes.func,
     saveStepResponse: PropTypes.func,
     existingComments: PropTypes.string,
     existingPass: PropTypes.bool,
-    // setStepResponses: PropTypes.func,
-    // stepID: PropTypes.string,
     stepNumber: PropTypes.number,
     stepDescription: PropTypes.string,
-    // isLastStep: PropTypes.bool,
     totalNumberOfSteps: PropTypes.number,
 }
 
 TestStepCard.defaultProps = {
-    // setRendering: () => { },
-    // setIsTestingInProgress: () => { },
     goBackToTestingLandingPage: () => { },
-    // handleChangeStep: () => { },
     setCurrentStepResponseProps: () => { },
     saveStepResponse: () => { },
     existingComments: "",
-    existingPass: false,
-    // setStepResponses: () => { },
-    // stepID: "",
+    existingPass: true,
     stepNumber: 0,
     stepDescription: "",
-    // isLastStep: false,
     totalNumberOfSteps: 0,
 }
 

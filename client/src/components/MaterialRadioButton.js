@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import Radio from '@mui/material/Radio';
@@ -15,10 +14,6 @@ function MaterialRadioButton({
   defaultValue,
 }) {
   const [value, setValue] = React.useState(defaultValue);
-
-  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setValue((event.target as HTMLInputElement).value);
-  // };
 
   const handleChange = (value) => {
     setValue(value);

@@ -5,75 +5,33 @@ import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import Collapse from '@mui/material/Collapse';
 import Typography from '@mui/material/Typography';
-// import MaterialSingleSelect from './MaterialSingleSelect';
-// import MaterialSingleSelectFreeSolo from './MaterialSingleSelectFreeSolo';
 import MaterialTextField from './MaterialTextField';
 import MaterialDialog from './MaterialDialog';
 import SubmitButton from './SubmitButton';
-// import { display } from '@mui/system';
-// import MaterialMultiSelect from './MaterialMultiSelect';
-// import MaterialMultiSelectFreeSolo from './MaterialMultiSelectFreeSolo';
-// import MaterialCheckBox from './MaterialCheckBox';
-// import FadingBalls from "react-cssfx-loading/lib/FadingBalls";
-
-// const ExpandMore = styled((props) => {
-//     const { expand, ...other } = props;
-//     return <IconButton {...other} />;
-// })(({ theme, expand }) => ({
-//     transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-//     marginLeft: 'auto',
-//     transition: theme.transitions.create('transform', {
-//         duration: theme.transitions.duration.shortest,
-//     }),
-// }));
-
 function TestingFormCard({
     setFormProps,
     testScriptName,
     testScriptDescription,
     testScriptPrimaryWorkstream,
-    // testerFirstName,
     existingTesterFirstName,
-    // testerLastName,
     existingTesterLastName,
-    // ownerEmail = "",
-    // submittedOwnerEmail = "",
-    // setRendering,
-    // setCardChanged,
-   beginTesting,
+    beginTesting,
     isBeginTestingButtonDisabled,
-    // setIsTestScriptSubmitted,
     isSubmitButtonDisabled,
     hasUserCompletedAnyStepResponses,
     hasUserCompletedAllStepResponses,
     submitTestScriptResults,
     displayFadingBalls,
 }) {
-    // const [expanded, setExpanded] = React.useState(true);
-    // const [submitButtonColor, setSubmitButtonColor] = React.useState("#BFBFBF");
-
     const handleOnChange = (returnedObject) => {
-        // const objectToReturn = { value: returnedObject.value, field: returnedObject.field };
-        // const stringFunction = returnedObject.field + "(objectToReturn)";
-        // eval(stringFunction);
         setFormProps(
             prev => ({ ...prev, [returnedObject.field]: returnedObject.value })
         );
     }
 
-    // React.useEffect(() => {
-    //     if (!submitButtonDisabled) {
-    //         setSubmitButtonColor("var(--lunikoBlue)");
-    //     } else {
-    //         setSubmitButtonColor("#BFBFBF");
-    //     }
-    // }, [submitButtonDisabled]);
-
     return (
         <Card
             sx={{
-                // minWidth: 1,
-                // maxWidth: 1,
                 maxHeight: "calc(100vh - 166.52px)",
                 overflowY: "scroll",
                 borderRadius: "10px",
@@ -85,36 +43,9 @@ function TestingFormCard({
             <div className="card-content">
                 <CardHeader
                     titleTypographyProps={{ color: "white", fontFamily: "'Raleway', Verdana, Geneva, Tahoma, sans-serif" }}
-                    // subheaderTypographyProps={{ color: "rgba(0, 0, 0, 0.7)", fontFamily: "'Raleway', Verdana, Geneva, Tahoma, sans-serif", fontSize: "10.5pt" }}
-                    // avatar={
-                    //     <Avatar sx={{
-                    //         bgcolor: "var(--lunikoBlue)"
-                    //     }}
-                    //         aria-label="status">
-                    //         {statusAbbreviation}
-                    //     </Avatar>
-                    // }
-                    title={<strong>Testing Form for {testScriptName}</strong>}
-                />
-                {/* < CardActions
-                disableSpacing
-                style={{ justifyContent: "center", height: "40px", padding: 0, paddingBottom: "10px" }}>
-                <ExpandMore
-                    expand={expanded}
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
-                    aria-label="show more"
-                    style={{ marginLeft: 0 }}
-                >
-                    <ExpandMoreIcon />
-                </ExpandMore>
-            </CardActions > */}
+                    title={<strong>Testing Form for {testScriptName}</strong>} />
                 <Collapse in={true} timeout="auto" unmountOnExit>
                     <CardContent>
-                        {/* <Typography
-                        paragraph>
-                        <strong>Updatable Fields</strong>
-                    </Typography> */}
                         <MaterialDialog
                             className="test-script-instructions"
                             exteriorButton=
@@ -142,7 +73,7 @@ function TestingFormCard({
                             <strong>Test Script Description</strong><br />
                             {testScriptDescription}
                         </Typography>
-                        <Typography paragraph>
+                        <Typography paragraph className="test-script-primary-workstream">
                             <strong>Primary Workstream</strong><br />
                             {testScriptPrimaryWorkstream}
                         </Typography>
@@ -193,7 +124,6 @@ function TestingFormCard({
                                 displayActiveButton={true}
                                 activeButtonFunction={submitTestScriptResults}
                                 activeButtonText="Submit"
-                                // dialogTitle="Test"
                                 dialogDescription={<p>You're attempting to submit test script results before completing all steps. This is perfectly fine, but are you sure you want to do this?</p>}>
                             </MaterialDialog>}
                     </CardContent>
@@ -208,15 +138,11 @@ TestingFormCard.propTypes = {
     testScriptName: PropTypes.string,
     testScriptDescription: PropTypes.string,
     testScriptPrimaryWorkstream: PropTypes.string,
-    // testerFirstName: PropTypes.func,
     existingTesterFirstName: PropTypes.string,
-    // testerLastName: PropTypes.func,
     existingTesterLastName: PropTypes.string,
-    // setRendering: PropTypes.func,
-    // setCardChanged: PropTypes.func,
     beginTesting: PropTypes.func,
     isBeginTestingButtonDisabled: PropTypes.bool,
-    // setIsTestScriptSubmitted: PropTypes.func,
+   isSubmitButtonDisabled: PropTypes.bool,
     hasUserCompletedStepResponses: PropTypes.bool,
     hasUserCompletedAllStepResponses: PropTypes.bool,
     submitTestScriptResults: PropTypes.func,
@@ -228,15 +154,11 @@ TestingFormCard.defaultProps = {
     testScriptName: "",
     testScriptDescription: "",
     testScriptPrimaryWorkstream: "",
-    // testerFirstName: () => { },
     existingTesterFirstName: "",
-    // testerLastName: () => { },
     existingTesterLastName: "",
-    // setRendering: () => { },
-    // setCardChanged: () => { },
-    beginTesting: () => {},
+    beginTesting: () => { },
     isBeginTestingButtonDisabled: true,
-    // setIsTestScriptSubmitted: () => { },
+    isSubmitButtonDisabled: false,
     hasUserCompletedStepResponses: false,
     hasUserCompletedAllStepResponses: false,
     submitTestScriptResults: () => { },

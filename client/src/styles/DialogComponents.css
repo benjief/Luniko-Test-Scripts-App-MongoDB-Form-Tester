@@ -38,11 +38,19 @@
 }
 
 .material-dialog-inactive-button, .material-dialog-active-button {
+    background-color: var(--lunikoBlue) !important;
+    border-radius: 5px !important;
     font-family: "Raleway", Verdana, Geneva, Tahoma, sans-serif !important;
     font-size: 13pt !important;
-    font-weight: 700 !important;
-    color: var(--lunikoBlue) !important;
+    font-weight: 600 !important;
+    color: white !important;
+    text-transform: none !important;
+    /* width: 90px !important; */
 }
+
+/* .MuiTouchRipple-child {
+    background-color: var(--lunikoOrange) !important;
+} */
 
 ol {
     margin-left: -15px !important;

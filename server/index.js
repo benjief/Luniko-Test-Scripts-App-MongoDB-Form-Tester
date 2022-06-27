@@ -17,18 +17,26 @@ app.use(express.json());
 // app.use(json());
 app.use(cors());
 
+// TestingSession.
+
 // Queries
 app.post("/add-testing-session", async (req, res) => {
     const testScriptID = req.body.testScriptID;
     const testingSessionTester = req.body.testingSessionTester;
     const testingSessionPass = req.body.testingSessionPass;
+    const testingSessionComplete = req.body.testingSessionComplete;
+    const testingSessionStoppedAt = req.body.testingSessionStoppedAt;
+    const testingSessionFailedSteps = req.body.testingSessionFailedSteps;
     const testingSessionStepResponses = req.body.testingSessionStepResponses;
     try {
-        // console.log(testingSessionStepResponses);
+        console.log(testingSessionFailedSteps);
         const testingSession = await TestingSession.create({
             testScriptID: testScriptID,
             tester: testingSessionTester,
             pass: testingSessionPass,
+            complete: testingSessionComplete,
+            stoppedTestingAtStep: testingSessionStoppedAt,
+            failedSteps: testingSessionFailedSteps,
         });
         await addStepResponses(testingSession.toObject()._id.toString(), testingSessionStepResponses);
         console.log("testing session added to DB");

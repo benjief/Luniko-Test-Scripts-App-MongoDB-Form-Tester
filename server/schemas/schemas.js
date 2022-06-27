@@ -15,17 +15,6 @@ const step = new mongoose.Schema({
         maxlength: 1000,
         required: true
     },
-    // pass: {
-    //     type: Boolean,
-    //     default: false,
-    //     required: true
-    // },
-    // comments: {
-    //     type: String
-    // },
-    // id: {
-    //     type: String
-    // }
 });
 
 const testingSession = new mongoose.Schema({
@@ -34,9 +23,6 @@ const testingSession = new mongoose.Schema({
         required: true,
         ref: "testScript"
     },
-    // testScriptID: {
-    //     type: String
-    // },
     tester: {
         type: {
             firstName: String,
@@ -47,7 +33,18 @@ const testingSession = new mongoose.Schema({
     pass: {
         type: Boolean,
         required: true
-    }
+    },
+    complete: {
+        type: Boolean,
+        default: false
+    },
+    stoppedTestingAtStep: {
+        type: Number,
+    },
+    failedSteps: {
+        type: Array,
+        default: []
+    },
 }, { timestamps: true });
 
 const stepResponse = new mongoose.Schema({
@@ -57,18 +54,15 @@ const stepResponse = new mongoose.Schema({
         ref: "testingSession"
     },
     stepID: {
-        // type: String
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: "step"
     },
     comments: {
         type: String,
-        required: true
     },
     pass: {
         type: Boolean,
-        // default: false,
         required: true
     }
 });
@@ -95,7 +89,6 @@ const testScript = new mongoose.Schema({
         type: String,
         required: true
     },
-    /*steps: [step]*/
 }, { timestamps: true });
 
 testScript.pre('deleteOne', function (next) {

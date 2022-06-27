@@ -2,6 +2,7 @@
     color: rgba(0, 0, 0, 0.7);
     font-family: "Raleway", Verdana, Geneva, Tahoma, sans-serif !important;
     font-size: 10.5pt !important;
+    margin-bottom: 25px !important;
 }
 
 /* .update-owned-request-container .MuiCollapse-root,
@@ -67,10 +68,4 @@
     padding-top: 0 !important;
     padding-bottom: 0 !important;
 
-}
-
-.MuiTypography-paragraph {
-    color: rgba(0, 0, 0, 0.7);
-    font-family: "Raleway", Verdana, Geneva, Tahoma, sans-serif !important;
-    font-size: 10.5pt !important;
 }

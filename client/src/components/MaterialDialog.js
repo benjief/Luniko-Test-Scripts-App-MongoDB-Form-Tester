@@ -4,13 +4,11 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-// import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 function MaterialDialog({
     className,
     exteriorButton,
-    // exteriorButtonText,
     inactiveButtonText,
     displayActiveButton,
     activeButtonFunction,
@@ -49,9 +47,6 @@ function MaterialDialog({
                 </DialogTitle>
                 <DialogContent id="alert-dialog-description">
                     {dialogDescription}
-                    {/* <DialogContentText id="alert-dialog-description">
-                        
-                    </DialogContentText> */}
                 </DialogContent>
                 <DialogActions>
                     <Button className="material-dialog-inactive-button" onClick={handleClose} autoFocus>
@@ -71,7 +66,6 @@ function MaterialDialog({
 MaterialDialog.propTypes = {
     className: PropTypes.string,
     exteriorButton: PropTypes.object,
-    // exteriorButtonText: PropTypes.string,
     inactiveButtonText: PropTypes.string,
     displayActiveButton: PropTypes.bool,
     activeButtonFunction: PropTypes.func,
@@ -83,7 +77,6 @@ MaterialDialog.propTypes = {
 MaterialDialog.defaultProps = {
     className: "",
     exteriorButton: {},
-    // exteriorButtonText: "",
     inactiveButtonText: "",
     displayActiveButton: false,
     activeButtonFunction: () => { },

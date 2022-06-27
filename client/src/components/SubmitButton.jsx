@@ -12,8 +12,7 @@ function SubmitButton({
         <button
             className="submit-test-script-button"
             disabled={isSubmitButtonDisabled}
-            onClick={handleOnClick ? handleOnClickFunction : undefined}
-                            /*style={{ backgroundColor: submitButtonColor }}*/>
+            onClick={handleOnClick ? handleOnClickFunction : undefined}>
             {displayFadingBalls ?
                 <div className="fading-balls-container">
                     <FadingBalls
@@ -21,8 +20,7 @@ function SubmitButton({
                         color="white"
                         width="7px"
                         height="7px"
-                        duration="0.5s"
-                    />
+                        duration="0.5s" />
                 </div> :
                 <p>Submit</p>}
         </button>
@@ -40,7 +38,7 @@ SubmitButton.defaultProps = {
     isSubmitButtonDisabled: true,
     displayFadingBalls: false,
     handleOnClick: false,
-    handleOnClickFunction: () => {}
+    handleOnClickFunction: () => { }
 };
 
 export default SubmitButton;
