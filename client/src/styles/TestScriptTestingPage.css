@@ -62,10 +62,6 @@
     margin-top: 30px;
 }
 
-.back-button {
-    margin-top: 25px;
-}
-
 .submit-test-script-name-button:not(:disabled),
 .begin-testing-button:not(:disabled),
 .submit-test-script-button:not(:disabled),

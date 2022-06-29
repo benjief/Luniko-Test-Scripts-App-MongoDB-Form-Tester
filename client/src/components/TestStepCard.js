@@ -81,16 +81,16 @@ function TestStepCard({
                             defaultValue={existingPass}>
                         </MaterialRadioButton>
                         <button
-                            className="previous-step-button"
-                            onClick={() => handleChangeStep()}
-                            disabled={stepNumber === 1 || areButtonsDisabled}>
-                            Previous Step
-                        </button>
-                        <button
                             className="next-step-button"
                             onClick={() => handleChangeStep("increment")}
                             disabled={stepNumber === totalNumberOfSteps || areButtonsDisabled}>
                             Next Step
+                        </button>
+                        <button
+                            className="previous-step-button"
+                            onClick={() => handleChangeStep()}
+                            disabled={stepNumber === 1 || areButtonsDisabled}>
+                            Previous Step
                         </button>
                         <button
                             className="back-button"
