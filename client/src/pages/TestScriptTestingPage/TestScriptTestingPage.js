@@ -48,7 +48,7 @@ function TestScriptTestingPage() {
     const async = useRef(false);
     const [isErrorThrown, setIsErrorThrown] = useState(false);
     const [alert, setAlert] = useState(false);
-    const alertMessage = useRef("Test script results successfully submitted!");
+    const successAlertMessage = useRef("Test script results successfully submitted!");
     const alertType = useRef("success-alert");
     const testScriptNamesAlreadyInDB = useRef([]);
     const isDataBeingFetched = useRef(false);
@@ -61,8 +61,8 @@ function TestScriptTestingPage() {
         setIsErrorThrown(true);
         alertType.current = "error-alert";
         errorType === "r"
-            ? alertMessage.current = loadErrorMessage
-            : alertMessage.current = writeErrorMessage;
+            ? successAlertMessage.current = loadErrorMessage
+            : successAlertMessage.current = writeErrorMessage;
 
         // Delay is set up just in case an error is generated before the is fully-displayed
         // let delay = transitionElementOpacity === "100%" ? 500 : rendering ? 500 : 0;
@@ -312,13 +312,14 @@ function TestScriptTestingPage() {
             </LoadingWrapper>
             <ErrorWrapper
                 alert={alert}
-                alertMessage={alertMessage.current}
+                alertMessage={successAlertMessage.current}
                 handleAlertClosed={handleAlertClosed}
                 alertType={alertType.current}> {/* TODO: change alertType hook to useState? */}
             </ErrorWrapper>
             {isValidTestScriptNameEntered
                 ? <CardWrapper
                     rendering={rendering}
+                    alert={alert}
                     isErrorThrown={isErrorThrown}
                     isTestingInProgress={isTestingInProgress}>
                     {isTestingInProgress

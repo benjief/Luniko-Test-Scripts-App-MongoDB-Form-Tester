@@ -4,11 +4,12 @@ import PropTypes from 'prop-types';
 function CardWrapper({
     children,
     rendering,
+    alert,
     isErrorThrown,
     isTestingInProgress,
 }) {
     return (
-        rendering
+        rendering || alert
             ? <div></div>
             : isErrorThrown
                 ? <div></div>
@@ -30,12 +31,14 @@ function CardWrapper({
 CardWrapper.propTypes = {
     children: PropTypes.node.isRequired,
     rendering: PropTypes.bool,
+    alert: PropTypes.bool,
     isErrorThrown: PropTypes.bool,
     isTestingInProgress: PropTypes.bool,
 };
 
 CardWrapper.defaultProps = {
     rendering: false,
+    alert: false,
     isErrorThrown: false,
     isTestingInProgress: false,
 };
