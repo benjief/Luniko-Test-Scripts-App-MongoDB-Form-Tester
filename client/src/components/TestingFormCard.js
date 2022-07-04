@@ -124,7 +124,7 @@ function TestingFormCard({
                                 displayActiveButton={true}
                                 activeButtonFunction={submitTestScriptResults}
                                 activeButtonText="Submit"
-                                dialogDescription={<p>You're attempting to submit test script results before completing all steps. This is perfectly fine, but are you sure you want to do this?</p>}>
+                                dialogDescription={<p>You're attempting to submit test script results before completing all steps.</p>}>
                             </MaterialDialog>}
                     </CardContent>
                 </Collapse>

@@ -15,6 +15,11 @@ const step = new mongoose.Schema({
         maxlength: 1000,
         required: true
     },
+    dataInputtedByUser: {
+        type: String,
+        maxlength: 1000,
+        default: ""
+    }
 });
 
 const testingSession = new mongoose.Schema({
@@ -43,7 +48,7 @@ const testingSession = new mongoose.Schema({
     },
     failedSteps: {
         type: Array,
-        default: []
+        default: [] 
     },
 }, { timestamps: true });
 

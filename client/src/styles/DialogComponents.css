@@ -42,9 +42,10 @@
     border-radius: 5px !important;
     font-family: "Raleway", Verdana, Geneva, Tahoma, sans-serif !important;
     font-size: 13pt !important;
-    font-weight: 600 !important;
+    font-weight: 500 !important;
     color: white !important;
     text-transform: none !important;
+    padding: 5px 10px 5px 10px !important;
     /* width: 90px !important; */
 }
 

@@ -332,6 +332,7 @@ function TestScriptTestingPage() {
                             stepID={testScriptSteps[currentStepNumber - 1]._id}
                             stepNumber={testScriptSteps[currentStepNumber - 1].number}
                             stepDescription={testScriptSteps[currentStepNumber - 1].description}
+                            stepDataInputtedByUser={testScriptSteps[currentStepNumber - 1].dataInputtedByUser}
                             totalNumberOfSteps={testScriptSteps.length}>
                         </TestStepCard>
                         : <TestingFormCard

@@ -15,6 +15,7 @@ function TestStepCard({
     existingPass,
     stepNumber,
     stepDescription,
+    stepDataInputtedByUser,
     totalNumberOfSteps,
 }) {
     const [areButtonsDisabled, setAreButtonsDisabled] = React.useState(false);
@@ -62,6 +63,12 @@ function TestStepCard({
                         <Typography paragraph className="step-description">
                             <strong>Step Description</strong><br />
                             {stepDescription}
+                        </Typography>
+                        <Typography paragraph className="step-data-inputted-by-user">
+                            {stepDataInputtedByUser.length ?
+                                <span><strong>Data Inputted by User</strong><br />
+                                    {stepDataInputtedByUser}</span>
+                                : <span></span>}
                         </Typography>
                         <MaterialTextField
                             className="step-response-comments"
@@ -113,6 +120,7 @@ TestStepCard.propTypes = {
     existingPass: PropTypes.bool,
     stepNumber: PropTypes.number,
     stepDescription: PropTypes.string,
+    stepDataInputtedByUser: PropTypes.string,
     totalNumberOfSteps: PropTypes.number,
 }
 
@@ -124,6 +132,7 @@ TestStepCard.defaultProps = {
     existingPass: true,
     stepNumber: 0,
     stepDescription: "",
+    stepDataInputtedByUser: "",
     totalNumberOfSteps: 0,
 }
 
