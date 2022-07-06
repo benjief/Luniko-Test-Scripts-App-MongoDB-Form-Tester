@@ -7,6 +7,7 @@ import Collapse from '@mui/material/Collapse';
 import Typography from '@mui/material/Typography';
 import MaterialTextField from './MaterialTextField';
 import MaterialRadioButton from './MaterialRadioButton';
+import FileInputButton from './FileInputButton';
 function TestStepCard({
     goBackToTestingLandingPage,
     setCurrentStepResponseProps,
@@ -81,6 +82,7 @@ function TestStepCard({
                             showCharCounter={true}
                             field="comments" >
                         </MaterialTextField>
+                        <FileInputButton buttonText="Upload File"></FileInputButton>
                         <MaterialRadioButton
                             buttonOne={{ value: true, label: "Pass" }}
                             buttonTwo={{ value: false, label: "Fail" }}

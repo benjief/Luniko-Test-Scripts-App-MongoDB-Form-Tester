@@ -79,3 +79,23 @@
 /* .MuiOutlinedInput-notchedOutline {
     border-color: var(--lunikoBlue) !important;
 } */
+
+.input-button-container {
+    display: flex;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.file-input {
+    display: none;
+}
+
+.file-input-button {
+    margin-right: 10px;
+    padding: 2px 10px 2px 10px;
+    /* color: white; */
+    font-size: 12pt;
+    background-color: var(--lunikoLightGrey);
+    border-radius: 3px;
+    border: none;
+}
