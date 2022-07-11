@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect, useState, useRef, useCallback } from "react";
 import { useValidationErrorUpdate } from "./Context/ValidationErrorContext";
 import Axios from "axios";
+import { uploadStepResponseImage } from "../../firebase/config";
 import LoadingWrapper from "./wrappers/LoadingWrapper/LoadingWrapper";
 import ErrorWrapper from "./wrappers/ErrorWrapper";
 import CardWrapper from "./wrappers/CardWrapper";
@@ -42,6 +43,7 @@ function TestScriptTestingPage() {
         stepID: "",
         comments: "",
         pass: true,
+        uploadedImage: null,
     });
     const allFailedSteps = useRef([]);
     const [displayFadingBalls, setDisplayFadingBalls] = useState(false);
@@ -178,10 +180,10 @@ function TestScriptTestingPage() {
             if (!isValidTestScriptNameEntered) {
                 formProps["testScriptName"].trim().length ? setIsRequestTestScriptButtonDisabled(false) : setIsRequestTestScriptButtonDisabled(true);
             } else {
-                stepResponses.length ? setIsSubmitButtonDisabled(false) : setIsSubmitButtonDisabled(true);
                 if (!areTestScriptResultsSubmitted) {
                     (formProps["testerFirstName"].trim() !== "" && formProps["testerLastName"].trim() !== "")
                         ? setIsBeginTestingButtonDisabled(false) : setIsBeginTestingButtonDisabled(true);
+                    stepResponses.length ? setIsSubmitButtonDisabled(false) : setIsSubmitButtonDisabled(true);
                 }
             }
         }
@@ -246,6 +248,7 @@ function TestScriptTestingPage() {
                     stepID: "",
                     comments: "",
                     pass: true,
+                    uploadedImage: null,
                 })
                 : stepResponses[stepNumber - 1]
         );
@@ -269,10 +272,10 @@ function TestScriptTestingPage() {
 
     const addTestScriptResultsToDB = async () => {
         console.log("adding test script results to DB");
-        console.log(stepResponses);
         async.current = true;
         try {
             identifyAllFailedSteps();
+            await uploadStepResponseImages();
             await Axios.post("http://localhost:5000/add-testing-session", {
                 testScriptID: testScriptID.current,
                 testingSessionTester: { firstName: formProps["testerFirstName"], lastName: formProps["testerLastName"] },
@@ -303,6 +306,21 @@ function TestScriptTestingPage() {
         allFailedSteps.current = tempArray;
     }
 
+    const uploadStepResponseImages = async () => {
+        console.log("uploading step response images");
+        for (let i = 0; i < stepResponses.length; i++) {
+            if (stepResponses[i]["uploadedImage"]) {
+                const image = stepResponses[i]["uploadedImage"];
+                const imageType = image["type"].split("/").pop();
+                const imageName = testScriptID.current + "_" + (i + 1) + "." + imageType;
+                stepResponses[i]["uploadedImage"] = imageName;
+                stepResponses[i]["uploadedImageURL"] = await uploadStepResponseImage(imageName, image);
+            } else {
+                stepResponses[i]["uploadedImageURL"] = "";
+            }
+        }
+    }
+
     return (
         <Fragment>
             <LoadingWrapper
@@ -329,6 +347,7 @@ function TestScriptTestingPage() {
                             saveStepResponse={handleSaveStepResponse}
                             existingComments={currentStepResponseProps["comments"]}
                             existingPass={currentStepResponseProps["pass"]}
+                            existingUploadedImage={currentStepResponseProps["uploadedImage"]}
                             stepID={testScriptSteps[currentStepNumber - 1]._id}
                             stepNumber={testScriptSteps[currentStepNumber - 1].number}
                             stepDescription={testScriptSteps[currentStepNumber - 1].description}

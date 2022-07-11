@@ -29,6 +29,10 @@ function TestingFormCard({
         );
     }
 
+    React.useEffect(() => {
+        console.log(isSubmitButtonDisabled);
+    }, [isSubmitButtonDisabled]);
+
     return (
         <Card
             sx={{
@@ -142,7 +146,7 @@ TestingFormCard.propTypes = {
     existingTesterLastName: PropTypes.string,
     beginTesting: PropTypes.func,
     isBeginTestingButtonDisabled: PropTypes.bool,
-   isSubmitButtonDisabled: PropTypes.bool,
+    isSubmitButtonDisabled: PropTypes.bool,
     hasUserCompletedStepResponses: PropTypes.bool,
     hasUserCompletedAllStepResponses: PropTypes.bool,
     submitTestScriptResults: PropTypes.func,

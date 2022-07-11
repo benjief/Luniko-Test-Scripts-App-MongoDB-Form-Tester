@@ -69,6 +69,9 @@ const stepResponse = new mongoose.Schema({
     pass: {
         type: Boolean,
         required: true
+    },
+    uploadedImageURL: {
+        type: String,
     }
 });
 

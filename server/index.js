@@ -2,12 +2,10 @@ const express = require("express");
 const morgan = require("morgan");
 // const { urlencoded, json } = require("body-parser");
 const cors = require("cors");
-
 const app = express();
 
 const connect = require("./connect");
 const { Step, TestingSession, StepResponse, TestScript } = require("./schemas/schemas");
-// const e = require("express");
 
 // Middleware
 app.use(morgan("dev"));
@@ -17,9 +15,11 @@ app.use(express.json());
 // app.use(json());
 app.use(cors());
 
-// TestingSession.
-
 // Queries
+app.post("/upload-image", async (req, res) => {
+    console.log(req.body);
+}) 
+
 app.post("/add-testing-session", async (req, res) => {
     const testScriptID = req.body.testScriptID;
     const testingSessionTester = req.body.testingSessionTester;
@@ -29,7 +29,7 @@ app.post("/add-testing-session", async (req, res) => {
     const testingSessionFailedSteps = req.body.testingSessionFailedSteps;
     const testingSessionStepResponses = req.body.testingSessionStepResponses;
     try {
-        console.log(testingSessionFailedSteps);
+        // console.log(testingSessionFailedSteps);
         const testingSession = await TestingSession.create({
             testScriptID: testScriptID,
             tester: testingSessionTester,
@@ -45,8 +45,6 @@ app.post("/add-testing-session", async (req, res) => {
         res.status(500).send;
     }
 });
-
-
 
 app.get("/get-test-script-names", async (req, res) => {
     try {
@@ -85,7 +83,7 @@ app.get("/get-test-script-steps/:testScriptID", async (req, res) => {
     try {
         const steps = await Step.find(
             { testScriptID: testScriptID }
-        ).sort({number: "asc"}).lean().exec();
+        ).sort({ number: "asc" }).lean().exec();
         res.status(200).json(steps);
     } catch (e) {
         res.status(500).send;
@@ -97,6 +95,7 @@ const addStepResponses = async (testingSessionID, stepResponsesToAdd) => {
     addTestingSessionIDToStepResponses(testingSessionID, stepResponsesToAdd);
     for (let i = 0; i < stepResponsesToAdd.length; i++) {
         try {
+            console.log("creating step response");
             await StepResponse.create(stepResponsesToAdd[i]);
         } catch (e) {
             console.log(e);
@@ -106,7 +105,6 @@ const addStepResponses = async (testingSessionID, stepResponsesToAdd) => {
 }
 
 const addTestingSessionIDToStepResponses = (testingSessionID, stepResponsesToAdd) => {
-    console.log(stepResponsesToAdd.length);
     for (let i = 0; i < stepResponsesToAdd.length; i++) {
         stepResponsesToAdd[i]["sessionID"] = testingSessionID;
     }

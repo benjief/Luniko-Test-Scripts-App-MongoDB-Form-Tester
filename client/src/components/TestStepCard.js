@@ -14,6 +14,7 @@ function TestStepCard({
     saveStepResponse,
     existingComments,
     existingPass,
+    existingUploadedImage,
     stepNumber,
     stepDescription,
     stepDataInputtedByUser,
@@ -28,6 +29,14 @@ function TestStepCard({
         }
         setCurrentStepResponseProps(
             prev => ({ ...prev, [returnedObject.field]: returnedObject.value })
+        );
+    }
+
+    const handleAddImageToStepResponse = (file) => {
+        console.log("file:", file);
+        // TODO: verify uploaded file is an image (MIME type)
+        setCurrentStepResponseProps(
+            prev => ({ ...prev, "uploadedImage": file })
         );
     }
 
@@ -82,7 +91,13 @@ function TestStepCard({
                             showCharCounter={true}
                             field="comments" >
                         </MaterialTextField>
-                        <FileInputButton buttonText="Upload File"></FileInputButton>
+                        <FileInputButton
+                            acceptedFileFormats="image/*"
+                            fileSizeLimit={16777216}
+                            buttonText="Upload Image"
+                            uploadedFile={handleAddImageToStepResponse}
+                            existingUploadedFile={existingUploadedImage}>
+                        </FileInputButton>
                         <MaterialRadioButton
                             buttonOne={{ value: true, label: "Pass" }}
                             buttonTwo={{ value: false, label: "Fail" }}
@@ -120,6 +135,7 @@ TestStepCard.propTypes = {
     saveStepResponse: PropTypes.func,
     existingComments: PropTypes.string,
     existingPass: PropTypes.bool,
+    existingUploadedImage: PropTypes.object,
     stepNumber: PropTypes.number,
     stepDescription: PropTypes.string,
     stepDataInputtedByUser: PropTypes.string,
@@ -132,6 +148,7 @@ TestStepCard.defaultProps = {
     saveStepResponse: () => { },
     existingComments: "",
     existingPass: true,
+    existingUploadedImage: null,
     stepNumber: 0,
     stepDescription: "",
     stepDataInputtedByUser: "",
