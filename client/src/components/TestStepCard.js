@@ -33,7 +33,7 @@ function TestStepCard({
     }
 
     const handleAddImageToStepResponse = (file) => {
-        console.log("file:", file);
+        // console.log("file:", file);
         // TODO: verify uploaded file is an image (MIME type)
         setCurrentStepResponseProps(
             prev => ({ ...prev, "uploadedImage": file })

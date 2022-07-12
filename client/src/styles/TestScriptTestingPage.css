@@ -82,15 +82,16 @@
 
 .submit-test-script-name-button:not(:disabled):hover,
 .begin-testing-button:not(:disabled):hover,
+.submit-test-script-button:not(:disabled):hover,
 .previous-step-button:not(:disabled):hover,
 .next-step-button:not(:disabled):hover,
 .back-button:not(:disabled):hover {
     background-color: var(--lunikoOrange) !important;
 }
 
-.submit-test-script-button:not(:disabled):hover {
+/* .submit-test-script-button:not(:disabled):hover {
     background-color: #009952 !important;
-}
+} */
 
 .test-script-instructions {
     margin-top: 15px;

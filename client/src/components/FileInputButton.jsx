@@ -13,20 +13,39 @@ function FileInputButton({
     const selectedFile = useRef(existingUploadedFile ? existingUploadedFile : null);
 
     const handleSelectFile = (event) => {
-        if (event.target.files[0] && event.target.files[0].size <= fileSizeLimit) {
-            selectedFile.current = event.target.files[0];
-            uploadedFile(event.target.files[0]);
-            setLabel(event.target.files[0].name);
-        } else {
-            event.target.files[0]
-                ? setLabel("file too large") : setLabel("no file selected");
-            selectedFile.current = null;
-        }
+        event.target.files[0]
+            ? event.target.files[0].size <= fileSizeLimit
+                ? handleValidFileSelection(event.target.files[0])
+                : handleInvalidFileSelection()
+            : console.log("");
+    }
+
+    const handleValidFileSelection = (file) => {
+        selectedFile.current = file;
+        uploadedFile(file);
+        setLabel(file.name);
+    }
+
+    const handleInvalidFileSelection = () => {
+        setLabel("file too large")
+        selectedFile.current = null;
+    }
+
+    // const handleNoFileSelection = () => {
+    //     if (!selectedFile.current) {
+    //         selectedFile.current = null;
+    //         setLabel("no file selected");
+    //     }
+    // }
+
+    const handleRemoveFile = () => {
+        selectedFile.current = null;
+        setLabel("no file selected");
     }
 
     return (
         <div className="input-button-container">
-            <label>
+            <label className="file-input-label">
                 <button
                     className="file-input-button"
                     onClick={() => fileInput.current.click()} >
@@ -40,6 +59,13 @@ function FileInputButton({
                     onChange={handleSelectFile} />
                 {label}
             </label>
+            <div className="remove-file">
+                <button className="remove-file-button"
+                    type="submit"
+                    disabled={selectedFile.current ? false : true}
+                    onClick={handleRemoveFile}>
+                </button>
+            </div>
         </div>
     )
 }

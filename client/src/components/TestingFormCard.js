@@ -29,10 +29,6 @@ function TestingFormCard({
         );
     }
 
-    React.useEffect(() => {
-        console.log(isSubmitButtonDisabled);
-    }, [isSubmitButtonDisabled]);
-
     return (
         <Card
             sx={{

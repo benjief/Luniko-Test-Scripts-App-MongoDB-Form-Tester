@@ -2,6 +2,7 @@ import React, { Fragment, useEffect, useState, useRef, useCallback } from "react
 import { useValidationErrorUpdate } from "./Context/ValidationErrorContext";
 import Axios from "axios";
 import { uploadStepResponseImage } from "../../firebase/config";
+import { v4 as uuidv4 } from "uuid";
 import LoadingWrapper from "./wrappers/LoadingWrapper/LoadingWrapper";
 import ErrorWrapper from "./wrappers/ErrorWrapper";
 import CardWrapper from "./wrappers/CardWrapper";
@@ -308,11 +309,12 @@ function TestScriptTestingPage() {
 
     const uploadStepResponseImages = async () => {
         console.log("uploading step response images");
+        const uniqueSessionIDForImages = uuidv4();
         for (let i = 0; i < stepResponses.length; i++) {
             if (stepResponses[i]["uploadedImage"]) {
                 const image = stepResponses[i]["uploadedImage"];
                 const imageType = image["type"].split("/").pop();
-                const imageName = testScriptID.current + "_" + (i + 1) + "." + imageType;
+                const imageName = uniqueSessionIDForImages + "_" + (i + 1) + "." + imageType;
                 stepResponses[i]["uploadedImage"] = imageName;
                 stepResponses[i]["uploadedImageURL"] = await uploadStepResponseImage(imageName, image);
             } else {
