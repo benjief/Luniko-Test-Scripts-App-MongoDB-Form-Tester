@@ -18,7 +18,7 @@ app.use(cors());
 // Queries
 app.post("/upload-image", async (req, res) => {
     console.log(req.body);
-}) 
+})
 
 app.post("/add-testing-session", async (req, res) => {
     const testScriptID = req.body.testScriptID;
@@ -27,6 +27,7 @@ app.post("/add-testing-session", async (req, res) => {
     const testingSessionComplete = req.body.testingSessionComplete;
     const testingSessionStoppedAt = req.body.testingSessionStoppedAt;
     const testingSessionFailedSteps = req.body.testingSessionFailedSteps;
+    const testingSessionStepsWithMinorIssues = req.body.testingSessionStepsWithMinorIssues;
     const testingSessionStepResponses = req.body.testingSessionStepResponses;
     try {
         // console.log(testingSessionFailedSteps);
@@ -37,8 +38,10 @@ app.post("/add-testing-session", async (req, res) => {
             complete: testingSessionComplete,
             stoppedTestingAtStep: testingSessionStoppedAt,
             failedSteps: testingSessionFailedSteps,
+            stepsWithMinorIssues: testingSessionStepsWithMinorIssues,
         });
         await addStepResponses(testingSession.toObject()._id.toString(), testingSessionStepResponses);
+        await checkNumberOfStepResponsesWritten(testingSession.toObject()._id.toString());
         console.log("testing session added to DB");
         res.status(201).json(testingSession.toObject());
     } catch (e) {
@@ -107,6 +110,19 @@ const addStepResponses = async (testingSessionID, stepResponsesToAdd) => {
 const addTestingSessionIDToStepResponses = (testingSessionID, stepResponsesToAdd) => {
     for (let i = 0; i < stepResponsesToAdd.length; i++) {
         stepResponsesToAdd[i]["sessionID"] = testingSessionID;
+    }
+}
+
+const checkNumberOfStepResponsesWritten = async (testingSessionID) => {
+    try {
+        const stepResponses = await StepResponse.find(
+            { sessionID: testingSessionID }
+        ).lean().exec();
+        if (!stepResponses.length) {
+            await TestingSession.findByIdAndDelete(testingSessionID).exec();
+        }
+    } catch (e) {
+        console.log(e);
     }
 }
 

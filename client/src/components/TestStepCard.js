@@ -25,7 +25,6 @@ function TestStepCard({
     const handleOnChange = (returnedObject) => {
         if (returnedObject["field"] === "radio button value") {
             returnedObject["field"] = "pass";
-            returnedObject["value"] = returnedObject["value"] === "true";
         }
         setCurrentStepResponseProps(
             prev => ({ ...prev, [returnedObject.field]: returnedObject.value })
@@ -99,8 +98,9 @@ function TestStepCard({
                             existingUploadedFile={existingUploadedImage}>
                         </FileInputButton>
                         <MaterialRadioButton
-                            buttonOne={{ value: true, label: "Pass" }}
-                            buttonTwo={{ value: false, label: "Fail" }}
+                            buttonOne={{ value: "P", label: "Pass" }}
+                            buttonTwo={{ value: "I", label: "Pass With Minor Issues" }}
+                            buttonThree={{ value: "F", label: "Fail" }}
                             selectedValue={handleOnChange}
                             defaultValue={existingPass}>
                         </MaterialRadioButton>
@@ -134,7 +134,7 @@ TestStepCard.propTypes = {
     setCurrentStepResponseProps: PropTypes.func,
     saveStepResponse: PropTypes.func,
     existingComments: PropTypes.string,
-    existingPass: PropTypes.bool,
+    existingPass: PropTypes.string,
     existingUploadedImage: PropTypes.object,
     stepNumber: PropTypes.number,
     stepDescription: PropTypes.string,
@@ -147,7 +147,7 @@ TestStepCard.defaultProps = {
     setCurrentStepResponseProps: () => { },
     saveStepResponse: () => { },
     existingComments: "",
-    existingPass: true,
+    existingPass: "P",
     existingUploadedImage: null,
     stepNumber: 0,
     stepDescription: "",

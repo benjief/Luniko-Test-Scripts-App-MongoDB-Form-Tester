@@ -10,6 +10,7 @@ function MaterialRadioButton({
   formTitle,
   buttonOne,
   buttonTwo,
+  buttonThree,
   selectedValue,
   defaultValue,
 }) {
@@ -36,6 +37,9 @@ function MaterialRadioButton({
       >
         <FormControlLabel value={buttonOne.value} control={<Radio />} label={buttonOne.label} />
         <FormControlLabel value={buttonTwo.value} control={<Radio />} label={buttonTwo.label} />
+        {buttonThree
+          ? <FormControlLabel value={buttonThree.value} control={<Radio />} label={buttonThree.label} />
+          : <div></div>}
       </RadioGroup>
     </FormControl>
   );
@@ -44,21 +48,26 @@ function MaterialRadioButton({
 MaterialRadioButton.propTypes = {
   formTitle: PropTypes.string,
   buttonOne: PropTypes.shape({
-    value: PropTypes.bool,
+    value: PropTypes.string,
     label: PropTypes.string,
   }),
   buttonTwo: PropTypes.shape({
-    value: PropTypes.bool,
+    value: PropTypes.string,
+    label: PropTypes.string,
+  }),
+  buttonThree: PropTypes.shape({
+    value: PropTypes.string,
     label: PropTypes.string,
   }),
   selectedValue: PropTypes.func,
-  defaultValue: PropTypes.bool,
+  defaultValue: PropTypes.string,
 }
 
 MaterialRadioButton.defaultProps = {
   formTitle: "",
-  buttonOne: {},
-  buttonTwo: {},
+  buttonOne: null,
+  buttonTwo: null,
+  buttonThree: null, // TODO: test this (i.e. see if it causes a warning)
   selectedValue: () => { },
   defaultValue: "",
 }

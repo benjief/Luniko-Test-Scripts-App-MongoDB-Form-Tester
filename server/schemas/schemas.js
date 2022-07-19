@@ -50,6 +50,10 @@ const testingSession = new mongoose.Schema({
         type: Array,
         default: [] 
     },
+    stepsWithMinorIssues: {
+        type: Array,
+        default: []
+    }
 }, { timestamps: true });
 
 const stepResponse = new mongoose.Schema({
@@ -67,11 +71,15 @@ const stepResponse = new mongoose.Schema({
         type: String,
     },
     pass: {
-        type: Boolean,
+        type: String,
+        enum: ["T", "I", "F"],
         required: true
     },
-    uploadedImageURL: {
-        type: String,
+    uploadedImage: {
+        type: {
+            imageName: String,
+            imageURL: String
+        }
     }
 });
 

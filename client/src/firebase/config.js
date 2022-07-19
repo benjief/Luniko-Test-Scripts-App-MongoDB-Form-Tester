@@ -24,5 +24,4 @@ const uploadStepResponseImage = async (imageName, file) => {
   }
 }
 
-
 export { uploadStepResponseImage };

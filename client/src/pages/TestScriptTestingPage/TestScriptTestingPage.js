@@ -43,10 +43,11 @@ function TestScriptTestingPage() {
         sessionID: "",
         stepID: "",
         comments: "",
-        pass: true,
+        pass: "P",
         uploadedImage: null,
     });
     const allFailedSteps = useRef([]);
+    const stepsWithMinorIssues = useRef([]);
     const [displayFadingBalls, setDisplayFadingBalls] = useState(false);
     const async = useRef(false);
     const [isErrorThrown, setIsErrorThrown] = useState(false);
@@ -248,7 +249,7 @@ function TestScriptTestingPage() {
                     ...prev,
                     stepID: "",
                     comments: "",
-                    pass: true,
+                    pass: "P",
                     uploadedImage: null,
                 })
                 : stepResponses[stepNumber - 1]
@@ -275,7 +276,7 @@ function TestScriptTestingPage() {
         console.log("adding test script results to DB");
         async.current = true;
         try {
-            identifyAllFailedSteps();
+            identifyProblematicSteps();
             await uploadStepResponseImages();
             await Axios.post("http://localhost:5000/add-testing-session", {
                 testScriptID: testScriptID.current,
@@ -284,6 +285,7 @@ function TestScriptTestingPage() {
                 testingSessionComplete: !(stepResponses.length < testScriptSteps.length),
                 testingSessionStoppedAt: currentStepNumber,
                 testingSessionFailedSteps: allFailedSteps.current,
+                testingSessionStepsWithMinorIssues: stepsWithMinorIssues.current,
                 testingSessionStepResponses: stepResponses,
             }, { timeout: 5000 })
                 .then(res => {
@@ -297,14 +299,18 @@ function TestScriptTestingPage() {
         }
     }
 
-    const identifyAllFailedSteps = () => {
-        let tempArray = [];
+    const identifyProblematicSteps = () => {
+        let allFailedStepsTemp = [];
+        let stepsWithMinorIssuesTemp = [];
         for (let i = 0; i < stepResponses.length; i++) {
-            if (!stepResponses[i].pass) {
-                tempArray.push(i + 1);
+            if (stepResponses[i].pass === "F") {
+                allFailedStepsTemp.push(i + 1);
+            } else if (stepResponses[i].pass === "I") {
+                stepsWithMinorIssuesTemp.push(i + 1);
             }
         }
-        allFailedSteps.current = tempArray;
+        allFailedSteps.current = allFailedStepsTemp;
+        stepsWithMinorIssues.current = stepsWithMinorIssuesTemp;
     }
 
     const uploadStepResponseImages = async () => {
@@ -315,8 +321,8 @@ function TestScriptTestingPage() {
                 const image = stepResponses[i]["uploadedImage"];
                 const imageType = image["type"].split("/").pop();
                 const imageName = uniqueSessionIDForImages + "_" + (i + 1) + "." + imageType;
-                stepResponses[i]["uploadedImage"] = imageName;
-                stepResponses[i]["uploadedImageURL"] = await uploadStepResponseImage(imageName, image);
+                const uploadedImageURL = await uploadStepResponseImage(imageName, image);
+                stepResponses[i]["uploadedImage"] = { imageName: imageName, imageURL: uploadedImageURL };
             } else {
                 stepResponses[i]["uploadedImageURL"] = "";
             }
