@@ -25,6 +25,7 @@ function TestScriptTestingPage() {
     const [isRequestTestScriptButtonDisabled, setIsRequestTestScriptButtonDisabled] = useState(true);
     const [isBeginTestingButtonDisabled, setIsBeginTestingButtonDisabled] = useState(true);
     const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState(true);
+    const [isCancelButtonDisabled, setIsCancelButtonDisabled] = useState(false);
     const [formProps, setFormProps] = useState({
         testScriptName: "",
         testScriptDescription: "",
@@ -261,6 +262,7 @@ function TestScriptTestingPage() {
         setAreTestScriptResultsSubmitted(true);
         setIsBeginTestingButtonDisabled(true);
         setIsSubmitButtonDisabled(true);
+        setIsCancelButtonDisabled(true);
         setDisplayFadingBalls(true);
         runWriteAsyncFunctions();
     }
@@ -376,6 +378,7 @@ function TestScriptTestingPage() {
                             hasUserCompletedAnyStepResponses={stepResponses.length > 0}
                             hasUserCompletedAllStepResponses={stepResponses.length === testScriptSteps.length}
                             submitTestScriptResults={handleSubmitTestScriptResults}
+                            isCancelButtonDisabled={isCancelButtonDisabled}
                             displayFadingBalls={displayFadingBalls}>
                         </TestingFormCard>}
                 </CardWrapper >

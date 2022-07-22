@@ -6,6 +6,7 @@ import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import Collapse from '@mui/material/Collapse';
 import MaterialTextField from './MaterialTextField';
+import SubmitButton from './SubmitButton';
 function EnterTestScriptNameCard({
     setFormProps,
     requestTestScript,
@@ -51,12 +52,12 @@ function EnterTestScriptNameCard({
                             authenticationField={true}
                             field={"testScriptName"}>
                         </MaterialTextField>
-                        <button
-                            className="submit-test-script-name-button"
-                            onClick={requestTestScript}
-                            disabled={isSubmitButtonDisabled}>
-                            Submit
-                        </button>
+                        <SubmitButton
+                        className={"submit-test-script-name-button"}
+                        isSubmitButtonDisabled={isSubmitButtonDisabled}
+                        handleOnClick={true}
+                        handleOnClickFunction={requestTestScript}>             
+                        </SubmitButton>
                     </CardContent>
                 </Collapse>
             </div>

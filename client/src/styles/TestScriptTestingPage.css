@@ -39,6 +39,7 @@
 .submit-test-script-name-button,
 .begin-testing-button,
 .submit-test-script-button,
+.cancel-button,
 .previous-step-button,
 .next-step-button,
 .back-button {
@@ -58,13 +59,14 @@
     box-shadow: 2px 2px 4px rgba(43, 43, 43, 0.6);
 }
 
-.begin-testing-button {
+/* .begin-testing-button {
     margin-top: 30px;
-}
+} */
 
 .submit-test-script-name-button:not(:disabled),
 .begin-testing-button:not(:disabled),
 .submit-test-script-button:not(:disabled),
+.cancel-button:not(:disabled),
 .previous-step-button:not(:disabled),
 .next-step-button:not(:disabled),
 .back-button:not(:disabled) {
@@ -83,6 +85,7 @@
 .submit-test-script-name-button:not(:disabled):hover,
 .begin-testing-button:not(:disabled):hover,
 .submit-test-script-button:not(:disabled):hover,
+.cancel-button:not(:disabled):hover,
 .previous-step-button:not(:disabled):hover,
 .next-step-button:not(:disabled):hover,
 .back-button:not(:disabled):hover {

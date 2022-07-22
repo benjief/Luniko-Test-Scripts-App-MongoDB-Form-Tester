@@ -103,13 +103,13 @@
     color: white;
     font-size: 12pt;
     font-weight: 500 !important;
-    background-color: var(--lunikoOrange);
+    background-color: var(--lunikoBlue);
     border-radius: 3px;
     border: none;
 }
 
 .file-input-button:active {
-    background-color: #f98c06;
+    background-color: var(--lunikoOrange);
 }
 
 .remove-file {

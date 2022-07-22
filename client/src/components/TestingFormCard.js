@@ -21,12 +21,19 @@ function TestingFormCard({
     hasUserCompletedAnyStepResponses,
     hasUserCompletedAllStepResponses,
     submitTestScriptResults,
+    isCancelButtonDisabled,
     displayFadingBalls,
 }) {
     const handleOnChange = (returnedObject) => {
         setFormProps(
             prev => ({ ...prev, [returnedObject.field]: returnedObject.value })
         );
+    }
+
+    const handleOnClickCancel = () => {
+        setTimeout(() => {
+            window.location.reload();
+        }, 100);
     }
 
     return (
@@ -105,6 +112,7 @@ function TestingFormCard({
                         </button>
                         {hasUserCompletedAllStepResponses
                             ? <SubmitButton
+                                className={"submit-test-script-button"}
                                 isSubmitButtonDisabled={isSubmitButtonDisabled}
                                 displayFadingBalls={displayFadingBalls}
                                 handleOnClick={true}
@@ -115,9 +123,11 @@ function TestingFormCard({
                                 exteriorButton=
                                 {
                                     <SubmitButton
+                                        className={"submit-test-script-button"}
                                         isSubmitButtonDisabled={isSubmitButtonDisabled}
                                         displayFadingBalls={displayFadingBalls}
-                                        handleOnClick={false}>
+                                        handleOnClick={true}
+                                        handleOnClickFunction={submitTestScriptResults}>
                                     </SubmitButton>
                                 }
                                 inactiveButtonText="Cancel"
@@ -126,6 +136,12 @@ function TestingFormCard({
                                 activeButtonText="Submit"
                                 dialogDescription={<p>You're attempting to submit test script results before completing all steps.</p>}>
                             </MaterialDialog>}
+                        <button
+                            className="cancel-button"
+                            onClick={handleOnClickCancel}
+                            disabled={isCancelButtonDisabled}>
+                            Cancel
+                        </button>
                     </CardContent>
                 </Collapse>
             </div>
@@ -146,6 +162,7 @@ TestingFormCard.propTypes = {
     hasUserCompletedStepResponses: PropTypes.bool,
     hasUserCompletedAllStepResponses: PropTypes.bool,
     submitTestScriptResults: PropTypes.func,
+    isCancelButtonDisabled: PropTypes.bool,
     displayFadingBalls: PropTypes.bool,
 }
 
@@ -162,6 +179,7 @@ TestingFormCard.defaultProps = {
     hasUserCompletedStepResponses: false,
     hasUserCompletedAllStepResponses: false,
     submitTestScriptResults: () => { },
+    isCancelButtonDisabled: false,
     displayFadingBalls: false,
 }
 
