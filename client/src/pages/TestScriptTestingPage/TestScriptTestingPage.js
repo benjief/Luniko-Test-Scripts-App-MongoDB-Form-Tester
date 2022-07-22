@@ -4,7 +4,7 @@ import Axios from "axios";
 import { uploadStepResponseImage } from "../../firebase/config";
 import { v4 as uuidv4 } from "uuid";
 import LoadingWrapper from "./wrappers/LoadingWrapper/LoadingWrapper";
-import ErrorWrapper from "./wrappers/ErrorWrapper";
+import AlertWrapper from "./wrappers/AlertWrapper";
 import CardWrapper from "./wrappers/CardWrapper";
 import EnterTestScriptNameCard from "../../components/EnterTestScriptNameCard";
 import TestingFormCard from "../../components/TestingFormCard";
@@ -338,12 +338,12 @@ function TestScriptTestingPage() {
                 transitionElementOpacity={transitionElementOpacity}
                 transitionElementVisibility={transtitionElementVisibility}>
             </LoadingWrapper>
-            <ErrorWrapper
+            <AlertWrapper
                 alert={alert}
                 alertMessage={successAlertMessage.current}
                 handleAlertClosed={handleAlertClosed}
                 alertType={alertType.current}> {/* TODO: change alertType hook to useState? */}
-            </ErrorWrapper>
+            </AlertWrapper>
             {isValidTestScriptNameEntered
                 ? <CardWrapper
                     rendering={rendering}

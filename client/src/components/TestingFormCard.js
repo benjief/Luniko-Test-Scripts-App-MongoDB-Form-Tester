@@ -125,9 +125,7 @@ function TestingFormCard({
                                     <SubmitButton
                                         className={"submit-test-script-button"}
                                         isSubmitButtonDisabled={isSubmitButtonDisabled}
-                                        displayFadingBalls={displayFadingBalls}
-                                        handleOnClick={true}
-                                        handleOnClickFunction={submitTestScriptResults}>
+                                        displayFadingBalls={displayFadingBalls}>
                                     </SubmitButton>
                                 }
                                 inactiveButtonText="Cancel"
