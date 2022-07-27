@@ -106,9 +106,10 @@
     background-color: var(--lunikoBlue);
     border-radius: 3px;
     border: none;
+    transition: 200ms;
 }
 
-.file-input-button:active {
+.file-input-button:hover {
     background-color: var(--lunikoOrange);
 }
 

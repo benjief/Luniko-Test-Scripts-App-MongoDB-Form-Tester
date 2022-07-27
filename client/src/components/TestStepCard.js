@@ -64,7 +64,7 @@ function TestStepCard({
             }}>
             <div className="card-content">
                 <CardHeader
-                    titleTypographyProps={{ color: "white", fontFamily: "'Raleway', Verdana, Geneva, Tahoma, sans-serif", fontSize: "10.5pt" }}
+                    titleTypographyProps={{ color: "white", fontFamily: "'Raleway', Verdana, Geneva, Tahoma, sans-serif", fontSize: "10.5pt", textAlign: "center"  }}
                     title={<strong>Step {stepNumber} of {totalNumberOfSteps}</strong>}
                 />
                 <Collapse in={true} timeout="auto" unmountOnExit>
@@ -74,10 +74,11 @@ function TestStepCard({
                             {stepDescription}
                         </Typography>
                         <Typography paragraph className="step-data-inputted-by-user">
-                            {stepDataInputtedByUser.length ?
-                                <span><strong>Data Inputted by User</strong><br />
-                                    {stepDataInputtedByUser}</span>
-                                : <span></span>}
+                            <span><strong>Data Inputted by User</strong><br />
+                                {stepDataInputtedByUser.length
+                                    ? stepDataInputtedByUser
+                                    : "None"}
+                            </span>
                         </Typography>
                         <MaterialTextField
                             className="step-response-comments"

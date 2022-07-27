@@ -18,7 +18,7 @@ function EnterTestScriptNameCard({
     const handleOnChange = (returnedObject) => {
         invalidTestScriptNameError("");
         setFormProps(
-            prev => ({ ...prev, [returnedObject.field]: returnedObject.value.trim() })
+            prev => ({ ...prev, [returnedObject.field]: returnedObject.value.trim().toLowerCase() })
         );
     }
 
@@ -37,7 +37,7 @@ function EnterTestScriptNameCard({
             }}>
             <div className="load-sheet-name-card-content">
                 <CardHeader
-                    titleTypographyProps={{ color: "white", fontFamily: "'Raleway', Verdana, Geneva, Tahoma, sans-serif", fontSize: "10.5pt" }}
+                    titleTypographyProps={{ color: "white", fontFamily: "'Raleway', Verdana, Geneva, Tahoma, sans-serif", fontSize: "10.5pt", textAlign: "center"  }}
                     title={<strong>Please enter a valid test script name</strong>}
                 />
                 <Collapse in={expanded} timeout="auto" unmountOnExit>

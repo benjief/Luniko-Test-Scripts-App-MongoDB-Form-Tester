@@ -103,7 +103,7 @@ function TestScriptTestingPage() {
                     timeout: 5000
                 })
                     .then(res => {
-                        testScriptNamesAlreadyInDB.current = res.data.map(({ name }) => name);
+                        testScriptNamesAlreadyInDB.current = res.data.map(({ name_lowercase }) => name_lowercase);
                         async.current = false;
                     });
             } catch (e) {

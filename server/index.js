@@ -53,7 +53,7 @@ app.get("/get-test-script-names", async (req, res) => {
     try {
         const testScriptNames = await TestScript.find(
             {},
-            { "name": 1, "_id": 0 }
+            { "name_lowercase": 1, "_id": 0 }
         ).lean().exec();
         res.status(200).json(testScriptNames);
     } catch (e) {
@@ -66,7 +66,7 @@ app.get("/get-test-script/:testScriptName", async (req, res) => {
     console.log("fetching", testScriptName);
     try {
         const testScript = await TestScript.findOne(
-            { name: testScriptName },
+            { name_lowercase: testScriptName },
             {
                 "name": 1,
                 "description": 1,
