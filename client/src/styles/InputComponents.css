@@ -6,6 +6,16 @@
     min-height: 78.91px !important;
 }
 
+textarea {
+    overflow-y: scroll !important;
+    height: 100% !important;
+    resize: none !important;
+}
+
+textarea::-webkit-scrollbar {
+    display: none;
+}
+
 .step-response-comments {
     margin-top: 20px !important;
     margin-bottom: 5px !important;
@@ -39,12 +49,12 @@
     font-size: 12pt !important;
 }
 
-.test-script-description .MuiOutlinedInput-root {
+/* .test-script-description .MuiOutlinedInput-root {
     min-height: 200px !important;
-}
+} */
 
-.step-description .MuiOutlinedInput-root, .step-response-comments .MuiOutlinedInput-root {
-    min-height: 150px !important;
+.step-response-comments .MuiOutlinedInput-root {
+    height: 150px !important;
 }
 
 .MuiOutlinedInput-input {
