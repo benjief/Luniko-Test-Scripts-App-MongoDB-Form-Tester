@@ -49,7 +49,7 @@ function TestingFormCard({
             }}>
             <div className="card-content">
                 <CardHeader
-                    titleTypographyProps={{ color: "white", fontFamily: "'Raleway', Verdana, Geneva, Tahoma, sans-serif", textAlign: "center"  }}
+                    titleTypographyProps={{ color: "white", fontFamily: "'Raleway', Verdana, Geneva, Tahoma, sans-serif", textAlign: "center" }}
                     title={<strong>Testing Form for {testScriptName}</strong>} />
                 <Collapse in={true} timeout="auto" unmountOnExit>
                     <CardContent>
@@ -69,9 +69,9 @@ function TestingFormCard({
                                 <ol>
                                     <li>Enter your name below.</li>
                                     <li>Click on the 'Begin Test' button below to perform the test steps.</li>
-                                    <li>Wherever data is entered or when numbers are automatically generated in the system, record what was entered or generated in the 'Comments' box.</li>
+                                    <li>Wherever data is entered or when numbers are automatically generated in the system, record what was entered or generated in the "Comments" box, or attach an image to the step response.</li>
                                     <li>After each step is performed, specify whether the step passed, passed with minor issues, or failed.</li>
-                                    <li>If the test step failed, write a description of the failure in the 'Comments' box, or attach an image to the step response.</li>
+                                    <li>If the test step failed, write a description of the failure in the "Comments" box, or attach an image to the step response.</li>
                                     <li>Whenever possible, continue performing steps and attempt to complete the test script, even if the previous step failed.</li>
                                     <li>When you have completed the test script, click the 'Submit' button.</li>
                                 </ol>}>

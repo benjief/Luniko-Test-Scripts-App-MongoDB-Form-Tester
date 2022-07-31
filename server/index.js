@@ -16,9 +16,9 @@ app.use(express.json());
 app.use(cors());
 
 // Queries
-app.post("/upload-image", async (req, res) => {
-    console.log(req.body);
-})
+// app.post("/upload-image", async (req, res) => {
+//     console.log(req.body);
+// })
 
 app.post("/add-testing-session", async (req, res) => {
     const testScriptID = req.body.testScriptID;

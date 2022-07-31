@@ -12,10 +12,6 @@ textarea {
     resize: none !important;
 }
 
-textarea::-webkit-scrollbar {
-    display: none;
-}
-
 .step-response-comments {
     margin-top: 20px !important;
     margin-bottom: 5px !important;
@@ -104,6 +100,7 @@ textarea::-webkit-scrollbar {
     text-align: left;
     width: 600px;
     max-height: 28px;
+    padding-right: 10px;
     overflow: hidden;
 }
 

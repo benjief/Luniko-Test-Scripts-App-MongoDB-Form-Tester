@@ -118,7 +118,7 @@ function MaterialTextField({
     setValue(value);
     inputValue({ field: field, value: "" });
     // if (showCharCounter && value) {
-      setInputLength(0); // TODO: test this - seems to work in specific data inputted by user scenario, but not sure about other text fields
+    setInputLength(0); // TODO: test this - seems to work in specific data inputted by user scenario, but not sure about other text fields
     // }
     if (required) {
       setErrorEnabled(true);
@@ -159,19 +159,19 @@ function MaterialTextField({
       autoComplete="off">
       <div className="material-text-field">
         <TextField
-          onKeyDown={(evt) => { // TODO: make this a separate function
+          onKeyDown={(event) => { // TODO: make this a separate function
             if (type === "number") {
-              if (["e", "E"].includes(evt.key)) {
-                evt.preventDefault();
+              if (["e", "E"].includes(event.key)) {
+                event.preventDefault();
               }
               if (!fractionsAllowed) {
-                if (["."].includes(evt.key)) {
-                  evt.preventDefault();
+                if (["."].includes(event.key)) {
+                  event.preventDefault();
                 }
               }
             }
           }}
-          
+
           label={label}
           defaultValue={defaultValue}
           type={type}

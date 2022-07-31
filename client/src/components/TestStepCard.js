@@ -64,7 +64,7 @@ function TestStepCard({
             }}>
             <div className="card-content">
                 <CardHeader
-                    titleTypographyProps={{ color: "white", fontFamily: "'Raleway', Verdana, Geneva, Tahoma, sans-serif", fontSize: "10.5pt", textAlign: "center"  }}
+                    titleTypographyProps={{ color: "white", fontFamily: "'Raleway', Verdana, Geneva, Tahoma, sans-serif", fontSize: "10.5pt", textAlign: "center" }}
                     title={<strong>Step {stepNumber} of {totalNumberOfSteps}</strong>}
                 />
                 <Collapse in={true} timeout="auto" unmountOnExit>
@@ -92,11 +92,12 @@ function TestStepCard({
                             field="comments" >
                         </MaterialTextField>
                         <FileInputButton
-                            acceptedFileFormats="image/*"
+                            acceptedFileTypes={["image/*"]}
                             fileSizeLimit={16777216}
                             buttonText="Upload Image"
                             uploadedFile={handleAddImageToStepResponse}
-                            existingUploadedFile={existingUploadedImage}>
+                            existingUploadedFile={existingUploadedImage}
+                            validFileTypes={["image/png", "image/gif", "image/jpeg"]}>
                         </FileInputButton>
                         <MaterialRadioButton
                             buttonOne={{ value: "P", label: "Pass" }}
