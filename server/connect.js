@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
+const uri = process.env.MONGODB_URI;
 
 const connect = () => {
-    return mongoose.connect('mongodb://127.0.0.1:27017/luniko', {
+    return mongoose.connect(uri, {
         autoIndex: true
     });
 }

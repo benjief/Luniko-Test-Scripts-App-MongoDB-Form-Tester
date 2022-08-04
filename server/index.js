@@ -127,7 +127,12 @@ const checkNumberOfStepResponsesWritten = async (testingSessionID) => {
 }
 
 connect()
-    .then(() => app.listen(5000, () => {
+    // .then(() => app.listen(5000, () => {
+    //     console.log("Yay! Your server is running on http://localhost:5000!");
+    // }))
+    // .catch(e => console.error(e));
+
+    .then(() => app.listen(process.env.PORT || 5000, () => {
         console.log("Yay! Your server is running on http://localhost:5000!");
     }))
     .catch(e => console.error(e));
