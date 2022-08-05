@@ -88,9 +88,10 @@ textarea {
 
 .input-button-container {
     display: grid;
-    flex-direction: row;
-    margin-top: 15px;
-    margin-bottom: 15px;
+    grid-template-columns: 90% 10%;
+    /* grid-template-areas: file-input-label, remove-file-button; */
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .file-input {
@@ -99,10 +100,10 @@ textarea {
 
 .file-input-label {
     text-align: left;
-    width: 600px;
     max-height: 28px;
     padding-right: 10px;
     overflow: hidden;
+    /* grid-column: file-input-label; */
 }
 
 .file-input-button {
@@ -122,27 +123,31 @@ textarea {
 }
 
 .remove-file {
-    justify-self: flex-end;
     display: flex;
     align-items: center;
+    justify-content: flex-end;
+    /* grid-column: remove-file-button; */
 }
 
 .remove-file-button {
     width: 22px;
     height: 22px;
-    cursor: pointer;
     background-repeat: no-repeat;
     background-size: 22px 22px;
     background-position: center;
     background-color: transparent;
     border: none;
-    justify-self: flex-end !important;
 }
 
 .remove-file-button:not(:disabled) {
     background-image: url("../img/remove_icon_active.png");
+    cursor: pointer;
 }
 
 .remove-file-button:disabled {
     background-image: url("../img/remove_icon_disabled.png");
 }
+
+/* .remove-file-button:disabled:hover {
+    cursor: auto;
+} */
