@@ -99,7 +99,7 @@ function TestScriptTestingPage() {
             console.log("fetching existing test script names");
             try {
                 async.current = true;
-                await Axios.get("http://localhost:5000/get-test-script-names", {
+                await Axios.get("https://test-scripts-app-tester.herokuapp.com/get-test-script-names", {
                     timeout: 5000
                 })
                     .then(res => {
@@ -122,7 +122,7 @@ function TestScriptTestingPage() {
         const fetchTestScriptInformation = async (testScriptName) => {
             try {
                 async.current = true;
-                await Axios.get(`http://localhost:5000/get-test-script/${testScriptName}`, {
+                await Axios.get(`https://test-scripts-app-tester.herokuapp.com/get-test-script/${testScriptName}`, {
                     timeout: 5000
                 })
                     .then(res => {
@@ -151,7 +151,7 @@ function TestScriptTestingPage() {
             if (!async.current) {
                 try {
                     async.current = true;
-                    await Axios.get(`http://localhost:5000/get-test-script-steps/${testScriptID}`, {
+                    await Axios.get(`https://test-scripts-app-tester.herokuapp.com/get-test-script-steps/${testScriptID}`, {
                         timeout: 5000
                     })
                         .then(res => {
@@ -184,13 +184,13 @@ function TestScriptTestingPage() {
                 formProps["testScriptName"].trim().length ? setIsRequestTestScriptButtonDisabled(false) : setIsRequestTestScriptButtonDisabled(true);
             } else {
                 if (!areTestScriptResultsSubmitted) {
-                    (formProps["testerFirstName"].trim() !== "" && formProps["testerLastName"].trim() !== "")
+                    (formProps["testerFirstName"].trim() !== "" && formProps["testerLastName"].trim() !== "" && testScriptSteps.length)
                         ? setIsBeginTestingButtonDisabled(false) : setIsBeginTestingButtonDisabled(true);
                     stepResponses.length ? setIsSubmitButtonDisabled(false) : setIsSubmitButtonDisabled(true);
                 }
             }
         }
-    }, [rendering, isDataBeingFetched, cardChanged, formProps, isValidTestScriptNameEntered, isTestingInProgress, areTestScriptResultsSubmitted, stepResponses, stepChanged, handleError]);
+    }, [rendering, isDataBeingFetched, cardChanged, formProps, testScriptSteps, isValidTestScriptNameEntered, isTestingInProgress, areTestScriptResultsSubmitted, stepResponses, stepChanged, handleError]);
 
     const handleChangeCard = () => {
         setRendering(true);
@@ -280,7 +280,7 @@ function TestScriptTestingPage() {
         try {
             identifyProblematicSteps();
             await uploadStepResponseImages();
-            await Axios.post("http://localhost:5000/add-testing-session", {
+            await Axios.post("https://test-scripts-app-tester.herokuapp.com/add-testing-session", {
                 testScriptID: testScriptID.current,
                 testingSessionTester: { firstName: formProps["testerFirstName"], lastName: formProps["testerLastName"] },
                 testingSessionPass: allFailedSteps.current.length ? false : true,

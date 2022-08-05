@@ -133,6 +133,6 @@ connect()
     // .catch(e => console.error(e));
 
     .then(() => app.listen(process.env.PORT || 5000, () => {
-        console.log("Yay! Your server is running on http://localhost:5000!");
+        console.log("Yay! Your server is running on port 5000!");
     }))
     .catch(e => console.error(e));
