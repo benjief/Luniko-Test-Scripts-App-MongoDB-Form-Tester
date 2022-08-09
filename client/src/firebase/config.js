@@ -21,6 +21,7 @@ const uploadStepResponseImage = async (imageName, file) => {
     return await getDownloadURL(storageRef);
   } catch (e) {
     console.log(e);
+    return ("e");
   }
 }
 

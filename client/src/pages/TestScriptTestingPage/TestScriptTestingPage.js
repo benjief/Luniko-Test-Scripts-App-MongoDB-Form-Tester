@@ -324,10 +324,10 @@ function TestScriptTestingPage() {
                 const imageType = image["type"].split("/").pop();
                 const imageName = uniqueSessionIDForImages + "_" + (i + 1) + "." + imageType;
                 const uploadedImageURL = await uploadStepResponseImage(imageName, image);
-                stepResponses[i]["uploadedImage"] = { imageName: imageName, imageURL: uploadedImageURL };
-            } else {
-                stepResponses[i]["uploadedImageURL"] = "";
-            }
+                stepResponses[i]["uploadedImage"] = uploadedImageURL === "e" ? null : { imageName: imageName, imageURL: uploadedImageURL };
+            } /* else {
+                stepResponses[i]["uploadedImage"] = "";
+            } */
         }
     }
 
