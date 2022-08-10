@@ -12,11 +12,11 @@
     scrollbar-width: none;
 }
 
-.enter-valid-test-script-name::-webkit-scrollbar,
+/* .enter-valid-test-script-name::-webkit-scrollbar,
 .complete-step::-webkit-scrollbar,
 .test-landing-page::-webkit-scrollbar {
     display: none;
-}
+} */
 
 .enter-valid-test-script-name-container,
 .complete-step-container,
