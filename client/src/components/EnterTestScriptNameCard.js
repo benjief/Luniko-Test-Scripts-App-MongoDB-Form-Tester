@@ -23,45 +23,47 @@ function EnterTestScriptNameCard({
     }
 
     return (
-        <Card
-            sx={{
-                // minWidth: 1,
-                // maxWidth: 1,
-                minHeight: "150px",
-                overflowY: "scroll",
-                borderRadius: "10px",
-                boxShadow: "2px 2px 6px rgba(43, 43, 43, 0.6)",
-                transition: "0.5s",
-                backgroundColor: "var(--lunikoMidGrey)",
-                marginBottom: "20px"
-            }}>
-            <div className="load-sheet-name-card-content">
-                <CardHeader
-                    titleTypographyProps={{ color: "white", fontFamily: "'Raleway', Verdana, Geneva, Tahoma, sans-serif", fontSize: "10.5pt", textAlign: "center"  }}
-                    title={<strong>Please enter a valid test script name</strong>}
-                />
-                <Collapse in={expanded} timeout="auto" unmountOnExit>
-                    <CardContent>
-                        <MaterialTextField
-                            className="test-script-name"
-                            label="Test Script Name"
-                            inputValue={handleOnChange}
-                            multiline={false}
-                            required={false}
-                            type="text"
-                            authenticationField={true}
-                            field={"testScriptName"}>
-                        </MaterialTextField>
-                        <SubmitButton
-                        className={"submit-test-script-name-button"}
-                        isSubmitButtonDisabled={isSubmitButtonDisabled}
-                        handleOnClick={true}
-                        handleOnClickFunction={requestTestScript}>             
-                        </SubmitButton>
-                    </CardContent>
-                </Collapse>
-            </div>
-        </Card >
+        <div>
+            <Card
+                sx={{
+                    // minWidth: 1,
+                    // maxWidth: 1,
+                    minHeight: "150px",
+                    overflowY: "scroll",
+                    borderRadius: "10px",
+                    boxShadow: "2px 2px 6px rgba(43, 43, 43, 0.6)",
+                    transition: "0.5s",
+                    backgroundColor: "var(--lunikoMidGrey)",
+                    marginBottom: "20px"
+                }}>
+                <div className="load-sheet-name-card-content">
+                    <CardHeader
+                        titleTypographyProps={{ color: "white", fontFamily: "'Raleway', Verdana, Geneva, Tahoma, sans-serif", fontSize: "10.5pt", textAlign: "center" }}
+                        title={<strong>Please enter a valid test script name</strong>}
+                    />
+                    <Collapse in={expanded} timeout="auto" unmountOnExit>
+                        <CardContent>
+                            <MaterialTextField
+                                className="test-script-name"
+                                label="Test Script Name"
+                                inputValue={handleOnChange}
+                                multiline={false}
+                                required={false}
+                                type="text"
+                                authenticationField={true}
+                                field={"testScriptName"}>
+                            </MaterialTextField>
+                        </CardContent>
+                    </Collapse>
+                </div>
+            </Card >
+            <SubmitButton
+                className={"submit-test-script-name-button"}
+                isSubmitButtonDisabled={isSubmitButtonDisabled}
+                handleOnClick={true}
+                handleOnClickFunction={requestTestScript}>
+            </SubmitButton>
+        </div>
     );
 }
 

@@ -150,7 +150,7 @@ textarea {
 }
 
 .remove-file-button:disabled {
-    background-image: url("../img/remove_icon_disabled.png");
+    background-image: none;
 }
 
 /* .remove-file-button:disabled:hover {

@@ -41,7 +41,7 @@ function TestingFormCard({
             <Card
             className="testing-form-card"
                 sx={{
-                    height: "calc(100vh - 336.52px)",
+                    maxHeight: "calc(100vh - 336.52px)",
                     overflowY: "scroll",
                     borderRadius: "10px",
                     boxShadow: "2px 2px 6px rgba(43, 43, 43, 0.6)",
