@@ -52,82 +52,85 @@ function TestStepCard({
     }
 
     return (
-        <Card
-            sx={{
-                maxHeight: "calc(100vh - 166.52px)",
-                overflowY: "scroll",
-                borderRadius: "10px",
-                boxShadow: "2px 2px 6px rgba(43, 43, 43, 0.6)",
-                transition: "0.5s",
-                backgroundColor: "var(--lunikoDarkGrey)",
-                marginBottom: "20px"
-            }}>
-            <div className="card-content">
-                <CardHeader
-                    titleTypographyProps={{ color: "white", fontFamily: "'Raleway', Verdana, Geneva, Tahoma, sans-serif", fontSize: "10.5pt", textAlign: "center" }}
-                    title={<strong>Step {stepNumber} of {totalNumberOfSteps}</strong>}
-                />
-                <Collapse in={true} timeout="auto" unmountOnExit>
-                    <CardContent>
-                        <Typography paragraph className="step-description">
-                            <strong>Step Description</strong><br />
-                            {stepDescription}
-                        </Typography>
-                        <Typography paragraph className="step-data-inputted-by-user">
-                            <span><strong>Data Inputted by User</strong><br />
-                                {stepDataInputtedByUser.length
-                                    ? stepDataInputtedByUser
-                                    : "None"}
-                            </span>
-                        </Typography>
-                        <MaterialTextField
-                            className="step-response-comments"
-                            label="Comments"
-                            placeholder="Comments"
-                            defaultValue={existingComments}
-                            inputValue={handleOnChange}
-                            multiline={true}
-                            characterLimit={1000}
-                            showCharCounter={true}
-                            field="comments" >
-                        </MaterialTextField>
-                        <FileInputButton
-                            acceptedFileTypes={["image/*"]}
-                            fileSizeLimit={16777216}
-                            buttonText="Upload Image"
-                            uploadedFile={handleAddImageToStepResponse}
-                            existingUploadedFile={existingUploadedImage}
-                            validFileTypes={["image/png", "image/gif", "image/jpeg"]}>
-                        </FileInputButton>
-                        <MaterialRadioButton
-                            buttonOne={{ value: "P", label: "Pass" }}
-                            buttonTwo={{ value: "I", label: "Pass With Minor Issues" }}
-                            buttonThree={{ value: "F", label: "Fail" }}
-                            selectedValue={handleOnChange}
-                            defaultValue={existingPass}>
-                        </MaterialRadioButton>
-                        <button
-                            className="next-step-button"
-                            onClick={() => handleChangeStep("increment")}
-                            disabled={stepNumber === totalNumberOfSteps || areButtonsDisabled}>
-                            Next Step
-                        </button>
-                        <button
-                            className="previous-step-button"
-                            onClick={() => handleChangeStep()}
-                            disabled={stepNumber === 1 || areButtonsDisabled}>
-                            Previous Step
-                        </button>
-                        <button
-                            className="back-button"
-                            onClick={() => goBack()}
-                            disabled={areButtonsDisabled}>
-                            Back
-                        </button>
-                    </CardContent>
-                </Collapse>
-            </div>
-        </Card >
+        <div>
+            <Card
+                className="test-step-card"
+                sx={{
+                    height: "calc(100vh - 336.52px)",
+                    overflowY: "scroll",
+                    borderRadius: "10px",
+                    boxShadow: "2px 2px 6px rgba(43, 43, 43, 0.6)",
+                    transition: "0.5s",
+                    backgroundColor: "var(--lunikoMidGrey)",
+                    marginBottom: "20px"
+                }}>
+                <div className="card-content">
+                    <CardHeader
+                        titleTypographyProps={{ color: "white", fontFamily: "'Raleway', Verdana, Geneva, Tahoma, sans-serif", fontSize: "10.5pt", textAlign: "center" }}
+                        title={<strong>Step {stepNumber} of {totalNumberOfSteps}</strong>}
+                    />
+                    <Collapse in={true} timeout="auto" unmountOnExit>
+                        <CardContent>
+                            <Typography paragraph className="step-description">
+                                <strong>Step Description</strong><br />
+                                {stepDescription}
+                            </Typography>
+                            <Typography paragraph className="step-data-inputted-by-user">
+                                <span><strong>Data Inputted by User</strong><br />
+                                    {stepDataInputtedByUser.length
+                                        ? stepDataInputtedByUser
+                                        : "None"}
+                                </span>
+                            </Typography>
+                            <MaterialTextField
+                                className="step-response-comments"
+                                label="Comments"
+                                placeholder="Comments"
+                                defaultValue={existingComments}
+                                inputValue={handleOnChange}
+                                multiline={true}
+                                characterLimit={1000}
+                                showCharCounter={true}
+                                field="comments" >
+                            </MaterialTextField>
+                            <FileInputButton
+                                acceptedFileTypes={["image/*"]}
+                                fileSizeLimit={16777216}
+                                buttonText="Upload Image"
+                                uploadedFile={handleAddImageToStepResponse}
+                                existingUploadedFile={existingUploadedImage}
+                                validFileTypes={["image/png", "image/gif", "image/jpeg"]}>
+                            </FileInputButton>
+                            <MaterialRadioButton
+                                buttonOne={{ value: "P", label: "Pass" }}
+                                buttonTwo={{ value: "I", label: "Pass With Minor Issues" }}
+                                buttonThree={{ value: "F", label: "Fail" }}
+                                selectedValue={handleOnChange}
+                                defaultValue={existingPass}>
+                            </MaterialRadioButton>
+                        </CardContent>
+                    </Collapse>
+                </div>
+            </Card >
+            <button
+                className="next-step-button"
+                onClick={() => handleChangeStep("increment")}
+                disabled={stepNumber === totalNumberOfSteps || areButtonsDisabled}>
+                Next Step
+            </button>
+            <button
+                className="previous-step-button"
+                onClick={() => handleChangeStep()}
+                disabled={stepNumber === 1 || areButtonsDisabled}>
+                Previous Step
+            </button>
+            <button
+                className="back-button"
+                onClick={() => goBack()}
+                disabled={areButtonsDisabled}>
+                Back
+            </button>
+        </div>
     );
 }
 

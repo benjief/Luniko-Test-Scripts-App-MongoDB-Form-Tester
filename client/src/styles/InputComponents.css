@@ -137,11 +137,16 @@ textarea {
     background-position: center;
     background-color: transparent;
     border: none;
+    transition: 150ms;
 }
 
 .remove-file-button:not(:disabled) {
     background-image: url("../img/remove_icon_active.png");
     cursor: pointer;
+}
+
+.remove-file-button:not(:disabled):hover {
+    background-image: url("../img/x_icon_red.png");
 }
 
 .remove-file-button:disabled {

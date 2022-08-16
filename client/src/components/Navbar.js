@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import {
     Navbar,
-    NavbarBrand,
+    // NavbarBrand,
 } from "reactstrap";
 // import { Link } from "react-router-dom";
 import "../styles/Navbar.css";

@@ -37,113 +37,116 @@ function TestingFormCard({
     }
 
     return (
-        <Card
-            sx={{
-                maxHeight: "calc(100vh - 166.52px)",
-                overflowY: "scroll",
-                borderRadius: "10px",
-                boxShadow: "2px 2px 6px rgba(43, 43, 43, 0.6)",
-                transition: "0.5s",
-                backgroundColor: "var(--lunikoDarkGrey)",
-                marginBottom: "20px"
-            }}>
-            <div className="card-content">
-                <CardHeader
-                    titleTypographyProps={{ color: "white", fontFamily: "'Raleway', Verdana, Geneva, Tahoma, sans-serif", textAlign: "center" }}
-                    title={<strong>Testing Form for {testScriptName}</strong>} />
-                <Collapse in={true} timeout="auto" unmountOnExit>
-                    <CardContent>
-                        <MaterialDialog
-                            className="test-script-instructions"
-                            exteriorButton=
-                            {
-                                <button className="material-dialog-exterior-button">
-                                    <img src={require("../img/exclamation_icon_blue_2.png")} alt="!"></img>
-                                    Read Before Testing
-                                </button>
-                            }
-                            exteriorButtonText="Read Before Testing"
-                            inactiveButtonText="Okay"
-                            dialogTitle="Instructions"
-                            dialogDescription={
-                                <ol>
-                                    <li>Enter your name below.</li>
-                                    <li>Click on the 'Begin Test' button below to perform the test steps.</li>
-                                    <li>Wherever data is entered or when numbers are automatically generated in the system, record what was entered or generated in the "Comments" box, or attach an image to the step response.</li>
-                                    <li>After each step is performed, specify whether the step passed, passed with minor issues, or failed.</li>
-                                    <li>If the test step failed, write a description of the failure in the "Comments" box, or attach an image to the step response.</li>
-                                    <li>Whenever possible, continue performing steps and attempt to complete the test script, even if the previous step failed.</li>
-                                    <li>When you have completed the test script, click the 'Submit' button.</li>
-                                </ol>}>
-                        </MaterialDialog>
-                        <Typography paragraph className="test-script-description">
-                            <strong>Test Script Description</strong><br />
-                            {testScriptDescription}
-                        </Typography>
-                        <Typography paragraph className="test-script-primary-workstream">
-                            <strong>Primary Workstream</strong><br />
-                            {testScriptPrimaryWorkstream}
-                        </Typography>
-                        <MaterialTextField
-                            label="Tester First Name"
-                            placeholder="Tester First Name"
-                            defaultValue={existingTesterFirstName}
-                            inputValue={handleOnChange}
-                            multiline={false}
-                            required={true}
-                            showCharCounter={false}
-                            field="testerFirstName" >
-                        </MaterialTextField>
-                        <MaterialTextField
-                            label="Tester Last Name"
-                            placeholder="Tester Last Name"
-                            defaultValue={existingTesterLastName}
-                            inputValue={handleOnChange}
-                            multiline={false}
-                            required={true}
-                            showCharCounter={false}
-                            field="testerLastName" >
-                        </MaterialTextField>
-                        <button
-                            className="begin-testing-button"
-                            onClick={beginTesting}
-                            disabled={isBeginTestingButtonDisabled}>
-                            {hasUserCompletedAnyStepResponses ? "Continue Testing" : "Begin Testing"}
-                        </button>
-                        {hasUserCompletedAllStepResponses
-                            ? <SubmitButton
-                                className={"submit-test-script-button"}
-                                isSubmitButtonDisabled={isSubmitButtonDisabled}
-                                displayFadingBalls={displayFadingBalls}
-                                handleOnClick={true}
-                                handleOnClickFunction={submitTestScriptResults}>
-                            </SubmitButton>
-                            : <MaterialDialog
-                                className="submit-test-script-results" // TODO: deal with this - it doesn't really make sense
+        <div>
+            <Card
+            className="testing-form-card"
+                sx={{
+                    height: "calc(100vh - 336.52px)",
+                    overflowY: "scroll",
+                    borderRadius: "10px",
+                    boxShadow: "2px 2px 6px rgba(43, 43, 43, 0.6)",
+                    transition: "0.5s",
+                    backgroundColor: "var(--lunikoMidGrey)",
+                    marginBottom: "20px"
+                }}>
+                <div className="card-content">
+                    <CardHeader
+                        titleTypographyProps={{ color: "white", fontFamily: "'Raleway', Verdana, Geneva, Tahoma, sans-serif", textAlign: "center" }}
+                        title={<strong>Testing Form for {testScriptName}</strong>} />
+                    <Collapse in={true} timeout="auto" unmountOnExit>
+                        <CardContent>
+                            <MaterialDialog
+                                className="test-script-instructions"
                                 exteriorButton=
                                 {
-                                    <SubmitButton
-                                        className="submit-test-script-button"
-                                        isSubmitButtonDisabled={isSubmitButtonDisabled}
-                                        displayFadingBalls={displayFadingBalls}>
-                                    </SubmitButton>
+                                    <button className="material-dialog-exterior-button">
+                                        <img src={require("../img/exclamation_icon_blue_2.png")} alt="!"></img>
+                                        Read Before Testing
+                                    </button>
                                 }
-                                inactiveButtonText="Cancel"
-                                displayActiveButton={true}
-                                activeButtonFunction={submitTestScriptResults}
-                                activeButtonText="Submit"
-                                dialogDescription={<p>You're attempting to submit test script results before completing all steps.</p>}>
-                            </MaterialDialog>}
-                        <button
-                            className="cancel-button"
-                            onClick={handleOnClickCancel}
-                            disabled={isCancelButtonDisabled}>
-                            Cancel
-                        </button>
-                    </CardContent>
-                </Collapse>
-            </div>
-        </Card >
+                                exteriorButtonText="Read Before Testing"
+                                inactiveButtonText="Okay"
+                                dialogTitle="Instructions"
+                                dialogDescription={
+                                    <ol>
+                                        <li>Enter your name below.</li>
+                                        <li>Click on the 'Begin Test' button below to perform the test steps.</li>
+                                        <li>Wherever data is entered or when numbers are automatically generated in the system, record what was entered or generated in the "Comments" box, or attach an image to the step response.</li>
+                                        <li>After each step is performed, specify whether the step passed, passed with minor issues, or failed.</li>
+                                        <li>If the test step failed, write a description of the failure in the "Comments" box, or attach an image to the step response.</li>
+                                        <li>Whenever possible, continue performing steps and attempt to complete the test script, even if the previous step failed.</li>
+                                        <li>When you have completed the test script, click the 'Submit' button.</li>
+                                    </ol>}>
+                            </MaterialDialog>
+                            <Typography paragraph className="test-script-description">
+                                <strong>Test Script Description</strong><br />
+                                {testScriptDescription}
+                            </Typography>
+                            <Typography paragraph className="test-script-primary-workstream">
+                                <strong>Primary Workstream</strong><br />
+                                {testScriptPrimaryWorkstream}
+                            </Typography>
+                            <MaterialTextField
+                                label="Tester First Name"
+                                placeholder="Tester First Name"
+                                defaultValue={existingTesterFirstName}
+                                inputValue={handleOnChange}
+                                multiline={false}
+                                required={true}
+                                showCharCounter={false}
+                                field="testerFirstName" >
+                            </MaterialTextField>
+                            <MaterialTextField
+                                label="Tester Last Name"
+                                placeholder="Tester Last Name"
+                                defaultValue={existingTesterLastName}
+                                inputValue={handleOnChange}
+                                multiline={false}
+                                required={true}
+                                showCharCounter={false}
+                                field="testerLastName" >
+                            </MaterialTextField>
+                        </CardContent>
+                    </Collapse>
+                </div>
+            </Card >
+            <button
+                className="begin-testing-button"
+                onClick={beginTesting}
+                disabled={isBeginTestingButtonDisabled}>
+                {hasUserCompletedAnyStepResponses ? "Continue Testing" : "Begin Testing"}
+            </button>
+            {hasUserCompletedAllStepResponses
+                ? <SubmitButton
+                    className={"submit-test-script-button"}
+                    isSubmitButtonDisabled={isSubmitButtonDisabled}
+                    displayFadingBalls={displayFadingBalls}
+                    handleOnClick={true}
+                    handleOnClickFunction={submitTestScriptResults}>
+                </SubmitButton>
+                : <MaterialDialog
+                    className="submit-test-script-results" // TODO: deal with this - it doesn't really make sense
+                    exteriorButton=
+                    {
+                        <SubmitButton
+                            className="submit-test-script-button"
+                            isSubmitButtonDisabled={isSubmitButtonDisabled}
+                            displayFadingBalls={displayFadingBalls}>
+                        </SubmitButton>
+                    }
+                    inactiveButtonText="Cancel"
+                    displayActiveButton={true}
+                    activeButtonFunction={submitTestScriptResults}
+                    activeButtonText="Submit"
+                    dialogDescription={<p>You're attempting to submit test script results before completing all steps.</p>}>
+                </MaterialDialog>}
+            <button
+                className="cancel-button"
+                onClick={handleOnClickCancel}
+                disabled={isCancelButtonDisabled}>
+                Cancel
+            </button>
+        </div>
     );
 }
 
