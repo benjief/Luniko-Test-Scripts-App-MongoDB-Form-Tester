@@ -56,7 +56,7 @@ function TestStepCard({
             <Card
                 className="test-step-card"
                 sx={{
-                    height: "calc(100vh - 336.52px)",
+                    maxHeight: "calc(100vh - 336.52px)",
                     overflowY: "scroll",
                     borderRadius: "10px",
                     boxShadow: "2px 2px 6px rgba(43, 43, 43, 0.6)",
@@ -73,7 +73,9 @@ function TestStepCard({
                         <CardContent>
                             <Typography paragraph className="step-description">
                                 <strong>Step Description</strong><br />
-                                {stepDescription}
+                                {stepDescription.length
+                                    ? stepDescription
+                                    : "None"}
                             </Typography>
                             <Typography paragraph className="step-data-inputted-by-user">
                                 <span><strong>Data Inputted by User</strong><br />
