@@ -39,7 +39,7 @@ function TestingFormCard({
     return (
         <div>
             <Card
-            className="testing-form-card"
+                className="testing-form-card"
                 sx={{
                     maxHeight: "calc(100vh - 336.52px)",
                     overflowY: "scroll",
@@ -126,6 +126,7 @@ function TestingFormCard({
                 </SubmitButton>
                 : <MaterialDialog
                     className="submit-test-script-results" // TODO: deal with this - it doesn't really make sense
+                    isDialogDisable={isSubmitButtonDisabled}
                     exteriorButton=
                     {
                         <SubmitButton
