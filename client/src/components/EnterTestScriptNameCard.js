@@ -36,9 +36,9 @@ function EnterTestScriptNameCard({
                     backgroundColor: "var(--lunikoMidGrey)",
                     marginBottom: "20px"
                 }}>
-                <div className="load-sheet-name-card-content">
+                <div>
                     <CardHeader
-                        titleTypographyProps={{ color: "white", fontFamily: "'Raleway', Verdana, Geneva, Tahoma, sans-serif", fontSize: "10.5pt", textAlign: "center" }}
+                        titleTypographyProps={{ color: "white", fontFamily: "'Raleway', Verdana, Geneva, Tahoma, sans-serif", textAlign: "center" }}
                         title={<strong>Please enter a valid test script name</strong>}
                     />
                     <Collapse in={expanded} timeout="auto" unmountOnExit>
@@ -47,8 +47,6 @@ function EnterTestScriptNameCard({
                                 className="test-script-name"
                                 label="Test Script Name"
                                 inputValue={handleOnChange}
-                                multiline={false}
-                                required={false}
                                 type="text"
                                 authenticationField={true}
                                 field={"testScriptName"}>

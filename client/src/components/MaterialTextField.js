@@ -69,7 +69,7 @@ function MaterialTextField({
 
   const checkTextInputValidity = React.useCallback((input) => {
     input = isTextValidationCaseSensitive ? input : input.toLowerCase();
-    if (invalidInputs.includes(input)) {
+    if (invalidInputs.includes(input.trim())) {
       invalidInputMsg === ""
         ? setDisplayedHelperText("Invalid input")
         : setDisplayedHelperText(invalidInputMsg);
@@ -169,14 +169,14 @@ function MaterialTextField({
   )
 
   const handleOnKeyDown = React.useCallback(
-    (evt) => { // TODO: make this a separate function
+    (event) => { // TODO: make this a separate function
       if (type === "number") {
-        if (["e", "E"].includes(evt.key)) {
-          evt.preventDefault();
+        if (["e", "E"].includes(event.key)) {
+          event.preventDefault();
         }
         if (!fractionsAllowed) {
-          if (["."].includes(evt.key)) {
-            evt.preventDefault();
+          if (["."].includes(event.key)) {
+            event.preventDefault();
           }
         }
       }

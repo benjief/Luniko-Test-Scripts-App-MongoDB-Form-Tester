@@ -66,7 +66,7 @@ function TestStepCard({
                 }}>
                 <div className="card-content">
                     <CardHeader
-                        titleTypographyProps={{ color: "white", fontFamily: "'Raleway', Verdana, Geneva, Tahoma, sans-serif", fontSize: "10.5pt", textAlign: "center" }}
+                        titleTypographyProps={{ color: "white", fontFamily: "'Raleway', Verdana, Geneva, Tahoma, sans-serif", textAlign: "center" }}
                         title={<strong>Step {stepNumber} of {totalNumberOfSteps}</strong>}
                     />
                     <Collapse in={true} timeout="auto" unmountOnExit>
