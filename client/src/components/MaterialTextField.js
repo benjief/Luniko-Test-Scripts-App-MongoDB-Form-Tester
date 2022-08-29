@@ -34,7 +34,7 @@ function MaterialTextField({
   disabled = false,
 }) {
   const [value, setValue] = React.useState(defaultValue);
-  const [errorEnabled, setErrorEnabled] = React.useState(false);
+  const [isErrorEnabled, setIsErrorEnabled] = React.useState(false);
   const [displayedHelperText, setDisplayedHelperText] = React.useState(helperText);
   const [inputLength, setInputLength] = React.useState(type !== "number" ? defaultValue?.length : 0);
   const authenticationError = useValidationError();
