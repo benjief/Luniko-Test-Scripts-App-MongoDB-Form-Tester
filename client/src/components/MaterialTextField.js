@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useValidationError } from '../pages/TestScriptTestingPage/Context/ValidationErrorContext';
+import { useValidationError } from '../pages/test_script_pages/Context/ValidationErrorContext';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -46,7 +46,7 @@ function MaterialTextField({
     setInputLength(0); // TODO: test this - seems to work in specific data inputted by user scenario, but not sure about other text fields
     // }
     if (required) {
-      setErrorEnabled(true);
+      setIsErrorEnabled(true);
     }
   }, [field, inputValue, required])
 
@@ -56,7 +56,7 @@ function MaterialTextField({
     if (showCharCounter) {
       setInputLength(value.length);
     }
-    setErrorEnabled(false);
+    setIsErrorEnabled(false);
     setDisplayedHelperText(helperText);
   }, [field, helperText, inputValue, showCharCounter])
 
@@ -64,7 +64,7 @@ function MaterialTextField({
     setValue(number);
     inputValue({ field: field, value: number });
     setDisplayedHelperText(helperText);
-    setErrorEnabled(true);
+    setIsErrorEnabled(true);
   }, [field, inputValue])
 
   const checkTextInputValidity = React.useCallback((input) => {
@@ -114,15 +114,15 @@ function MaterialTextField({
   React.useEffect(() => {
     if (authenticationField) {
       if (authenticationError.length) {
-        setErrorEnabled(true);
+        setIsErrorEnabled(true);
         setDisplayedHelperText(authenticationError);
       } else {
-        setErrorEnabled(false);
+        setIsErrorEnabled(false);
         setDisplayedHelperText("");
         // }
       }
     }
-  }, [authenticationField, authenticationError, errorEnabled, value]) // TODO: check need for firstRender
+  }, [authenticationField, authenticationError, isErrorEnabled, value]) // TODO: check need for firstRender
 
   const handleOnSubmit = React.useCallback(
     (event) => {
@@ -161,15 +161,14 @@ function MaterialTextField({
   const handleOnBlur = React.useCallback(
     (event) => {
       if (required && event.target.value === "") {
-        setErrorEnabled(true);
+        setIsErrorEnabled(true);
         setDisplayedHelperText("Required Field");
       }
-    },
-    [required],
+    }, [required]
   )
 
   const handleOnKeyDown = React.useCallback(
-    (event) => { // TODO: make this a separate function
+    (event) => {
       if (type === "number") {
         if (["e", "E"].includes(event.key)) {
           event.preventDefault();
@@ -181,7 +180,7 @@ function MaterialTextField({
         }
       }
     },
-    [fractionsAllowed, type],
+    [fractionsAllowed, type]
   )
 
   const inputProps = React.useMemo(() => ({ // like useCallback, but for any variable - only returns a new object when the value of characterLimit changes
@@ -206,13 +205,13 @@ function MaterialTextField({
           onChange={handleOnChange}
           onBlur={handleOnBlur}
           multiline={multiline}
-          error={errorEnabled}
+          error={isErrorEnabled}
           required={required}
           placeholder={placeholder}
           disabled={disabled}
           inputProps={inputProps}
-          helperText={showCharCounter ? !errorEnabled ? displayedHelperText !== ""
-            ? [displayedHelperText, ". Limit: ", inputLength, "/", characterLimit].join('') : ["Limit: ", inputLength, "/", characterLimit].join('')
+          helperText={showCharCounter ? !isErrorEnabled ? displayedHelperText !== ""
+            ? [displayedHelperText, ". Limit: ", inputLength, "/", characterLimit].join("") : ["Limit: ", inputLength, "/", characterLimit].join('')
             : displayedHelperText
             : displayedHelperText} />
       </div>
