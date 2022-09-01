@@ -1,6 +1,5 @@
 const express = require("express");
 const morgan = require("morgan");
-// const { urlencoded, json } = require("body-parser");
 const cors = require("cors");
 const app = express();
 
@@ -11,15 +10,9 @@ const { Step, TestingSession, StepResponse, TestScript } = require("./schemas/sc
 app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-// app.use(urlencoded({ extended: true }));
-// app.use(json());
 app.use(cors());
 
 // Queries
-// app.post("/upload-image", async (req, res) => {
-//     console.log(req.body);
-// })
-
 app.post("/add-testing-session", async (req, res) => {
     const testScriptID = req.body.testScriptID;
     const testingSessionTester = req.body.testingSessionTester;
@@ -41,8 +34,8 @@ app.post("/add-testing-session", async (req, res) => {
             stepsWithMinorIssues: testingSessionStepsWithMinorIssues,
         });
         await addStepResponses(testingSession.toObject()._id.toString(), testingSessionStepResponses);
-        await checkNumberOfStepResponsesWritten(testingSession.toObject()._id.toString());
-        console.log("testing session added to DB");
+        await checkIfStepResponsesWereWritten(testingSession.toObject()._id.toString());
+        // console.log("testing session added to DB");
         res.status(201).json(testingSession.toObject());
     } catch (e) {
         res.status(500).send;
@@ -94,26 +87,40 @@ app.get("/get-test-script-steps/:testScriptID", async (req, res) => {
 });
 
 // Helper functions
+/**
+ * Writes step responses associated with a testing session to the database.
+ * @param {string} testingSessionID - ID of the testing session with which step responses are associated it.
+ * @param {array} stepResponsesToAdd - the step responses to be writted to the database.
+ */
 const addStepResponses = async (testingSessionID, stepResponsesToAdd) => {
     addTestingSessionIDToStepResponses(testingSessionID, stepResponsesToAdd);
     for (let i = 0; i < stepResponsesToAdd.length; i++) {
         try {
-            console.log("creating step response");
+            // console.log("creating step response");
             await StepResponse.create(stepResponsesToAdd[i]);
         } catch (e) {
             console.log(e);
         }
     }
-    console.log("step responses added");
+    // console.log("step responses added");
 }
 
+/** 
+ * Adds the correct test script ID to all step responses in stepResponsesToAdd array.
+ * @param {string} testingSessionID - the ID of the testing session that the step responses being added to the database are a part of.
+ * @param {array} stepsToAdd - array of step responses for which an ID attribute is to be written.
+*/
 const addTestingSessionIDToStepResponses = (testingSessionID, stepResponsesToAdd) => {
     for (let i = 0; i < stepResponsesToAdd.length; i++) {
         stepResponsesToAdd[i]["sessionID"] = testingSessionID;
     }
 }
 
-const checkNumberOfStepResponsesWritten = async (testingSessionID) => {
+/**
+ * Determines whether or not step responses were written for a particular testing session. If none were written, the testing session is removed from the database.
+ * @param {string} testingSessionID - ID of the testing session in question.
+ */
+const checkIfStepResponsesWereWritten = async (testingSessionID) => {
     try {
         const stepResponses = await StepResponse.find(
             { sessionID: testingSessionID }
@@ -127,11 +134,13 @@ const checkNumberOfStepResponsesWritten = async (testingSessionID) => {
 }
 
 connect()
+    // local connection code
     // .then(() => app.listen(5000, () => {
     //     console.log("Yay! Your server is running on http://localhost:5000!");
     // }))
     // .catch(e => console.error(e));
 
+    // Heroku connection code
     .then(() => app.listen(process.env.PORT || 5000, () => {
         console.log("Yay! Your server is running on port 5000!");
     }))

@@ -10,10 +10,21 @@ const validateInputFileType = async (file, acceptedFileTypes, acceptedFileExtens
     return await checkFileType(file, acceptedFileTypes, acceptedFileExtensions);
 }
 
+/**
+ * Determines whether or not the user's browser supports file attachments.
+ * @returns true if the user's browswer supports file attachments, false if not.
+ */
 const checkBrowserFileSupport = () => {
     return (window.FileReader && window.Blob);
 }
 
+/**
+ * Determines whether or not a file the user is attempting to attach is of a valid (specified) type.
+ * @param {file} uploadedFile - the file in question.
+ * @param {array} acceptedFileTypes - accepted general file types (e.g. ["image/*"])
+ * @param {array} acceptedFileExtensions - accepted file extensions (e.g. ["image/png"])
+ * @returns true if the file is of a valid type, false otherwise.
+ */
 const checkFileType = async (uploadedFile, acceptedFileTypes, acceptedFileExtensions) => {
     var blob = uploadedFile;
     return new Promise((resolve, reject) => {
@@ -42,6 +53,11 @@ const checkFileType = async (uploadedFile, acceptedFileTypes, acceptedFileExtens
     });
 }
 
+/**
+ * Returns a string specifying the file type/extension using information from the file header. 
+ * @param {string} header - the file in question's header.
+ * @returns a string containing the file type/extension (e.g. "image/png") if it matches any of the cases below; unknown if it doesn't.
+ */
 const getFileTypeFromHeader = (header) => {
     switch (header) {
         case "89504e47":

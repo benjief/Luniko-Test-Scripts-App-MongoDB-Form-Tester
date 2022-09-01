@@ -6,16 +6,24 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 
+/**
+ * Two-to-three-radio-button component customized from the original Material UI component that can be found here: https://mui.com/material-ui/react-react-radio-button/.
+ * @returns said radio button component.
+ */
 function MaterialRadioButton({
-  formTitle,
-  buttonOne,
-  buttonTwo,
-  buttonThree,
-  selectedValue,
-  defaultValue,
+  formTitle, // text displayed above the radio buttons
+  buttonOne, // object of the following form: {value: "string", label: "string"}
+  buttonTwo, // object of the following form: {value: "string", label: "string"}
+  buttonThree, // object of the following form: {value: "string", label: "string"}
+  selectedValue, // callback function that provides selected value to the component containing this component
+  defaultValue, // value to be selected by the component upon initial render
 }) {
   const [value, setValue] = React.useState(defaultValue);
 
+  /**
+   * Sets the value of the component to the selected value and sends said selected value back to the component containing this component as an object.
+   * @param {string} value - the selected value. 
+   */
   const handleChange = (value) => {
     setValue(value);
     selectedValue({ field: "radio button value", value: value });
@@ -33,8 +41,7 @@ function MaterialRadioButton({
           '& .MuiSvgIcon-root': {
             fontSize: 27,
           },
-        }}
-      >
+        }}>
         <FormControlLabel value={buttonOne.value} control={<Radio />} label={buttonOne.label} />
         <FormControlLabel value={buttonTwo.value} control={<Radio />} label={buttonTwo.label} />
         {buttonThree
@@ -48,7 +55,7 @@ function MaterialRadioButton({
 MaterialRadioButton.propTypes = {
   formTitle: PropTypes.string,
   buttonOne: PropTypes.shape({
-    value: PropTypes.string,
+    value: PropTypes.string, // TODO: make button values more general (shouldn't necessarily be restricted to strings)
     label: PropTypes.string,
   }),
   buttonTwo: PropTypes.shape({

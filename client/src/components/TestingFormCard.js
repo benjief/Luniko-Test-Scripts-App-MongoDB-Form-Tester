@@ -8,28 +8,40 @@ import Typography from '@mui/material/Typography';
 import MaterialTextField from './MaterialTextField';
 import MaterialDialog from './MaterialDialog';
 import SubmitButton from './SubmitButton';
+
+/**
+ * Card that displays information users require to begin testing a test script, that also facilitates testing and submission of a testing session.
+ * @returns said card.
+ */
 function TestingFormCard({
-    setFormProps,
+    setFormProps, // function to handle setting form props
     testScriptName,
     testScriptDescription,
     testScriptPrimaryWorkstream,
     existingTesterFirstName,
     existingTesterLastName,
-    beginTesting,
-    isBeginTestingButtonDisabled,
-    isSubmitButtonDisabled,
-    hasUserCompletedAnyStepResponses,
-    hasUserCompletedAllStepResponses,
-    submitTestScriptResults,
-    isCancelButtonDisabled,
-    displayFadingBalls,
+    beginTesting, // function to handle switching between cards (e.g. between the main testing session card and test step cards)
+    isBeginTestingButtonDisabled, // whether or not the "begin testing" button is disabled
+    isSubmitButtonDisabled, // whether or not the submit button is disabled
+    hasUserCompletedAnyStepResponses, // whether or not the user has begun testing of the test script
+    hasUserCompletedAllStepResponses, // whether or not the user has completed testing of the test script
+    submitTestScriptResults, // function to handle test script submission/updating
+    isCancelButtonDisabled, // whether or not the cancel button is disabled
+    displayFadingBalls, // whether or not fading balls are displayed (to indicate that the page is writing testing session information)
 }) {
+    /**
+     * Handles changes to a card field (form prop). The corresponding field (form prop) in the page housing this card is updated with the value entered.
+     * @param {object} returnedObject - the object containing the field to be updated and the value to which that field should be updated.
+     */
     const handleOnChange = (returnedObject) => {
         setFormProps(
             prev => ({ ...prev, [returnedObject.field]: returnedObject.value })
         );
     }
 
+    /**
+     * Redirects the user back to the testing landing page (i.e. the "Enter Test Script Name" card).
+     */
     const handleOnClickCancel = () => {
         setTimeout(() => {
             window.location.reload();

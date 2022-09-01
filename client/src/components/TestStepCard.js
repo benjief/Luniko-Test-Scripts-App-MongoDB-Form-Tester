@@ -8,20 +8,29 @@ import Typography from '@mui/material/Typography';
 import MaterialTextField from './MaterialTextField';
 import MaterialRadioButton from './MaterialRadioButton';
 import FileInputButton from './FileInputButton';
+
+/**
+ * Card that displays information pertaining to a specific step in a test script, that also allows users to enter testing information pertaining to said step. Users are also able to move back and forth between steps.
+ * @returns said card.
+ */
 function TestStepCard({
-    goBackToTestingLandingPage,
-    setCurrentStepResponseProps,
-    saveStepResponse,
+    goBackToTestingLandingPage, // function to handle switching between cards (e.g. between test step cards and session card and the main testing session card)
+    setCurrentStepResponseProps, // function to handle setting current step response props 
+    saveStepResponse, // function that saves the current step response
     existingComments,
     existingPass,
     existingUploadedImage,
     stepNumber,
     stepDescription,
     stepDataInputtedByUser,
-    totalNumberOfSteps,
+    totalNumberOfSteps, // the total number of steps in this test script
 }) {
     const [areButtonsDisabled, setAreButtonsDisabled] = React.useState(false);
 
+    /**
+     * Handles changes to a card field (form prop). The corresponding field (form prop) in the page housing this card is updated with the value entered.
+     * @param {object} returnedObject - the object containing the field to be updated and the value to which that field should be updated.
+     */
     const handleOnChange = (returnedObject) => {
         if (returnedObject["field"] === "radio button value") {
             returnedObject["field"] = "pass";
@@ -31,6 +40,10 @@ function TestStepCard({
         );
     }
 
+    /**
+     * Attaches an image file to the step response and sets the uploadedImage form prop accordingly.
+     * @param {file} file - the attached image file.
+     */
     const handleAddImageToStepResponse = (file) => {
         // console.log("file:", file);
         // TODO: verify uploaded file is an image (MIME type)
@@ -39,13 +52,20 @@ function TestStepCard({
         );
     }
 
+    /**
+     * Saves the current step response and changes the current step being tested by making a call to saveStepResponse.
+     * @param {string} direction - "increment" if the step is being incremented, "decrement" otherwise.
+     */
     const handleChangeStep = (direction) => {
-        setAreButtonsDisabled(true);
+        setAreButtonsDisabled(true); // disable buttons while step card re-renders
         direction === "increment"
             ? saveStepResponse(stepNumber + 1)
             : saveStepResponse(stepNumber - 1);
     }
 
+    /**  
+     * Calls functions to save the current step response and change the card being displayed back to the main testing page.
+     */
     const goBack = () => {
         saveStepResponse(stepNumber);
         goBackToTestingLandingPage();

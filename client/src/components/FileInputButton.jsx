@@ -46,8 +46,8 @@ function FileInputButton({
     }
 
     /**
-     * 
-     * @param {*} file 
+     * Handles attachment of a valid file (i.e. one that is of the correct type and is less than the maximum allotted size). The input's label is also set to the filename.
+     * @param {file} file - the valid file in question.
      */
     const handleValidFileSelection = (file) => {
         selectedFile.current = file;
@@ -55,12 +55,19 @@ function FileInputButton({
         setLabel(file.name);
     }
 
+    /**
+     * Handles attachment of an invalid file (i.e. one that is of an incorrect type and/or more than the maximum allotted size). The input's label displays the reason the file was rejected.
+     * @param {string} reasonInvalid - the reason the file was rejected.
+     */
     const handleInvalidFileSelection = (reasonInvalid) => {
         setLabel(reasonInvalid);
         selectedFile.current = null;
         attachedFile(null);
     }
 
+    /**
+     * Handles removal of an attached file from the input.
+     */
     const handleRemoveFile = () => {
         console.log("removing file");
         setLabel("no file selected");
