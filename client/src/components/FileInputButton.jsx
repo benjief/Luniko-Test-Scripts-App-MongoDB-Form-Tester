@@ -2,13 +2,17 @@ import React, { useState, useRef } from "react";
 import PropTypes from 'prop-types';
 import { validateInputFileType } from "./functions/ValidateInputFileType";
 
+/**
+ * A simple file input button that allows users to attach files wherever this component is used. The file input only accepts specified file types and files under a specified max file size.
+ * @returns said file input.
+ */
 function FileInputButton({
-    acceptedFileTypes,
-    fileSizeLimit,
-    buttonText,
-    uploadedFile,
+    acceptedFileTypes, // array of accepted file types (e.g. "image/*") 
+    fileSizeLimit, // the file size limit in bytes
+    buttonText, // text displayed on the file input button
+    attachedFile, // function that handles the file once it has been attached
     existingUploadedFile,
-    validFileTypes,
+    acceptedFileExtensions, // array of accepted file extensions; note that these must be preceded by the general file type (e.g. "image/png")
 }) {
     const fileInput = useRef(null);
     const [label, setLabel] = useState(existingUploadedFile ? existingUploadedFile.size <= fileSizeLimit ? existingUploadedFile.name : "file too large" : "no file selected");
@@ -18,12 +22,15 @@ function FileInputButton({
     //     console.log(selectedFile.current);
     // }, [selectedFile]);
 
+    /**
+     * Handles file selection. If the file is determined to be valid (with a call to validateInputFileType) and does not exceed the size limit, a call to handleValidFileSelection is made. If the file is not an accepted type, or is too large, a call to handleInvalidFileSelection is made (with different error messages).
+     * @param {*} event - the event that leads to this function being called.
+     */
     const handleSelectFile = async (event) => {
         console.log(event.target.files[0]);
         if (event.target.files[0]) {
-            console.log('testing');
-            var test = await validateInputFileType(event.target.files[0], acceptedFileTypes);
-            if (test) {
+            var isValidFileType = await validateInputFileType(event.target.files[0], acceptedFileTypes, acceptedFileExtensions);
+            if (isValidFileType) {
                 if (event.target.files[0].size <= fileSizeLimit) {
                     handleValidFileSelection(event.target.files[0]);
                 } else {
@@ -35,33 +42,30 @@ function FileInputButton({
         } else {
             console.log("no file selected");
         }
-        event.target.value = null; // need this in order to upload the same file twice
+        event.target.value = null; // need this in order to have the ability to upload the same file twice
     }
 
+    /**
+     * 
+     * @param {*} file 
+     */
     const handleValidFileSelection = (file) => {
         selectedFile.current = file;
-        uploadedFile(file);
+        attachedFile(file);
         setLabel(file.name);
     }
 
     const handleInvalidFileSelection = (reasonInvalid) => {
         setLabel(reasonInvalid);
         selectedFile.current = null;
-        uploadedFile(null);
+        attachedFile(null);
     }
-
-    // const handleNoFileSelection = () => {
-    //     if (!selectedFile.current) {
-    //         selectedFile.current = null;
-    //         setLabel("no file selected");
-    //     }
-    // }
 
     const handleRemoveFile = () => {
         console.log("removing file");
         setLabel("no file selected");
         selectedFile.current = null;
-        uploadedFile(null);
+        attachedFile(null);
     }
 
     return (
@@ -95,18 +99,18 @@ FileInputButton.propTypes = {
     acceptedFileTypes: PropTypes.arrayOf(PropTypes.string),
     fileSizeLimit: PropTypes.number,
     buttonText: PropTypes.string,
-    uploadedFile: PropTypes.func,
+    attachedFile: PropTypes.func,
     existingUploadedFile: PropTypes.object,
-    validFileTypes: PropTypes.arrayOf(PropTypes.string),
+    acceptedFileExtensions: PropTypes.arrayOf(PropTypes.string),
 }
 
 FileInputButton.defaultProps = {
     acceptedFileTypes: [""],
     fileSizeLimit: Number.MAX_SAFE_INTEGER,
     buttonText: "Your Text Here",
-    uploadedFile: () => { },
+    attachedFile: () => { },
     existingUploadedFile: null,
-    validFileTypes: ["all"],
+    acceptedFileExtensions: ["all"],
 }
 
 export default FileInputButton;

@@ -7,6 +7,10 @@ import CardContent from '@mui/material/CardContent';
 import Collapse from '@mui/material/Collapse';
 import MaterialTextField from './MaterialTextField';
 import SubmitButton from './SubmitButton';
+
+/**
+ * Card that allows users to retrieve test script information from the database by entering a valid test script name. Note that the validity of a test script name is determined by the page that contains this card.
+ */
 function EnterTestScriptNameCard({
     setFormProps,
     requestTestScript,
@@ -15,6 +19,10 @@ function EnterTestScriptNameCard({
     const expanded = true;
     const invalidTestScriptNameError = useValidationErrorUpdate();
 
+    /**
+     * Handles changes to a card field (form prop). The corresponding field (form prop) in the page housing this card is updated with the value entered. Note that because we're dealing with test script names here, we need to eliminate any white space from the user-entered string and make it lower case. This allows the string to be properly compared to test script names that already exist in the database on the page containing this card (i.e. all the strings being compared to are lower case and don't contain any outside white space).
+     * @param {object} returnedObject - the object containing the field to be updated and the value to which that field should be updated.
+     */
     const handleOnChange = (returnedObject) => {
         invalidTestScriptNameError("");
         setFormProps(

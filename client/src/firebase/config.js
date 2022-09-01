@@ -14,6 +14,12 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const storage = getStorage(app);
 
+/**
+ * Handles the uploading of any images attached to step responses by the user during testing to Google Firebase Cloud Storage.
+ * @param {*} imageName - the name to be assigned to the image.
+ * @param {*} file - the image file to be uploaded.
+ * @returns a download URL for the uploaded image.
+ */
 const uploadStepResponseImage = async (imageName, file) => {
   try {
     const storageRef = ref(storage, imageName);

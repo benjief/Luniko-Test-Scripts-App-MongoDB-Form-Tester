@@ -99,9 +99,9 @@ function TestStepCard({
                                 acceptedFileTypes={["image/*"]}
                                 fileSizeLimit={16777216}
                                 buttonText="Upload Image"
-                                uploadedFile={handleAddImageToStepResponse}
+                                attachedFile={handleAddImageToStepResponse}
                                 existingUploadedFile={existingUploadedImage}
-                                validFileTypes={["image/png", "image/gif", "image/jpeg"]}>
+                                acceptedFileExtensions={["image/png", "image/gif", "image/jpeg"]}>
                             </FileInputButton>
                             <MaterialRadioButton
                                 buttonOne={{ value: "P", label: "Pass" }}
@@ -122,7 +122,7 @@ function TestStepCard({
             </button>
             <button
                 className="previous-step-button"
-                onClick={() => handleChangeStep()}
+                onClick={() => handleChangeStep("decrement")}
                 disabled={stepNumber === 1 || areButtonsDisabled}>
                 Previous Step
             </button>

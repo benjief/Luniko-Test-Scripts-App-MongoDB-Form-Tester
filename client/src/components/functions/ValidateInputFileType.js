@@ -4,17 +4,17 @@
  * https://en.wikipedia.org/wiki/List_of_file_signatures
  * https://mimesniff.spec.whatwg.org/#matching-an-image-type-pattern
  */
-const validateInputFileType = async (file, acceptedFileTypes) => {
+const validateInputFileType = async (file, acceptedFileTypes, acceptedFileExtensions) => {
     checkBrowserFileSupport();
     console.log("checking file type");
-    return await checkFileType(file, acceptedFileTypes);
+    return await checkFileType(file, acceptedFileTypes, acceptedFileExtensions);
 }
 
 const checkBrowserFileSupport = () => {
     return (window.FileReader && window.Blob);
 }
 
-const checkFileType = async (uploadedFile, acceptedFileTypes) => {
+const checkFileType = async (uploadedFile, acceptedFileTypes, acceptedFileExtensions) => {
     var blob = uploadedFile;
     return new Promise((resolve, reject) => {
         const fileReader = new FileReader();
@@ -27,7 +27,9 @@ const checkFileType = async (uploadedFile, acceptedFileTypes) => {
                 }
                 var fileType = await getFileTypeFromHeader(header);
                 var generalFileType = fileType.split("/").shift() + "/*";
-                resolve(acceptedFileTypes.includes(fileType) || acceptedFileTypes.includes(generalFileType));
+                // console.log(generalFileType);
+                // console.log(fileType);
+                resolve(acceptedFileExtensions.includes(fileType) || acceptedFileTypes.includes(generalFileType));
             } catch (e) {
                 console.log(e);
                 reject(e);

@@ -1,12 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+/**
+ * Component that structures TestScriptTestingPage.js.
+ * @returns said component.
+ */
 function CardWrapper({
-    children,
-    rendering,
-    alert,
-    isErrorThrown,
-    isTestingInProgress,
+    children, // components to be displayed within the structured divs below
+    rendering, // whether or not the page is rendering
+    alert, // whether or not an alert is being displayed on the page
+    isErrorThrown, // whether or not an error has been thrown on the page
+    isTestingInProgress, // whether or not the user is currently in the process of testing (i.e. creating a step response)
 }) {
     return (
         rendering || alert
